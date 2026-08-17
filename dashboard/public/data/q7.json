@@ -1,0 +1,679 @@
+{
+  "question_id": 7,
+  "question_text": "What role do fit, size, styling, price, reviews, occasion, social validation play?",
+  "question_short": "Factor Importance",
+  "total_relevant_docs": 8182,
+  "avg_confidence": 0.69,
+  "breakdown": [
+    {
+      "tag": "delivery_returns",
+      "label": "Delivery & Returns",
+      "count": 1021,
+      "pct": 30.3,
+      "avg_confidence": 0.7,
+      "color": "#84cc16"
+    },
+    {
+      "tag": "price",
+      "label": "Price",
+      "count": 530,
+      "pct": 15.8,
+      "avg_confidence": 0.7,
+      "color": "#ff7849"
+    },
+    {
+      "tag": "brand_trust",
+      "label": "Brand Trust",
+      "count": 519,
+      "pct": 15.4,
+      "avg_confidence": 0.7,
+      "color": "#ec4899"
+    },
+    {
+      "tag": "reviews_ratings",
+      "label": "Reviews & Ratings",
+      "count": 417,
+      "pct": 12.4,
+      "avg_confidence": 0.7,
+      "color": "#a855f7"
+    },
+    {
+      "tag": "styling",
+      "label": "Styling",
+      "count": 411,
+      "pct": 12.2,
+      "avg_confidence": 0.7,
+      "color": "#2dd4bf"
+    },
+    {
+      "tag": "fit_size",
+      "label": "Fit/Size",
+      "count": 311,
+      "pct": 9.2,
+      "avg_confidence": 0.7,
+      "color": "#ff3f6c"
+    },
+    {
+      "tag": "occasion",
+      "label": "Occasion",
+      "count": 116,
+      "pct": 3.4,
+      "avg_confidence": 0.7,
+      "color": "#3b82f6"
+    },
+    {
+      "tag": "social_validation",
+      "label": "Social Validation",
+      "count": 40,
+      "pct": 1.2,
+      "avg_confidence": 0.7,
+      "color": "#fbbf24"
+    }
+  ],
+  "segment_splits": {
+    "gen_z": [
+      {
+        "tag": "styling",
+        "label": "Styling",
+        "count": 19,
+        "pct": 22.4
+      },
+      {
+        "tag": "brand_trust",
+        "label": "Brand Trust",
+        "count": 13,
+        "pct": 15.3
+      },
+      {
+        "tag": "occasion",
+        "label": "Occasion",
+        "count": 12,
+        "pct": 14.1
+      },
+      {
+        "tag": "reviews_ratings",
+        "label": "Reviews & Ratings",
+        "count": 11,
+        "pct": 12.9
+      },
+      {
+        "tag": "price",
+        "label": "Price",
+        "count": 11,
+        "pct": 12.9
+      },
+      {
+        "tag": "delivery_returns",
+        "label": "Delivery & Returns",
+        "count": 10,
+        "pct": 11.8
+      },
+      {
+        "tag": "fit_size",
+        "label": "Fit/Size",
+        "count": 7,
+        "pct": 8.2
+      },
+      {
+        "tag": "social_validation",
+        "label": "Social Validation",
+        "count": 2,
+        "pct": 2.4
+      }
+    ],
+    "millennial": [
+      {
+        "tag": "delivery_returns",
+        "label": "Delivery & Returns",
+        "count": 1011,
+        "pct": 30.8
+      },
+      {
+        "tag": "price",
+        "label": "Price",
+        "count": 519,
+        "pct": 15.8
+      },
+      {
+        "tag": "brand_trust",
+        "label": "Brand Trust",
+        "count": 506,
+        "pct": 15.4
+      },
+      {
+        "tag": "reviews_ratings",
+        "label": "Reviews & Ratings",
+        "count": 406,
+        "pct": 12.4
+      },
+      {
+        "tag": "styling",
+        "label": "Styling",
+        "count": 392,
+        "pct": 12.0
+      },
+      {
+        "tag": "fit_size",
+        "label": "Fit/Size",
+        "count": 304,
+        "pct": 9.3
+      },
+      {
+        "tag": "occasion",
+        "label": "Occasion",
+        "count": 104,
+        "pct": 3.2
+      },
+      {
+        "tag": "social_validation",
+        "label": "Social Validation",
+        "count": 38,
+        "pct": 1.2
+      }
+    ],
+    "gen_x": []
+  },
+  "source_attribution": [],
+  "key_quotes": [
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "waiting_for_sale"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "social_validation_needed"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "After not adding taxes in display price Myntra now resorting to this BS. &#32; submitted by &#32; /u/ppatra [link] &#32; [comments]",
+      "source": "Reddit",
+      "source_id": "reddit_t3_kh9fx4",
+      "date": "2020-12-21",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    }
+  ],
+  "temporal_trend": [
+    {
+      "month": "2015-04",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2016-10",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-09",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2019-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-06",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-12",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-05",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-07",
+      "count": 18,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-08",
+      "count": 10,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-12",
+      "count": 11,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-03",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-05",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-08",
+      "count": 40,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-11",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-12",
+      "count": 28,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-02",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-03",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-04",
+      "count": 30,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-05",
+      "count": 66,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-06",
+      "count": 34,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-07",
+      "count": 21,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-08",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-10",
+      "count": 38,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-11",
+      "count": 79,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-12",
+      "count": 8,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-01",
+      "count": 17,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-02",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-03",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-04",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-05",
+      "count": 29,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-06",
+      "count": 22,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-07",
+      "count": 114,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-08",
+      "count": 240,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-09",
+      "count": 153,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-10",
+      "count": 172,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-11",
+      "count": 70,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-12",
+      "count": 80,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-01",
+      "count": 39,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-02",
+      "count": 55,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-03",
+      "count": 98,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-04",
+      "count": 69,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-05",
+      "count": 323,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-06",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-07",
+      "count": 246,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-08",
+      "count": 335,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-09",
+      "count": 318,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-10",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-11",
+      "count": 168,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-12",
+      "count": 148,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-01",
+      "count": 174,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-02",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-03",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-04",
+      "count": 245,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-05",
+      "count": 353,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-06",
+      "count": 475,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-07",
+      "count": 295,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-08",
+      "count": 2423,
+      "pct": 100.0
+    }
+  ],
+  "radar_data": [
+    {
+      "factor": "Delivery & Returns",
+      "importance": 30,
+      "positive_pct": 17.4,
+      "negative_pct": 19.8
+    },
+    {
+      "factor": "Price",
+      "importance": 15,
+      "positive_pct": 28.1,
+      "negative_pct": 16.8
+    },
+    {
+      "factor": "Brand Trust",
+      "importance": 15,
+      "positive_pct": 30.8,
+      "negative_pct": 32.9
+    },
+    {
+      "factor": "Reviews & Ratings",
+      "importance": 12,
+      "positive_pct": 26.1,
+      "negative_pct": 11.5
+    },
+    {
+      "factor": "Styling",
+      "importance": 12,
+      "positive_pct": 33.3,
+      "negative_pct": 9.2
+    },
+    {
+      "factor": "Fit/Size",
+      "importance": 9,
+      "positive_pct": 14.5,
+      "negative_pct": 16.1
+    },
+    {
+      "factor": "Occasion",
+      "importance": 3,
+      "positive_pct": 20.7,
+      "negative_pct": 6.0
+    },
+    {
+      "factor": "Social Validation",
+      "importance": 1,
+      "positive_pct": 22.5,
+      "negative_pct": 22.5
+    }
+  ],
+  "correlation_matrix": {
+    "factors": [
+      "fit_size",
+      "price",
+      "reviews_ratings",
+      "styling",
+      "occasion",
+      "social_validation",
+      "brand_trust",
+      "delivery_returns"
+    ],
+    "values": [
+      [
+        1.0,
+        0.04,
+        0.06,
+        0.05,
+        0.04,
+        0.01,
+        0.04,
+        0.07
+      ],
+      [
+        0.04,
+        1.0,
+        0.04,
+        0.07,
+        0.01,
+        0.0,
+        0.1,
+        0.06
+      ],
+      [
+        0.06,
+        0.04,
+        1.0,
+        0.07,
+        0.04,
+        0.01,
+        0.12,
+        0.06
+      ],
+      [
+        0.05,
+        0.07,
+        0.07,
+        1.0,
+        0.03,
+        0.01,
+        0.08,
+        0.04
+      ],
+      [
+        0.04,
+        0.01,
+        0.04,
+        0.03,
+        1.0,
+        0.01,
+        0.01,
+        0.01
+      ],
+      [
+        0.01,
+        0.0,
+        0.01,
+        0.01,
+        0.01,
+        1.0,
+        0.01,
+        0.01
+      ],
+      [
+        0.04,
+        0.1,
+        0.12,
+        0.08,
+        0.01,
+        0.01,
+        1.0,
+        0.1
+      ],
+      [
+        0.07,
+        0.06,
+        0.06,
+        0.04,
+        0.01,
+        0.01,
+        0.1,
+        1.0
+      ]
+    ]
+  }
+}

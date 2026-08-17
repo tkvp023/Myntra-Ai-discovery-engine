@@ -1,0 +1,435 @@
+{
+  "question_id": 8,
+  "question_text": "When is the wishlist being used as genuine purchase intent vs bookmarking?",
+  "question_short": "Intent vs Bookmarking",
+  "total_relevant_docs": 8182,
+  "avg_confidence": 0.69,
+  "breakdown": [
+    {
+      "tag": "genuine_purchase_intent",
+      "label": "Genuine Purchase Intent",
+      "count": 6903,
+      "pct": 84.4,
+      "avg_confidence": 0.7,
+      "color": "#ff3f6c"
+    },
+    {
+      "tag": "comparison_shortlist",
+      "label": "Comparison Shortlisting",
+      "count": 816,
+      "pct": 10.0,
+      "avg_confidence": 0.7,
+      "color": "#2dd4bf"
+    },
+    {
+      "tag": "bookmarking",
+      "label": "Bookmarking / Inspiration",
+      "count": 319,
+      "pct": 3.9,
+      "avg_confidence": 0.7,
+      "color": "#ff7849"
+    },
+    {
+      "tag": "gift_idea",
+      "label": "Gift Idea",
+      "count": 79,
+      "pct": 1.0,
+      "avg_confidence": 0.7,
+      "color": "#3b82f6"
+    },
+    {
+      "tag": "aspiration",
+      "label": "Aspiration",
+      "count": 65,
+      "pct": 0.8,
+      "avg_confidence": 0.7,
+      "color": "#a855f7"
+    }
+  ],
+  "segment_splits": {},
+  "source_attribution": [],
+  "key_quotes": [
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "waiting_for_sale"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "social_validation_needed"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "After not adding taxes in display price Myntra now resorting to this BS. &#32; submitted by &#32; /u/ppatra [link] &#32; [comments]",
+      "source": "Reddit",
+      "source_id": "reddit_t3_kh9fx4",
+      "date": "2020-12-21",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    }
+  ],
+  "temporal_trend": [
+    {
+      "month": "2015-04",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2016-10",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-09",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2019-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-06",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-12",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-05",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-07",
+      "count": 18,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-08",
+      "count": 10,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-12",
+      "count": 11,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-03",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-05",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-08",
+      "count": 40,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-11",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-12",
+      "count": 28,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-02",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-03",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-04",
+      "count": 30,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-05",
+      "count": 66,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-06",
+      "count": 34,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-07",
+      "count": 21,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-08",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-10",
+      "count": 38,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-11",
+      "count": 79,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-12",
+      "count": 8,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-01",
+      "count": 17,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-02",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-03",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-04",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-05",
+      "count": 29,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-06",
+      "count": 22,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-07",
+      "count": 114,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-08",
+      "count": 240,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-09",
+      "count": 153,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-10",
+      "count": 172,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-11",
+      "count": 70,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-12",
+      "count": 80,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-01",
+      "count": 39,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-02",
+      "count": 55,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-03",
+      "count": 98,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-04",
+      "count": 69,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-05",
+      "count": 323,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-06",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-07",
+      "count": 246,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-08",
+      "count": 335,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-09",
+      "count": 318,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-10",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-11",
+      "count": 168,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-12",
+      "count": 148,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-01",
+      "count": 174,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-02",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-03",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-04",
+      "count": 245,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-05",
+      "count": 353,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-06",
+      "count": 475,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-07",
+      "count": 295,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-08",
+      "count": 2423,
+      "pct": 100.0
+    }
+  ],
+  "word_cloud_data": {
+    "genuine_purchase_intent": [
+      {
+        "text": "want it",
+        "value": 2
+      },
+      {
+        "text": "need this",
+        "value": 1
+      },
+      {
+        "text": "never buy",
+        "value": 1
+      }
+    ],
+    "bookmarking": [
+      {
+        "text": "love this",
+        "value": 13
+      },
+      {
+        "text": "inspiration",
+        "value": 1
+      }
+    ]
+  }
+}

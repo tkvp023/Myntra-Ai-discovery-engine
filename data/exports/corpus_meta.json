@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-08-17T08:30:05Z",
+  "pipeline_version": "1.0.0",
+  "corpus_stats": {
+    "total_raw_docs": 8182,
+    "total_after_cleaning": 8182,
+    "total_classified": 8182,
+    "total_primary_signal": 8182,
+    "total_secondary_signal": 0,
+    "total_no_signal": 0,
+    "duplicates_removed": 0,
+    "language_filtered": 0
+  },
+  "scrape_dates": {
+    "appstore": {
+      "start": "2026-08-17",
+      "end": "2026-08-17",
+      "count": 137
+    },
+    "pissedconsumer": {
+      "start": "2026-08-17",
+      "end": "2026-08-17",
+      "count": 507
+    },
+    "playstore": {
+      "start": "2026-08-17",
+      "end": "2026-08-17",
+      "count": 1180
+    },
+    "reddit": {
+      "start": "2026-08-17",
+      "end": "2026-08-17",
+      "count": 1039
+    },
+    "youtube": {
+      "start": "2026-08-17",
+      "end": "2026-08-17",
+      "count": 5319
+    }
+  },
+  "classification_stats": {
+    "model_used": "gemini-3.7-flash (primary), keyword-fallback",
+    "total_api_calls": 0,
+    "total_tokens_used": 0,
+    "avg_confidence": 0.69,
+    "classification_errors": 0,
+    "validation_failures": 0
+  },
+  "date_range": {
+    "earliest_review": "2015-04-06",
+    "latest_review": "2026-08-17"
+  }
+}

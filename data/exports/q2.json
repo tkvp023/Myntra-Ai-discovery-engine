@@ -1,0 +1,976 @@
+{
+  "question_id": 2,
+  "question_text": "What prevents wishlisted products from eventually being purchased?",
+  "question_short": "Purchase Prevention",
+  "total_relevant_docs": 7557,
+  "avg_confidence": 0.678,
+  "breakdown": [
+    {
+      "tag": "quality_doubt",
+      "label": "Quality Doubt",
+      "count": 4617,
+      "pct": 52.5,
+      "avg_confidence": 0.57,
+      "color": "#a855f7"
+    },
+    {
+      "tag": "waiting_for_sale",
+      "label": "Waiting for Sale",
+      "count": 1364,
+      "pct": 15.5,
+      "avg_confidence": 0.689,
+      "color": "#2dd4bf"
+    },
+    {
+      "tag": "social_validation_needed",
+      "label": "Social Validation Needed",
+      "count": 669,
+      "pct": 7.6,
+      "avg_confidence": 0.85,
+      "color": "#fbbf24"
+    },
+    {
+      "tag": "price_sensitivity",
+      "label": "Price Sensitivity",
+      "count": 620,
+      "pct": 7.0,
+      "avg_confidence": 0.85,
+      "color": "#ff7849"
+    },
+    {
+      "tag": "sizing_uncertainty",
+      "label": "Sizing Uncertainty",
+      "count": 411,
+      "pct": 4.7,
+      "avg_confidence": 0.85,
+      "color": "#ff3f6c"
+    },
+    {
+      "tag": "style_uncertainty",
+      "label": "Style Uncertainty",
+      "count": 366,
+      "pct": 4.2,
+      "avg_confidence": 0.85,
+      "color": "#3b82f6"
+    },
+    {
+      "tag": "return_policy_concern",
+      "label": "Return Policy Concern",
+      "count": 323,
+      "pct": 3.7,
+      "avg_confidence": 0.85,
+      "color": "#06b6d4"
+    },
+    {
+      "tag": "occasion_mismatch",
+      "label": "Occasion Mismatch",
+      "count": 165,
+      "pct": 1.9,
+      "avg_confidence": 0.85,
+      "color": "#8b5cf6"
+    },
+    {
+      "tag": "trust_deficit",
+      "label": "Trust Deficit",
+      "count": 123,
+      "pct": 1.4,
+      "avg_confidence": 0.85,
+      "color": "#f97316"
+    },
+    {
+      "tag": "comparison_paralysis",
+      "label": "Comparison Paralysis",
+      "count": 73,
+      "pct": 0.8,
+      "avg_confidence": 0.85,
+      "color": "#ec4899"
+    },
+    {
+      "tag": "information_gap",
+      "label": "Information Gap",
+      "count": 69,
+      "pct": 0.8,
+      "avg_confidence": 0.85,
+      "color": "#84cc16"
+    }
+  ],
+  "segment_splits": {
+    "gen_z": [
+      {
+        "tag": "social_validation_needed",
+        "label": "Social Validation Needed",
+        "count": 142,
+        "pct": 53.8,
+        "avg_confidence": 0.85,
+        "color": "#fbbf24"
+      },
+      {
+        "tag": "quality_doubt",
+        "label": "Quality Doubt",
+        "count": 36,
+        "pct": 13.6,
+        "avg_confidence": 0.665,
+        "color": "#a855f7"
+      },
+      {
+        "tag": "occasion_mismatch",
+        "label": "Occasion Mismatch",
+        "count": 24,
+        "pct": 9.1,
+        "avg_confidence": 0.85,
+        "color": "#8b5cf6"
+      },
+      {
+        "tag": "style_uncertainty",
+        "label": "Style Uncertainty",
+        "count": 13,
+        "pct": 4.9,
+        "avg_confidence": 0.85,
+        "color": "#3b82f6"
+      },
+      {
+        "tag": "price_sensitivity",
+        "label": "Price Sensitivity",
+        "count": 12,
+        "pct": 4.5,
+        "avg_confidence": 0.85,
+        "color": "#ff7849"
+      },
+      {
+        "tag": "waiting_for_sale",
+        "label": "Waiting for Sale",
+        "count": 11,
+        "pct": 4.2,
+        "avg_confidence": 0.759,
+        "color": "#2dd4bf"
+      },
+      {
+        "tag": "sizing_uncertainty",
+        "label": "Sizing Uncertainty",
+        "count": 8,
+        "pct": 3.0,
+        "avg_confidence": 0.85,
+        "color": "#ff3f6c"
+      },
+      {
+        "tag": "return_policy_concern",
+        "label": "Return Policy Concern",
+        "count": 8,
+        "pct": 3.0,
+        "avg_confidence": 0.85,
+        "color": "#06b6d4"
+      },
+      {
+        "tag": "comparison_paralysis",
+        "label": "Comparison Paralysis",
+        "count": 5,
+        "pct": 1.9,
+        "avg_confidence": 0.85,
+        "color": "#ec4899"
+      },
+      {
+        "tag": "information_gap",
+        "label": "Information Gap",
+        "count": 3,
+        "pct": 1.1,
+        "avg_confidence": 0.85,
+        "color": "#84cc16"
+      },
+      {
+        "tag": "trust_deficit",
+        "label": "Trust Deficit",
+        "count": 2,
+        "pct": 0.8,
+        "avg_confidence": 0.85,
+        "color": "#f97316"
+      }
+    ],
+    "millennial": [
+      {
+        "tag": "quality_doubt",
+        "label": "Quality Doubt",
+        "count": 4581,
+        "pct": 53.7,
+        "avg_confidence": 0.569,
+        "color": "#a855f7"
+      },
+      {
+        "tag": "waiting_for_sale",
+        "label": "Waiting for Sale",
+        "count": 1353,
+        "pct": 15.9,
+        "avg_confidence": 0.688,
+        "color": "#2dd4bf"
+      },
+      {
+        "tag": "price_sensitivity",
+        "label": "Price Sensitivity",
+        "count": 608,
+        "pct": 7.1,
+        "avg_confidence": 0.85,
+        "color": "#ff7849"
+      },
+      {
+        "tag": "social_validation_needed",
+        "label": "Social Validation Needed",
+        "count": 527,
+        "pct": 6.2,
+        "avg_confidence": 0.85,
+        "color": "#fbbf24"
+      },
+      {
+        "tag": "sizing_uncertainty",
+        "label": "Sizing Uncertainty",
+        "count": 403,
+        "pct": 4.7,
+        "avg_confidence": 0.85,
+        "color": "#ff3f6c"
+      },
+      {
+        "tag": "style_uncertainty",
+        "label": "Style Uncertainty",
+        "count": 353,
+        "pct": 4.1,
+        "avg_confidence": 0.85,
+        "color": "#3b82f6"
+      },
+      {
+        "tag": "return_policy_concern",
+        "label": "Return Policy Concern",
+        "count": 315,
+        "pct": 3.7,
+        "avg_confidence": 0.85,
+        "color": "#06b6d4"
+      },
+      {
+        "tag": "occasion_mismatch",
+        "label": "Occasion Mismatch",
+        "count": 141,
+        "pct": 1.7,
+        "avg_confidence": 0.85,
+        "color": "#8b5cf6"
+      },
+      {
+        "tag": "trust_deficit",
+        "label": "Trust Deficit",
+        "count": 121,
+        "pct": 1.4,
+        "avg_confidence": 0.85,
+        "color": "#f97316"
+      },
+      {
+        "tag": "comparison_paralysis",
+        "label": "Comparison Paralysis",
+        "count": 68,
+        "pct": 0.8,
+        "avg_confidence": 0.85,
+        "color": "#ec4899"
+      },
+      {
+        "tag": "information_gap",
+        "label": "Information Gap",
+        "count": 66,
+        "pct": 0.8,
+        "avg_confidence": 0.85,
+        "color": "#84cc16"
+      }
+    ],
+    "gen_x": []
+  },
+  "source_attribution": [
+    {
+      "label": "Quality Doubt",
+      "tag": "quality_doubt",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 3414,
+          "pct": 73.9
+        },
+        {
+          "source": "Play Store",
+          "count": 519,
+          "pct": 11.2
+        },
+        {
+          "source": "Reddit",
+          "count": 435,
+          "pct": 9.4
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 184,
+          "pct": 4.0
+        },
+        {
+          "source": "App Store",
+          "count": 65,
+          "pct": 1.4
+        }
+      ]
+    },
+    {
+      "label": "Waiting for Sale",
+      "tag": "waiting_for_sale",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 536,
+          "pct": 39.3
+        },
+        {
+          "source": "Play Store",
+          "count": 452,
+          "pct": 33.1
+        },
+        {
+          "source": "Reddit",
+          "count": 288,
+          "pct": 21.1
+        },
+        {
+          "source": "App Store",
+          "count": 45,
+          "pct": 3.3
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 43,
+          "pct": 3.2
+        }
+      ]
+    },
+    {
+      "label": "Social Validation Needed",
+      "tag": "social_validation_needed",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 365,
+          "pct": 54.6
+        },
+        {
+          "source": "Reddit",
+          "count": 195,
+          "pct": 29.1
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 62,
+          "pct": 9.3
+        },
+        {
+          "source": "Play Store",
+          "count": 41,
+          "pct": 6.1
+        },
+        {
+          "source": "App Store",
+          "count": 6,
+          "pct": 0.9
+        }
+      ]
+    },
+    {
+      "label": "Price Sensitivity",
+      "tag": "price_sensitivity",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 395,
+          "pct": 63.7
+        },
+        {
+          "source": "Reddit",
+          "count": 106,
+          "pct": 17.1
+        },
+        {
+          "source": "Play Store",
+          "count": 71,
+          "pct": 11.5
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 39,
+          "pct": 6.3
+        },
+        {
+          "source": "App Store",
+          "count": 9,
+          "pct": 1.5
+        }
+      ]
+    },
+    {
+      "label": "Sizing Uncertainty",
+      "tag": "sizing_uncertainty",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 253,
+          "pct": 61.6
+        },
+        {
+          "source": "Reddit",
+          "count": 65,
+          "pct": 15.8
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 53,
+          "pct": 12.9
+        },
+        {
+          "source": "Play Store",
+          "count": 31,
+          "pct": 7.5
+        },
+        {
+          "source": "App Store",
+          "count": 9,
+          "pct": 2.2
+        }
+      ]
+    },
+    {
+      "label": "Style Uncertainty",
+      "tag": "style_uncertainty",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 233,
+          "pct": 63.7
+        },
+        {
+          "source": "Reddit",
+          "count": 75,
+          "pct": 20.5
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 36,
+          "pct": 9.8
+        },
+        {
+          "source": "Play Store",
+          "count": 18,
+          "pct": 4.9
+        },
+        {
+          "source": "App Store",
+          "count": 4,
+          "pct": 1.1
+        }
+      ]
+    },
+    {
+      "label": "Return Policy Concern",
+      "tag": "return_policy_concern",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 329,
+          "pct": 39.4
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 263,
+          "pct": 31.5
+        },
+        {
+          "source": "Play Store",
+          "count": 130,
+          "pct": 15.6
+        },
+        {
+          "source": "Reddit",
+          "count": 106,
+          "pct": 12.7
+        },
+        {
+          "source": "App Store",
+          "count": 8,
+          "pct": 1.0
+        }
+      ]
+    },
+    {
+      "label": "Occasion Mismatch",
+      "tag": "occasion_mismatch",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 91,
+          "pct": 55.2
+        },
+        {
+          "source": "Reddit",
+          "count": 51,
+          "pct": 30.9
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 12,
+          "pct": 7.3
+        },
+        {
+          "source": "Play Store",
+          "count": 7,
+          "pct": 4.2
+        },
+        {
+          "source": "App Store",
+          "count": 4,
+          "pct": 2.4
+        }
+      ]
+    },
+    {
+      "label": "Trust Deficit",
+      "tag": "trust_deficit",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 105,
+          "pct": 47.5
+        },
+        {
+          "source": "Reddit",
+          "count": 49,
+          "pct": 22.2
+        },
+        {
+          "source": "Play Store",
+          "count": 40,
+          "pct": 18.1
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 26,
+          "pct": 11.8
+        },
+        {
+          "source": "App Store",
+          "count": 1,
+          "pct": 0.5
+        }
+      ]
+    },
+    {
+      "label": "Comparison Paralysis",
+      "tag": "comparison_paralysis",
+      "sources": [
+        {
+          "source": "YouTube",
+          "count": 65,
+          "pct": 48.5
+        },
+        {
+          "source": "Reddit",
+          "count": 42,
+          "pct": 31.3
+        },
+        {
+          "source": "Play Store",
+          "count": 19,
+          "pct": 14.2
+        },
+        {
+          "source": "PissedConsumer",
+          "count": 6,
+          "pct": 4.5
+        },
+        {
+          "source": "App Store",
+          "count": 2,
+          "pct": 1.5
+        }
+      ]
+    },
+    {
+      "label": "Information Gap",
+      "tag": "information_gap",
+      "sources": [
+        {
+          "source": "PissedConsumer",
+          "count": 29,
+          "pct": 42.0
+        },
+        {
+          "source": "YouTube",
+          "count": 17,
+          "pct": 24.6
+        },
+        {
+          "source": "Reddit",
+          "count": 16,
+          "pct": 23.2
+        },
+        {
+          "source": "Play Store",
+          "count": 7,
+          "pct": 10.1
+        }
+      ]
+    }
+  ],
+  "key_quotes": [
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "waiting_for_sale"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "social_validation_needed"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "After not adding taxes in display price Myntra now resorting to this BS. &#32; submitted by &#32; /u/ppatra [link] &#32; [comments]",
+      "source": "Reddit",
+      "source_id": "reddit_t3_kh9fx4",
+      "date": "2020-12-21",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    }
+  ],
+  "temporal_trend": [
+    {
+      "month": "2015-04",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2016-10",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-09",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2019-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-06",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-12",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-05",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-07",
+      "count": 18,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-08",
+      "count": 10,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-12",
+      "count": 11,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-03",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-05",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-08",
+      "count": 40,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-11",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-12",
+      "count": 28,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-02",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-03",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-04",
+      "count": 30,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-05",
+      "count": 66,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-06",
+      "count": 34,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-07",
+      "count": 21,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-08",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-10",
+      "count": 38,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-11",
+      "count": 79,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-12",
+      "count": 8,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-01",
+      "count": 17,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-02",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-03",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-04",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-05",
+      "count": 29,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-06",
+      "count": 22,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-07",
+      "count": 114,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-08",
+      "count": 240,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-09",
+      "count": 153,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-10",
+      "count": 172,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-11",
+      "count": 70,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-12",
+      "count": 80,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-01",
+      "count": 39,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-02",
+      "count": 55,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-03",
+      "count": 98,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-04",
+      "count": 69,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-05",
+      "count": 323,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-06",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-07",
+      "count": 246,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-08",
+      "count": 335,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-09",
+      "count": 318,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-10",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-11",
+      "count": 168,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-12",
+      "count": 148,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-01",
+      "count": 174,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-02",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-03",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-04",
+      "count": 245,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-05",
+      "count": 353,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-06",
+      "count": 475,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-07",
+      "count": 295,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-08",
+      "count": 2423,
+      "pct": 100.0
+    }
+  ]
+}

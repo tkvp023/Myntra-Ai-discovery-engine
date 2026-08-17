@@ -1,0 +1,566 @@
+{
+  "question_id": 6,
+  "question_text": "What information do users seek outside Myntra before making a purchase?",
+  "question_short": "External Info Seeking",
+  "total_relevant_docs": 733,
+  "avg_confidence": 0.839,
+  "breakdown": [
+    {
+      "tag": "ask_friends",
+      "label": "Ask Friends",
+      "count": 61,
+      "pct": 31.9,
+      "avg_confidence": 0.7,
+      "color": "#ff7849"
+    },
+    {
+      "tag": "instagram_styling",
+      "label": "Instagram Styling",
+      "count": 51,
+      "pct": 26.7,
+      "avg_confidence": 0.7,
+      "color": "#a855f7"
+    },
+    {
+      "tag": "google_search",
+      "label": "Google Search",
+      "count": 43,
+      "pct": 22.5,
+      "avg_confidence": 0.7,
+      "color": "#3b82f6"
+    },
+    {
+      "tag": "youtube_reviews",
+      "label": "YouTube Reviews",
+      "count": 35,
+      "pct": 18.3,
+      "avg_confidence": 0.7,
+      "color": "#ff3f6c"
+    },
+    {
+      "tag": "brand_website",
+      "label": "Brand Website",
+      "count": 1,
+      "pct": 0.5,
+      "avg_confidence": 0.7,
+      "color": "#fbbf24"
+    }
+  ],
+  "segment_splits": {},
+  "source_attribution": [],
+  "key_quotes": [
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "waiting_for_sale"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_16x6kxj",
+      "date": "2023-10-01",
+      "confidence": 0.85,
+      "tags": [
+        "social_validation_needed"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "After not adding taxes in display price Myntra now resorting to this BS. &#32; submitted by &#32; /u/ppatra [link] &#32; [comments]",
+      "source": "Reddit",
+      "source_id": "reddit_t3_kh9fx4",
+      "date": "2020-12-21",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "/u/SnooSnooDingo on After not adding taxes in display price Myntra now resorting to this BS. 99 bucks for the &quot;privilege&quot; you get of using Myntra? LOL. These jokers think they are some government agency. Dump their shopping carts after loading it up.",
+      "source": "Reddit",
+      "source_id": "reddit_t1_ggk2oxy",
+      "date": "2020-12-21",
+      "confidence": 0.85,
+      "tags": [
+        "price_sensitivity"
+      ],
+      "segment": "millennial"
+    }
+  ],
+  "temporal_trend": [
+    {
+      "month": "2015-04",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2016-10",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2018-09",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2019-08",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-06",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2020-12",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-05",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-07",
+      "count": 18,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-08",
+      "count": 10,
+      "pct": 100.0
+    },
+    {
+      "month": "2021-12",
+      "count": 11,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-03",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-05",
+      "count": 3,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-08",
+      "count": 40,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-11",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2022-12",
+      "count": 28,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-01",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-02",
+      "count": 7,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-03",
+      "count": 6,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-04",
+      "count": 30,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-05",
+      "count": 66,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-06",
+      "count": 34,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-07",
+      "count": 21,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-08",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-09",
+      "count": 19,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-10",
+      "count": 38,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-11",
+      "count": 79,
+      "pct": 100.0
+    },
+    {
+      "month": "2023-12",
+      "count": 8,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-01",
+      "count": 17,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-02",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-03",
+      "count": 23,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-04",
+      "count": 15,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-05",
+      "count": 29,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-06",
+      "count": 22,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-07",
+      "count": 114,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-08",
+      "count": 240,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-09",
+      "count": 153,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-10",
+      "count": 172,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-11",
+      "count": 70,
+      "pct": 100.0
+    },
+    {
+      "month": "2024-12",
+      "count": 80,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-01",
+      "count": 39,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-02",
+      "count": 55,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-03",
+      "count": 98,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-04",
+      "count": 69,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-05",
+      "count": 323,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-06",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-07",
+      "count": 246,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-08",
+      "count": 335,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-09",
+      "count": 318,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-10",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-11",
+      "count": 168,
+      "pct": 100.0
+    },
+    {
+      "month": "2025-12",
+      "count": 148,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-01",
+      "count": 174,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-02",
+      "count": 205,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-03",
+      "count": 264,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-04",
+      "count": 245,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-05",
+      "count": 353,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-06",
+      "count": 475,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-07",
+      "count": 295,
+      "pct": 100.0
+    },
+    {
+      "month": "2026-08",
+      "count": 2423,
+      "pct": 100.0
+    }
+  ],
+  "seeks_external_info_pct": 2.2,
+  "sankey_data": {
+    "nodes": [
+      {
+        "id": "ask_friends"
+      },
+      {
+        "id": "google_search"
+      },
+      {
+        "id": "instagram_styling"
+      },
+      {
+        "id": "occasion_mismatch"
+      },
+      {
+        "id": "price_sensitivity"
+      },
+      {
+        "id": "quality_doubt"
+      },
+      {
+        "id": "return_policy_concern"
+      },
+      {
+        "id": "sizing_uncertainty"
+      },
+      {
+        "id": "social_validation_needed"
+      },
+      {
+        "id": "style_uncertainty"
+      },
+      {
+        "id": "trust_deficit"
+      },
+      {
+        "id": "waiting_for_sale"
+      },
+      {
+        "id": "youtube_reviews"
+      }
+    ],
+    "links": [
+      {
+        "source": "social_validation_needed",
+        "target": "ask_friends",
+        "value": 53
+      },
+      {
+        "source": "social_validation_needed",
+        "target": "instagram_styling",
+        "value": 46
+      },
+      {
+        "source": "return_policy_concern",
+        "target": "ask_friends",
+        "value": 27
+      },
+      {
+        "source": "quality_doubt",
+        "target": "google_search",
+        "value": 26
+      },
+      {
+        "source": "social_validation_needed",
+        "target": "youtube_reviews",
+        "value": 16
+      },
+      {
+        "source": "quality_doubt",
+        "target": "youtube_reviews",
+        "value": 13
+      },
+      {
+        "source": "waiting_for_sale",
+        "target": "ask_friends",
+        "value": 11
+      },
+      {
+        "source": "quality_doubt",
+        "target": "instagram_styling",
+        "value": 10
+      },
+      {
+        "source": "style_uncertainty",
+        "target": "instagram_styling",
+        "value": 10
+      },
+      {
+        "source": "social_validation_needed",
+        "target": "google_search",
+        "value": 9
+      },
+      {
+        "source": "quality_doubt",
+        "target": "ask_friends",
+        "value": 8
+      },
+      {
+        "source": "price_sensitivity",
+        "target": "ask_friends",
+        "value": 8
+      },
+      {
+        "source": "occasion_mismatch",
+        "target": "ask_friends",
+        "value": 8
+      },
+      {
+        "source": "waiting_for_sale",
+        "target": "google_search",
+        "value": 8
+      },
+      {
+        "source": "return_policy_concern",
+        "target": "google_search",
+        "value": 7
+      },
+      {
+        "source": "trust_deficit",
+        "target": "ask_friends",
+        "value": 6
+      },
+      {
+        "source": "style_uncertainty",
+        "target": "ask_friends",
+        "value": 5
+      },
+      {
+        "source": "occasion_mismatch",
+        "target": "instagram_styling",
+        "value": 4
+      },
+      {
+        "source": "sizing_uncertainty",
+        "target": "instagram_styling",
+        "value": 4
+      },
+      {
+        "source": "return_policy_concern",
+        "target": "instagram_styling",
+        "value": 4
+      }
+    ]
+  }
+}

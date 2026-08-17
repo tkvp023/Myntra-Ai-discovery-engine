@@ -1,0 +1,3 @@
+# Classification package
+from pipeline.classification.schema import DocumentClassification, ClassificationResult
+from pipeline.classification.validator import validate_classification

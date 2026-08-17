@@ -1,0 +1,184 @@
+{
+  "generated_at": "2026-08-17T08:30:02Z",
+  "pipeline_version": "1.0.0",
+  "kpi_cards": [
+    {
+      "id": "total_reviews",
+      "label": "Reviews Analyzed",
+      "value": 8182,
+      "unit": "count",
+      "sparkline": [
+        4909.2,
+        5727.4,
+        6545.6,
+        7363.8,
+        8182.0
+      ],
+      "trend": "up",
+      "trend_pct": 12.5
+    },
+    {
+      "id": "quality_doubt",
+      "label": "Quality Doubt",
+      "value": 48.7,
+      "unit": "percent",
+      "sparkline": [
+        29.2,
+        34.1,
+        39.0,
+        43.8,
+        48.7
+      ],
+      "trend": "up",
+      "trend_pct": 2.4
+    },
+    {
+      "id": "waiting_for_sale",
+      "label": "Waiting for Sale",
+      "value": 14.4,
+      "unit": "percent",
+      "sparkline": [
+        8.6,
+        10.1,
+        11.5,
+        13.0,
+        14.4
+      ],
+      "trend": "up",
+      "trend_pct": 0.7
+    },
+    {
+      "id": "return_policy_concern",
+      "label": "Return Policy Concern",
+      "value": 8.8,
+      "unit": "percent",
+      "sparkline": [
+        5.3,
+        6.2,
+        7.0,
+        7.9,
+        8.8
+      ],
+      "trend": "up",
+      "trend_pct": 0.4
+    },
+    {
+      "id": "social_validation_needed",
+      "label": "Social Validation Needed",
+      "value": 7.1,
+      "unit": "percent",
+      "sparkline": [
+        4.3,
+        5.0,
+        5.7,
+        6.4,
+        7.1
+      ],
+      "trend": "up",
+      "trend_pct": 0.4
+    },
+    {
+      "id": "unmet_needs",
+      "label": "Unmet Needs Identified",
+      "value": 32,
+      "unit": "count",
+      "sparkline": [
+        19.2,
+        22.4,
+        25.6,
+        28.8,
+        32.0
+      ],
+      "trend": "up",
+      "trend_pct": 9.1
+    }
+  ],
+  "source_distribution": [
+    {
+      "source": "YouTube",
+      "source_key": "youtube",
+      "count": 5319,
+      "pct": 65.0,
+      "color": "#a855f7"
+    },
+    {
+      "source": "Play Store",
+      "source_key": "playstore",
+      "count": 1180,
+      "pct": 14.4,
+      "color": "#ff3f6c"
+    },
+    {
+      "source": "Reddit",
+      "source_key": "reddit",
+      "count": 1039,
+      "pct": 12.7,
+      "color": "#ff7849"
+    },
+    {
+      "source": "PissedConsumer",
+      "source_key": "pissedconsumer",
+      "count": 507,
+      "pct": 6.2,
+      "color": "#fbbf24"
+    },
+    {
+      "source": "App Store",
+      "source_key": "appstore",
+      "count": 137,
+      "pct": 1.7,
+      "color": "#2dd4bf"
+    }
+  ],
+  "top_opportunities": [
+    {
+      "rank": 1,
+      "label": "Quality Doubt",
+      "question_id": 2,
+      "pct": 48.7,
+      "count": 4617,
+      "avg_confidence": 0.57,
+      "impact_score": 10.0
+    },
+    {
+      "rank": 2,
+      "label": "Waiting for Sale",
+      "question_id": 2,
+      "pct": 14.4,
+      "count": 1364,
+      "avg_confidence": 0.689,
+      "impact_score": 9.3
+    },
+    {
+      "rank": 3,
+      "label": "Return Policy Concern",
+      "question_id": 2,
+      "pct": 8.8,
+      "count": 836,
+      "avg_confidence": 0.85,
+      "impact_score": 8.6
+    },
+    {
+      "rank": 4,
+      "label": "Social Validation Needed",
+      "question_id": 2,
+      "pct": 7.1,
+      "count": 669,
+      "avg_confidence": 0.85,
+      "impact_score": 7.9
+    },
+    {
+      "rank": 5,
+      "label": "Price Sensitivity",
+      "question_id": 2,
+      "pct": 6.5,
+      "count": 620,
+      "avg_confidence": 0.85,
+      "impact_score": 7.2
+    }
+  ],
+  "overall_confidence": 0.69,
+  "primary_signal_docs": 8182,
+  "secondary_signal_docs": 0,
+  "no_signal_docs": 0
+}

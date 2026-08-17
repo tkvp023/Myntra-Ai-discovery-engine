@@ -1,0 +1,22 @@
+{
+  "raw_count": 22065,
+  "after_normalize": 22065,
+  "after_language_filter": 21047,
+  "language_dropped": 1018,
+  "language_drop_rate": 4.61,
+  "after_relevance_filter": 8406,
+  "relevance_dropped": 12641,
+  "relevance_drop_rate": 60.06,
+  "after_dedup": 8182,
+  "dedup_stats": {
+    "input_count": 8406,
+    "exact_duplicates": 179,
+    "fuzzy_duplicates": 45,
+    "total_removed": 224,
+    "output_count": 8182,
+    "dedup_rate": 2.66
+  },
+  "final_count": 8182,
+  "retention_rate": 37.08,
+  "elapsed_seconds": 87.8
+}

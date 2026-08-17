@@ -1,0 +1,49 @@
+{
+  "timestamp": "2026-08-17T06:36:01.943597+00:00",
+  "elapsed_seconds": 3342.4,
+  "total_documents": 17470,
+  "results": [
+    {
+      "source": "appstore",
+      "status": "completed",
+      "count": 0,
+      "error": null
+    },
+    {
+      "source": "playstore",
+      "status": "failed",
+      "count": 0,
+      "error": "TypeError: Object of type _ContinuationToken is not JSON serializable"
+    },
+    {
+      "source": "trustpilot",
+      "status": "completed",
+      "count": 0,
+      "error": null
+    },
+    {
+      "source": "pissedconsumer",
+      "status": "completed",
+      "count": 0,
+      "error": null
+    },
+    {
+      "source": "reviewsio",
+      "status": "completed",
+      "count": 0,
+      "error": null
+    },
+    {
+      "source": "youtube",
+      "status": "completed",
+      "count": 17470,
+      "error": null
+    },
+    {
+      "source": "reddit",
+      "status": "completed",
+      "count": 0,
+      "error": null
+    }
+  ]
+}

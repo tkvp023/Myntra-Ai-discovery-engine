@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+pipeline/venv/
+pipeline/.venv/
+
+# Node
+dashboard/node_modules/
+dashboard/.next/
+dashboard/out/
+
+# Data (large files — do not commit)
+data/raw/
+data/clean/
+data/classified/
+data/db.sqlite
+data/checkpoints/
+data/chroma_db/
+data/vectors/
+data/vectors.npz
+
+# Environment
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Misc
+*.bak
+*.tmp
