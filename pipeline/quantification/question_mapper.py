@@ -340,17 +340,36 @@ def build_q10(agg: Aggregator) -> dict:
     return data
 
 
+def _load_llm_curated_quotes() -> dict:
+    """Load LLM-curated quotes if available."""
+    import json
+    from pathlib import Path
+    curated_path = Path(__file__).resolve().parent.parent.parent / "data" / "exports" / "llm_curated_quotes.json"
+    if curated_path.exists():
+        try:
+            with open(curated_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+
 def build_all_questions(agg: Aggregator) -> dict:
-    """Build all 10 question data objects. Returns {1: data, 2: data, ...}"""
+    """Build all 10 question data objects with LLM-curated quotes. Returns {1: data, 2: data, ...}"""
     builders = {
         1: build_q1, 2: build_q2, 3: build_q3,
         4: build_q4, 5: build_q5, 6: build_q6,
         7: build_q7, 8: build_q8, 9: build_q9, 10: build_q10,
     }
+    llm_quotes = _load_llm_curated_quotes()
     results = {}
     for qid, builder in builders.items():
         try:
-            results[qid] = builder(agg)
+            data = builder(agg)
+            # Inject LLM curated quotes if present
+            if str(qid) in llm_quotes and len(llm_quotes[str(qid)]) >= 3:
+                data["key_quotes"] = llm_quotes[str(qid)]
+            results[qid] = data
             print(f"    [OK] Q{qid}: {QUESTIONS[qid][1]}")
         except Exception as e:
             print(f"    [!!] Q{qid} failed: {e}")

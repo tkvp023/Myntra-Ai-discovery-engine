@@ -35,12 +35,17 @@ function QuoteCard({ quote, accent }: { quote: Quote; accent?: string }) {
           {expanded ? 'Show less' : 'Read more'}
         </button>
       )}
-      <div className="quote-meta">
-        <span className="badge badge-source" style={{ background: `${SOURCE_COLORS[quote.source]}22`, color: SOURCE_COLORS[quote.source] || 'var(--text-secondary)' }}>
+      <div className="quote-meta" style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+        <span className="badge badge-source" style={{ background: `${SOURCE_COLORS[quote.source] || '#6b7280'}22`, color: SOURCE_COLORS[quote.source] || 'var(--text-secondary)' }}>
           {quote.source}
         </span>
-        {quote.segment !== 'unknown' && (
-          <span className="badge" style={{ background: `${SEGMENT_COLORS[quote.segment]}22`, color: SEGMENT_COLORS[quote.segment] }}>
+        {quote.tags && quote.tags.length > 0 && quote.tags[0] && (
+          <span className="badge" style={{ background: 'var(--theme-accent-bg)', color: 'var(--pink)', border: '1px solid var(--theme-accent-border)', fontSize: 11 }}>
+            #{quote.tags[0].replace(/_/g, ' ')}
+          </span>
+        )}
+        {quote.segment && quote.segment !== 'unknown' && (
+          <span className="badge" style={{ background: `${SEGMENT_COLORS[quote.segment] || '#6b7280'}22`, color: SEGMENT_COLORS[quote.segment] || 'var(--text-secondary)' }}>
             {quote.segment.replace('_', ' ')}
           </span>
         )}

@@ -106,57 +106,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "​@thesarutales sahi s pata na ho to kuch bhi ksi ko guide na kre product return s id block ho jati he agr srf product return krke unhe review chahiye to product selling kb krenge .. main think is product buy hona chahiye lot of people ko lagta he ki return krke review de denge pr esa krke bht logo n...",
+      "text": "Iski baat mat suno face_with_tears_of_joy face_with_tears_of_joy wishlist main rako big billion day sale pe kareedna face_with_tears_of_joy",
       "source": "YouTube",
-      "source_id": "UgysWobv8OckMpLyKrh4AaABAg.AJuJL3a05T1ALXPhYHZG3Y",
-      "date": "2025-08-07",
-      "confidence": 0.85,
+      "source_id": "UgxLBy7w9VtfQA_jVKR4AaABAg",
+      "date": "2025-09-18",
+      "confidence": 0.95,
       "tags": [
-        "genuine_purchase_intent"
+        "sale_planning"
       ],
       "segment": "millennial"
     },
     {
-      "text": "app is extremely slow , it takes forever to search something and then lands on \"oops something went wrong\" (It is not my network issue). once clicked on any item, it opens as a 3/4th page pop up(shows double click to wishlist) - why do I need to put in wishlist, if I couldnt even see the photos prop...",
-      "source": "Play Store",
-      "source_id": "47b8d8de-10aa-4cc9-a64e-381c05aed50f",
+      "text": "Oucchhh loudly_crying_face loudly_crying_face Wishlist now.. prices drop ho jaenge",
+      "source": "YouTube",
+      "source_id": "UgwQFYgglrdiRxRLTj94AaABAg.AUm_OpWseWuAUmeCx6fTv4",
+      "date": "2026-03-25",
+      "confidence": 0.93,
+      "tags": [
+        "price_drop_waiting"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Black wala sarara set bahot time se myntra pr wishlist me h pr bahot jyada costly hone ki wajah se le nhi pa rhe the thanx apne jo meesho se le kr uska comparison share kra",
+      "source": "YouTube",
+      "source_id": "Ugy54aaAsTAyjiFtWpt4AaABAg",
+      "date": "2025-05-13",
+      "confidence": 0.91,
+      "tags": [
+        "high_price_saving"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Kuch product aise hote h k wishlist nhi krti hu lekin jab tum pahan leti ho koi cloth to m bhi use wishlist kr leti hu red_heart",
+      "source": "YouTube",
+      "source_id": "UgyNFuEfba4YG_VEsyF4AaABAg",
       "date": "2026-08-14",
-      "confidence": 0.85,
+      "confidence": 0.9,
       "tags": [
-        "bookmarking"
+        "bookmarking_inspiration"
       ],
       "segment": "millennial"
     },
     {
-      "text": "All the kurta sets are to expensive all are 2000+ how can every one buy Make videos under 1500 rupes everyone is not like you Rich madam ji person_frowning saluting_face",
+      "text": "Maine bhi aapni wishlist ishliye bhar ke rakha he taki koi bhala manushya aaye aur use kharid de face_with_tears_of_joy face_with_tears_of_joy face_with_tears_of_joy lekin uske liye bhi kismat chahiye",
       "source": "YouTube",
-      "source_id": "UgzE4YAcRE0s20Yldyd4AaABAg",
-      "date": "2026-08-17",
-      "confidence": 0.85,
+      "source_id": "Ugx8CLg9SRuwU-w0vUl4AaABAg",
+      "date": "2026-03-08",
+      "confidence": 0.88,
       "tags": [
-        "aspiration"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "They are fraud. I'm chasing them for my return but they didn't bother to listen. They have been harassing me for 3 days. Don't buy anything from Myntra. Try amazon rather than Myntra They don't even listen to you.",
-      "source": "Play Store",
-      "source_id": "6e47d7c1-5963-4902-9ddc-7f8b656dff00",
-      "date": "2026-08-13",
-      "confidence": 0.85,
-      "tags": [
-        "comparison_shortlist"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Size size kya laga rakha hai?? I don't see any problem with your sister, she looks pretty normal who wears a extra small to small may b which u ll get anywhere. Stop sounding like u buy her clothes from the kids section.",
-      "source": "YouTube",
-      "source_id": "UgywoarEkiCcnKcH9Rl4AaABAg",
-      "date": "2024-10-23",
-      "confidence": 0.85,
-      "tags": [
-        "gift_idea"
+        "aspirational_wishlisting"
       ],
       "segment": "millennial"
     }

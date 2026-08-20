@@ -90,57 +90,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "So, please call me with this no. 955684 and try to return my product, Turtle men standard slim fit formal shirt.Original review Mar 28, 2026I want to return a product.The ordered id. No.Of the product is 1325636201955.The name of the product is Turtle slim fit formal shirt. I want to return the item...",
+      "text": "Why is there a capping on whishlisting the items on Myntra?? How does it make sense? What are you trying to achieve? You are literally losing out on a potential customer. No other shopping site does that.",
+      "source": "Reddit",
+      "source_id": "reddit_t3_1pemstf",
+      "date": "2025-12-05",
+      "confidence": 0.95,
+      "tags": [
+        "wishlist_capacity_limit"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "A Small Gift for My Girlfriend. We're moving in together soon and thought of surprising her with these. Not to worry, these were pre-approved by her and taken from her wishlist.",
+      "source": "Reddit",
+      "source_id": "reddit_t3_1j4q1sg",
+      "date": "2025-03-06",
+      "confidence": 0.92,
+      "tags": [
+        "wishlist_sharing_gifting"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "This has been causing me genuine inconvenience, as I am unable to access my saved wishlist and preferences.I kindly request you to please review my account and let me know if reactivation is possible",
       "source": "PissedConsumer",
-      "source_id": "pc_p25_9721173",
+      "source_id": "pc_p24_6569631",
       "date": "2026-08-17",
-      "confidence": 0.85,
+      "confidence": 0.88,
       "tags": [
-        "unmet_need"
+        "wishlist_data_loss"
       ],
       "segment": "millennial"
     },
     {
-      "text": "​@thesarutales sahi s pata na ho to kuch bhi ksi ko guide na kre product return s id block ho jati he agr srf product return krke unhe review chahiye to product selling kb krenge .. main think is product buy hona chahiye lot of people ko lagta he ki return krke review de denge pr esa krke bht logo n...",
+      "text": "Maine yeh kurta set ₹2350 mein liya tha, aur ab yeh 82% OFF ke saath sirf ₹1247 mein mil raha hai. Agar aapko pasand aa raha hai, to abhi buy kar lijiye. Aur iska full review aur try-on dekhna hai, to video ka link bhi niche diya hai",
       "source": "YouTube",
-      "source_id": "UgysWobv8OckMpLyKrh4AaABAg.AJuJL3a05T1ALXPhYHZG3Y",
-      "date": "2025-08-07",
-      "confidence": 0.85,
+      "source_id": "Ugz6Lk6OnRUxG4j8fet4AaABAg.AXXr4OzyrBSAXY3pD5mLKz",
+      "date": "2026-06-02",
+      "confidence": 0.9,
       "tags": [
-        "unmet_need"
+        "price_drop_try_on"
       ],
       "segment": "millennial"
     },
     {
-      "text": "@shubhangiiyer1654 no offence. People do really look good when they put it on but when it is only held, I can't help.. face_with_tears_of_joy face_with_tears_of_joy face_with_tears_of_joy face_with_tears_of_joy It looks like a bag .. face_with_tears_of_joy face_with_tears_of_joy face_with_tears_of_j...",
+      "text": "I do believe that the explore button in the bottom left is little hidden. There are amazing options in that feature but that feature doesn't stand out. May be it should be named something like \"Shop Your Look\" or something more catchy.",
       "source": "YouTube",
-      "source_id": "UgwSaIRg3eNZrtsSq3h4AaABAg.A9NqKhBaT5oAAs60uH0UWb",
-      "date": "2024-11-15",
-      "confidence": 0.85,
+      "source_id": "UgxKFTj7xhAiBxH9pOJ4AaABAg",
+      "date": "2025-11-11",
+      "confidence": 0.87,
       "tags": [
-        "unmet_need"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "I want to exchange the dress with the same amount with another one .but to the exchanged dress plastic tag was not fixed with the dress.Now the delivery agent was not accepting to exchange the dress.Pros:Ordering date will be given in correct dateCons:But delivery will be before the given datePrefer...",
-      "source": "PissedConsumer",
-      "source_id": "pc_p32_6225297",
-      "date": "2026-08-17",
-      "confidence": 0.85,
-      "tags": [
-        "unmet_need"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Very poor service. They are focused on their app and clothing brands, but not on delivery. My order is highly delayed even after choosing express delivery. Customer service is not giving a proper response about the delay. Whenever I call, they keep me on hold for a long time. Very disappointing expe...",
-      "source": "Play Store",
-      "source_id": "7e5d9421-5afd-4e6f-808a-c8efbe5c3680",
-      "date": "2026-08-15",
-      "confidence": 0.85,
-      "tags": [
-        "unmet_need"
+        "feature_discoverability_gap"
       ],
       "segment": "millennial"
     }

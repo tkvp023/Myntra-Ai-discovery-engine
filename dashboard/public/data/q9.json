@@ -280,46 +280,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "6:00 that suit is beautiful and the last one. But 6:00 looks different in ur video and the reviews given on myntra. Seems different products. Last time too i bought coorrset from ur link but the quality was too bad. I believed u and bought. Thought acha hi hoga if u did. I'm sure haul clothes r bett...",
-      "source": "YouTube",
-      "source_id": "UgysWMLmejF8sM3izEB4AaABAg",
-      "date": "2026-08-02",
-      "confidence": 0.85,
+      "text": "Myntra has started using AI-generated product images for clothing listings, and it’s becoming difficult to trust what the actual product looks like. For a platform known for fashion shopping, real product photos should be the standard.",
+      "source": "Play Store",
+      "source_id": "c17ee023-5e35-4e55-8623-e51ea357deef",
+      "date": "2026-08-15",
+      "confidence": 0.92,
       "tags": [
-        "genuine_purchase_intent"
-      ],
-      "segment": "gen_z"
-    },
-    {
-      "text": "​@sukanyav3120no problem at all. Yha sabse achi bat hi yehi h ki ap apni availability ke according work kr skte ho. Phir bhi I suggest ki agar videos nahi dal pate ho to product ka screenshot lekr Wishlink ya meesho creator club se link generate kro and then usko story par lagao kyuki reels se zyada...",
-      "source": "YouTube",
-      "source_id": "Ugx-71kX455Xb_vsEsd4AaABAg.ANNPP9TExy6ANOuqmC3CYA",
-      "date": "2025-09-23",
-      "confidence": 0.85,
-      "tags": [
-        "comparison_shortlist"
-      ],
-      "segment": "gen_z"
-    },
-    {
-      "text": "So, please call me with this no. 955684 and try to return my product, Turtle men standard slim fit formal shirt.Original review Mar 28, 2026I want to return a product.The ordered id. No.Of the product is 1325636201955.The name of the product is Turtle slim fit formal shirt. I want to return the item...",
-      "source": "PissedConsumer",
-      "source_id": "pc_p25_9721173",
-      "date": "2026-08-17",
-      "confidence": 0.85,
-      "tags": [
-        "genuine_purchase_intent"
+        "visual_trust"
       ],
       "segment": "millennial"
     },
     {
-      "text": "​@thesarutales sahi s pata na ho to kuch bhi ksi ko guide na kre product return s id block ho jati he agr srf product return krke unhe review chahiye to product selling kb krenge .. main think is product buy hona chahiye lot of people ko lagta he ki return krke review de denge pr esa krke bht logo n...",
+      "text": "In the photos, the clothes look like they are of good quality, but when you receive them as a customer, you receive footpath quality stitching. I always make sure to check photos uploaded by reviewers to see the real colour and quality then.",
       "source": "YouTube",
-      "source_id": "UgysWobv8OckMpLyKrh4AaABAg.AJuJL3a05T1ALXPhYHZG3Y",
-      "date": "2025-08-07",
-      "confidence": 0.85,
+      "source_id": "UgxL5BMpnYSYLdDJik94AaABAg",
+      "date": "2023-11-20",
+      "confidence": 0.94,
       "tags": [
-        "genuine_purchase_intent"
+        "fabric_durability"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "I purchased converse chunk shoes on 21st July. The shoes are starting to come apart—is this the kind of quality you provide? Within just 20 days, the shoes have started separating at the sides. I bought shoes worth 4,000.",
+      "source": "PissedConsumer",
+      "source_id": "pc_p7_1600411",
+      "date": "2026-08-17",
+      "confidence": 0.9,
+      "tags": [
+        "product_durability"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "They have no filter to check customer images. I was recently scrolling through ultimate glam clan and a lot of pictures there were obviously AI and not an ounce of authenticity.",
+      "source": "Reddit",
+      "source_id": "reddit_t3_1ukask8",
+      "date": "2026-07-01",
+      "confidence": 0.88,
+      "tags": [
+        "aesthetic_feed_authenticity"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "In online there is no scope to try, so basically you have to take few more pieces than you wanted and whatever don't look good on you, you have to return..but Myntra took convience fees for those extra return..so, had to stop buying from Myntra..",
+      "source": "YouTube",
+      "source_id": "UgwYb-BW0jI6I4C0hYx4AaABAg",
+      "date": "2023-11-07",
+      "confidence": 0.89,
+      "tags": [
+        "value_for_money"
       ],
       "segment": "millennial"
     }

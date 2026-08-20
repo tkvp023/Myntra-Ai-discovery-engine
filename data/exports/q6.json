@@ -50,57 +50,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "Commission tabhi milta hai jab aap product ka actual page link share karte ho. Post ka sirf pic show hona normal hai, but user jab us pic par click karke product page open karta hai tabhi visit count hota hai. Aapko product ka ‘Share Link’ option se link copy karke WhatsApp/Instagram jahan bhi share...",
-      "source": "YouTube",
-      "source_id": "UgxZG9aJXLloE5hDyGh4AaABAg.AQHl_vb_i3HAQK0wc9-76J",
-      "date": "2025-12-04",
-      "confidence": 0.85,
-      "tags": [
-        "external_info_seeking"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Links are not working in the description/comments. So I have added all product links in the Posts tab. backhand_index_pointing_right To view the links: keycap_1 Go to my YouTube profile keycap_2 Swipe left on the top menu keycap_3 Click on “Posts” keycap_4 You will find the product links there! shop...",
-      "source": "YouTube",
-      "source_id": "UgxYfwwhylxdL1Qip1p4AaABAg.AOaH96L73kIAQsdubR0yuG",
-      "date": "2025-12-18",
-      "confidence": 0.85,
-      "tags": [
-        "external_info_seeking"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Thank you Madam another doubt.. I registered recently in wishlink and meesho affiliate marketing.. I have 1000 sub in YouTube Due to some reasons I didn't post any video for 2 weeks..and not generated any link meesho or wishlink.. .is there any problem.. Please reply.. Thanks in advance..",
-      "source": "YouTube",
-      "source_id": "Ugx-71kX455Xb_vsEsd4AaABAg.ANNPP9TExy6ANNwWFsMxsk",
-      "date": "2025-09-22",
-      "confidence": 0.85,
-      "tags": [
-        "external_info_seeking"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Dekho didi.. dress ka screen shot lo aur dukaan meh jakar bhaiya ko poocho woh 1500 meh ese dress nikal kar muh ke saamne rakhega. Yaa google meh image search kar lijiye. That's why I don't use instagram aur sms meh bhi ese message job ke aate Hain lekin meh kisi par bharosa nai karta",
+      "text": "Keep or return! Honest reviews please. I ordered this Carlton London watch from Myntra. I am thinking of returning it as I've never heard of this brand so not sure of quality after usage. Is it even worth adding to my collection?",
       "source": "Reddit",
-      "source_id": "reddit_t1_kylttdc",
-      "date": "2024-04-08",
-      "confidence": 0.85,
+      "source_id": "reddit_t3_1nnmnnh",
+      "date": "2025-09-22",
+      "confidence": 0.94,
       "tags": [
-        "external_info_seeking"
+        "asking_community_reviews"
+      ],
+      "segment": "gen_z"
+    },
+    {
+      "text": "Maine yeh kurta set ₹2350 mein liya tha, aur ab yeh 82% OFF ke saath sirf ₹1247 mein mil raha hai. Agar aapko pasand aa raha hai, to abhi buy kar lijiye. Aur iska full review aur try-on dekhna hai, to video ka link bhi niche diya hai.",
+      "source": "YouTube",
+      "source_id": "Ugz6Lk6OnRUxG4j8fet4AaABAg.AXXr4OzyrBSAXY3pD5mLKz",
+      "date": "2026-06-02",
+      "confidence": 0.92,
+      "tags": [
+        "try_on_haul_seeking"
       ],
       "segment": "millennial"
     },
     {
-      "text": "I literally like you so much u inspire so many hardworking ladies I'm following u on YouTube since starting all vlogs of you shows how hardworking you are and you inspired me to think high all the very best for everything and do more vlogs like this party_popper",
+      "text": "On Myntra, the photos of the clothes are so edited that the colour shown is wayyy different than actual. In photos, clothes look like good quality, but you receive footpath quality. I always make sure to check photos uploaded by reviewers to see real colour.",
       "source": "YouTube",
-      "source_id": "UgxvUXiMEWescp4m4YF4AaABAg",
-      "date": "2026-08-13",
-      "confidence": 0.85,
+      "source_id": "UgxL5BMpnYSYLdDJik94AaABAg",
+      "date": "2023-11-20",
+      "confidence": 0.9,
       "tags": [
-        "external_info_seeking"
+        "seeking_real_photos"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Aapki video ka wait rehta h Diii chahe kuch lu ya nahi pr dekhte pura hu. Mehnge hote h mere liye ye sb, student wali mjburi me hu. Ghr se limited amount milta h, pr collection mst hote h aapke, or aapki choice or voice v mst hoti hai Dii.",
+      "source": "YouTube",
+      "source_id": "UgxGkrGlkAI00U--a2d4AaABAg",
+      "date": "2026-06-10",
+      "confidence": 0.88,
+      "tags": [
+        "influencer_haul_consulting"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Naa unga sister video la irunthu ungala pakkurean romba varushama... entha dress pottalum ungalukku suit aguthu unga lipstick colours ellamea romba unique ah iruku good selection.",
+      "source": "YouTube",
+      "source_id": "UgxJiLo_BQcPvJui-oh4AaABAg",
+      "date": "2025-07-13",
+      "confidence": 0.86,
+      "tags": [
+        "influencer_styling_consultation"
       ],
       "segment": "millennial"
     }

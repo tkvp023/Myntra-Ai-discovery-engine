@@ -176,57 +176,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "So, please call me with this no. 955684 and try to return my product, Turtle men standard slim fit formal shirt.Original review Mar 28, 2026I want to return a product.The ordered id. No.Of the product is 1325636201955.The name of the product is Turtle slim fit formal shirt. I want to return the item...",
-      "source": "PissedConsumer",
-      "source_id": "pc_p25_9721173",
-      "date": "2026-08-17",
-      "confidence": 0.85,
-      "tags": [
-        "fit_size"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "My experience with Myntra has been really disappointing. Whenever I order a product, the quality is very poor. Myntra never seems to deliver good quality products, even after charging high price Every time I buy something I end up having to return it. I feel really bad about this, and now I have dec...",
-      "source": "Play Store",
-      "source_id": "44a324e7-5304-4193-af15-f7fc2d26a05b",
-      "date": "2026-08-12",
-      "confidence": 0.85,
-      "tags": [
-        "price"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "I’ve had a really good experience with Myntra so far. There’s a great variety of brands and styles, and I find the app easy to browse and use. The product descriptions and reviews are helpful when deciding what to buy, and the delivery has been smooth for me. Overall, one of my go-to apps for fashio...",
-      "source": "App Store",
-      "source_id": "14423685125",
-      "date": "2026-08-13",
-      "confidence": 0.85,
-      "tags": [
-        "reviews_ratings"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Loved all the crop shirts heart_hands The styling is on point two_hearts white_heart Your fashion sense is always top-notch pinched_fingers pink_heart pink_heart",
+      "text": "In the photos, the clothes look like they are of good quality, but when you receive them as a customer, you receive the footpath quality. I always make sure to check photos uploaded by reviewers, at least I see the real colour and quality then.",
       "source": "YouTube",
-      "source_id": "UgzQJobVVCcrgc6flfZ4AaABAg",
-      "date": "2025-06-13",
-      "confidence": 0.85,
+      "source_id": "UgxL5BMpnYSYLdDJik94AaABAg",
+      "date": "2023-11-20",
+      "confidence": 0.94,
       "tags": [
-        "styling"
+        "authentic_photo_reviews"
       ],
       "segment": "millennial"
     },
     {
-      "text": "I want to exchange the dress with the same amount with another one .but to the exchanged dress plastic tag was not fixed with the dress.Now the delivery agent was not accepting to exchange the dress.Pros:Ordering date will be given in correct dateCons:But delivery will be before the given datePrefer...",
-      "source": "PissedConsumer",
-      "source_id": "pc_p32_6225297",
-      "date": "2026-08-17",
-      "confidence": 0.85,
+      "text": "The product details specified a 'regular fit,' but I received a 'relaxed fit' in a completely different color. Why am I being penalized with return fees and a non-refundable ₹30 platform fee for a mistake made entirely by your team?",
+      "source": "Play Store",
+      "source_id": "205ad5f3-2687-47ba-a505-f60bd3b42e3b",
+      "date": "2026-08-13",
+      "confidence": 0.93,
       "tags": [
-        "delivery_returns"
+        "fit_and_return_fees"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "In online there is no scope to try, so basically you have to take few more pieces than you wanted and whatever don't look good on you, you have to return..but Myntra took convience fees for those extra return..so, had to stop buying from Myntra..",
+      "source": "YouTube",
+      "source_id": "UgwYb-BW0jI6I4C0hYx4AaABAg",
+      "date": "2023-11-07",
+      "confidence": 0.91,
+      "tags": [
+        "return_policy_barrier"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "I ordered a denim skirt in 32 waist size, which was tight on me, so I exchanged it for a 34 size but received it in a different blue shade. I want the original navy blue shade. Now my size has gone in the app.",
+      "source": "PissedConsumer",
+      "source_id": "pc_p12_2412503",
+      "date": "2026-08-17",
+      "confidence": 0.89,
+      "tags": [
+        "size_chart_gap"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Is it better to buy kurti suits from Myntra or from the sites of brands like Libas? I recently purchased one Libas kurta set from Myntra and loved the quality. Will there be a difference in quality or prices?",
+      "source": "Reddit",
+      "source_id": "reddit_t3_1fy9rps",
+      "date": "2024-10-07",
+      "confidence": 0.87,
+      "tags": [
+        "cross_platform_comparison"
       ],
       "segment": "millennial"
     }
