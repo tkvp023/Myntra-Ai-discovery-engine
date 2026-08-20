@@ -20,7 +20,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-mode="dark" data-theme="sunset" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var m = localStorage.getItem('app-mode') || 'dark';
+                  var t = localStorage.getItem('app-theme') || 'sunset';
+                  document.documentElement.setAttribute('data-mode', m);
+                  document.documentElement.setAttribute('data-theme', t);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body suppressHydrationWarning>
         <Navbar />
         <main className="page-wrapper">

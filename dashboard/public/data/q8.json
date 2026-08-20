@@ -50,46 +50,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_16x6kxj",
-      "date": "2023-10-01",
+      "text": "app is extremely slow , it takes forever to search something and then lands on \"oops something went wrong\" (It is not my network issue). once clicked on any item, it opens as a 3/4th page pop up(shows double click to wishlist) - why do I need to put in wishlist, if I couldnt even see the photos prop...",
+      "source": "Play Store",
+      "source_id": "47b8d8de-10aa-4cc9-a64e-381c05aed50f",
+      "date": "2026-08-14",
       "confidence": 0.85,
       "tags": [
-        "price_sensitivity"
+        "bookmarking"
       ],
       "segment": "millennial"
     },
     {
-      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_16x6kxj",
-      "date": "2023-10-01",
+      "text": "​@thesarutales sahi s pata na ho to kuch bhi ksi ko guide na kre product return s id block ho jati he agr srf product return krke unhe review chahiye to product selling kb krenge .. main think is product buy hona chahiye lot of people ko lagta he ki return krke review de denge pr esa krke bht logo n...",
+      "source": "YouTube",
+      "source_id": "UgysWobv8OckMpLyKrh4AaABAg.AJuJL3a05T1ALXPhYHZG3Y",
+      "date": "2025-08-07",
       "confidence": 0.85,
       "tags": [
-        "waiting_for_sale"
+        "genuine_purchase_intent"
       ],
       "segment": "millennial"
     },
     {
-      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_16x6kxj",
-      "date": "2023-10-01",
+      "text": "All the kurta sets are to expensive all are 2000+ how can every one buy Make videos under 1500 rupes everyone is not like you Rich madam ji person_frowning saluting_face",
+      "source": "YouTube",
+      "source_id": "UgzE4YAcRE0s20Yldyd4AaABAg",
+      "date": "2026-08-17",
       "confidence": 0.85,
       "tags": [
-        "social_validation_needed"
+        "aspiration"
       ],
       "segment": "millennial"
     },
     {
-      "text": "After not adding taxes in display price Myntra now resorting to this BS. &#32; submitted by &#32; /u/ppatra [link] &#32; [comments]",
-      "source": "Reddit",
-      "source_id": "reddit_t3_kh9fx4",
-      "date": "2020-12-21",
+      "text": "They are fraud. I'm chasing them for my return but they didn't bother to listen. They have been harassing me for 3 days. Don't buy anything from Myntra. Try amazon rather than Myntra They don't even listen to you.",
+      "source": "Play Store",
+      "source_id": "6e47d7c1-5963-4902-9ddc-7f8b656dff00",
+      "date": "2026-08-13",
       "confidence": 0.85,
       "tags": [
-        "price_sensitivity"
+        "comparison_shortlist"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "Size size kya laga rakha hai?? I don't see any problem with your sister, she looks pretty normal who wears a extra small to small may b which u ll get anywhere. Stop sounding like u buy her clothes from the kids section.",
+      "source": "YouTube",
+      "source_id": "UgywoarEkiCcnKcH9Rl4AaABAg",
+      "date": "2024-10-23",
+      "confidence": 0.85,
+      "tags": [
+        "gift_idea"
       ],
       "segment": "millennial"
     }

@@ -601,32 +601,32 @@
   ],
   "key_quotes": [
     {
-      "text": "Where can I get good clothes for affordable prices online? Hi, I am in dire need of new clothes and I don&#39;t want to go out to stores for several reasons. So, what are some good places to buy clothes online which are of good quality? I keep seeing ads for big e-commerce websites like Flipkart, My...",
+      "text": "Sturdy minimalistic watch on a budget? Hey r/India, would you guys please help me out by suggesting me some good minimalistic watches? The preferences and requirements are below:Gender: ManStrap: Leather beltStyle: MinimalisticDial colour: White or black preferredBudget: Below 1000-1500 (Yes, I know...",
       "source": "Reddit",
-      "source_id": "reddit_t3_rd9htr",
-      "date": "2021-12-10",
+      "source_id": "reddit_t3_cwizzb",
+      "date": "2019-08-28",
       "confidence": 0.85,
       "tags": [
-        "quality_doubt"
+        "sizing_uncertainty"
+      ],
+      "segment": "gen_z"
+    },
+    {
+      "text": "[NP] The Snapdeal \"quality check\" scam Been a regular user of Snapdeal for quite a while. Bought my first piece of apparel after years of buying non apparel. I usually wear size L T shirts. This Nike that I ordered would be tight even for those who wear size M. Looked suspicious that the fit was so ...",
+      "source": "Reddit",
+      "source_id": "reddit_t3_59c8ky",
+      "date": "2016-10-25",
+      "confidence": 0.85,
+      "tags": [
+        "sizing_uncertainty"
       ],
       "segment": "millennial"
     },
     {
-      "text": "Received a Fake Product with Forged Label from Myntra – Happened to Me Twice Now Yesterday, I received a parcel from Myntra under Order ID #1303767 80369096753503, where I had ordered an Allen Solly trouser. Instead, I received a stained, unbranded white shirt. The packaging wasn’t Myntra’s standard...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_1lx9dz2",
-      "date": "2025-07-11",
-      "confidence": 0.85,
-      "tags": [
-        "quality_doubt"
-      ],
-      "segment": "millennial"
-    },
-    {
-      "text": "Received a Fake Product with Forged Label from Myntra – Happened to Me Twice Now Yesterday, I received a parcel from Myntra under Order ID #1303767 80369096753503, where I had ordered an Allen Solly trouser. Instead, I received a stained, unbranded white shirt. The packaging wasn’t Myntra’s standard...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_1lx9dz2",
-      "date": "2025-07-11",
+      "text": "I hope you are doing well.I would like to sincerely request a one-time review of my account.My account has been deactivated for over a year now, and during this period I have contacted customer support multiple times, but unfortunately my issue remains unresolved. I genuinely miss my old account, es...",
+      "source": "PissedConsumer",
+      "source_id": "pc_p18_799075",
+      "date": "2026-08-17",
       "confidence": 0.85,
       "tags": [
         "style_uncertainty"
@@ -634,10 +634,10 @@
       "segment": "millennial"
     },
     {
-      "text": "/u/sharedevaaste on Received a Fake Product with Forged Label from Myntra – Happened to Me Twice Now Return it?",
+      "text": "Myntra is deleting reviews from the listed products I've been trying to see the reviews on this tshirt on myntra with 200 plus ratings but couldn't see any.I thought the issue was only with this particular product and left.but since it seemed to be a bigger issue,I searched brands like max and hrx a...",
       "source": "Reddit",
-      "source_id": "reddit_t1_n2oow40",
-      "date": "2025-07-12",
+      "source_id": "reddit_t3_1osrk03",
+      "date": "2025-11-09",
       "confidence": 0.85,
       "tags": [
         "quality_doubt"

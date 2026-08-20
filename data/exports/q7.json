@@ -176,46 +176,57 @@
   "source_attribution": [],
   "key_quotes": [
     {
-      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_16x6kxj",
-      "date": "2023-10-01",
+      "text": "So, please call me with this no. 955684 and try to return my product, Turtle men standard slim fit formal shirt.Original review Mar 28, 2026I want to return a product.The ordered id. No.Of the product is 1325636201955.The name of the product is Turtle slim fit formal shirt. I want to return the item...",
+      "source": "PissedConsumer",
+      "source_id": "pc_p25_9721173",
+      "date": "2026-08-17",
       "confidence": 0.85,
       "tags": [
-        "price_sensitivity"
+        "fit_size"
       ],
       "segment": "millennial"
     },
     {
-      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_16x6kxj",
-      "date": "2023-10-01",
+      "text": "My experience with Myntra has been really disappointing. Whenever I order a product, the quality is very poor. Myntra never seems to deliver good quality products, even after charging high price Every time I buy something I end up having to return it. I feel really bad about this, and now I have dec...",
+      "source": "Play Store",
+      "source_id": "44a324e7-5304-4193-af15-f7fc2d26a05b",
+      "date": "2026-08-12",
       "confidence": 0.85,
       "tags": [
-        "waiting_for_sale"
+        "price"
       ],
       "segment": "millennial"
     },
     {
-      "text": "Got scammed by Myntra!! So this happened around a week ago. Ordered a few watches (~10-15k each) for a couple of people in my home to try. As usual, the delivery guy came with the packages. My mom received them and brought them to me. I started opening the packages immediately. As I opened the 1st p...",
-      "source": "Reddit",
-      "source_id": "reddit_t3_16x6kxj",
-      "date": "2023-10-01",
+      "text": "I’ve had a really good experience with Myntra so far. There’s a great variety of brands and styles, and I find the app easy to browse and use. The product descriptions and reviews are helpful when deciding what to buy, and the delivery has been smooth for me. Overall, one of my go-to apps for fashio...",
+      "source": "App Store",
+      "source_id": "14423685125",
+      "date": "2026-08-13",
       "confidence": 0.85,
       "tags": [
-        "social_validation_needed"
+        "reviews_ratings"
       ],
       "segment": "millennial"
     },
     {
-      "text": "After not adding taxes in display price Myntra now resorting to this BS. &#32; submitted by &#32; /u/ppatra [link] &#32; [comments]",
-      "source": "Reddit",
-      "source_id": "reddit_t3_kh9fx4",
-      "date": "2020-12-21",
+      "text": "Loved all the crop shirts heart_hands The styling is on point two_hearts white_heart Your fashion sense is always top-notch pinched_fingers pink_heart pink_heart",
+      "source": "YouTube",
+      "source_id": "UgzQJobVVCcrgc6flfZ4AaABAg",
+      "date": "2025-06-13",
       "confidence": 0.85,
       "tags": [
-        "price_sensitivity"
+        "styling"
+      ],
+      "segment": "millennial"
+    },
+    {
+      "text": "I want to exchange the dress with the same amount with another one .but to the exchanged dress plastic tag was not fixed with the dress.Now the delivery agent was not accepting to exchange the dress.Pros:Ordering date will be given in correct dateCons:But delivery will be before the given datePrefer...",
+      "source": "PissedConsumer",
+      "source_id": "pc_p32_6225297",
+      "date": "2026-08-17",
+      "confidence": 0.85,
+      "tags": [
+        "delivery_returns"
       ],
       "segment": "millennial"
     }

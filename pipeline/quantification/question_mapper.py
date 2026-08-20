@@ -135,14 +135,14 @@ def build_q1(agg: Aggregator) -> dict:
         for seg in ["gen_z", "millennial", "gen_x"]
     }
     data["source_attribution"] = []
-    data["key_quotes"] = agg.key_quotes(limit=5)
+    data["key_quotes"] = agg.wishlist_intent_quotes(limit=5)
     data["temporal_trend"] = agg.temporal_trend()
     return data
 
 
 def build_q2(agg: Aggregator) -> dict:
     """Q2 — What prevents purchase? (All hesitation reasons)"""
-    return _base(agg, 2)
+    return _base(agg, 2, tags=["sizing_uncertainty", "price_sensitivity", "return_policy_concern", "quality_doubt", "trust_deficit", "waiting_for_sale"])
 
 
 def build_q3(agg: Aggregator) -> dict:
@@ -160,6 +160,7 @@ def build_q5(agg: Aggregator) -> dict:
     data = _base(agg, 5, tags=["comparison_paralysis"])
     data["platform_matrix"] = agg.platform_comparison_matrix()
     data["compares_across_platforms_pct"] = agg.compares_across_platforms_pct()
+    data["key_quotes"] = agg.comparison_quotes(limit=5)
     return data
 
 
@@ -190,7 +191,7 @@ def build_q6(agg: Aggregator) -> dict:
     ]
     data["seeks_external_info_pct"] = agg.seeks_external_info_pct()
     data["sankey_data"] = agg.sankey_hesitation_to_info()
-    data["key_quotes"] = agg.key_quotes(limit=5)
+    data["key_quotes"] = agg.external_info_quotes(limit=5)
     return data
 
 
@@ -241,6 +242,7 @@ def build_q7(agg: Aggregator) -> dict:
         ]
         for seg in ["gen_z", "millennial", "gen_x"]
     }
+    data["key_quotes"] = agg.factor_quotes(limit=5)
     return data
 
 
@@ -276,6 +278,7 @@ def build_q8(agg: Aggregator) -> dict:
         for i in intent_dist
     ]
     data["word_cloud_data"] = agg.word_cloud_by_intent()
+    data["key_quotes"] = agg.wishlist_intent_quotes(intents=["bookmarking", "genuine_purchase_intent", "aspiration", "comparison_shortlist", "gift_idea"], limit=5)
     return data
 
 
@@ -299,6 +302,7 @@ def build_q9(agg: Aggregator) -> dict:
         seg: agg.wishlist_intent_distribution(segment=seg)
         for seg in ["gen_z", "millennial", "gen_x"]
     }
+    data["key_quotes"] = agg.segment_quotes(limit=5)
     return data
 
 
@@ -332,6 +336,7 @@ def build_q10(agg: Aggregator) -> dict:
         for i, n in enumerate(needs)
     ]
     data["treemap_data"] = agg.unmet_needs_treemap()
+    data["key_quotes"] = agg.unmet_needs_quotes(limit=5)
     return data
 
 

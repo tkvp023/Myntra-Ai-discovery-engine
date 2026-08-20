@@ -5,6 +5,8 @@ All queries run directly against the SQLite DB built in Phase 1 & 2.
 """
 
 from __future__ import annotations
+import re
+import html
 from collections import defaultdict
 from datetime import datetime
 from typing import List, Dict, Optional
@@ -87,6 +89,19 @@ INFO_TYPE_LABELS = {
     "brand_website":     "Brand Website",
     "other":             "Other",
 }
+
+
+def clean_quote_text(text: str) -> str:
+    if not text:
+        return ""
+    t = html.unescape(text.strip())
+    # Strip reddit username headers if present
+    t = re.sub(r"^/u/[^\s]+\s+on\s+[^:\n]+[:\n\-]*", "", t)
+    # Strip user update boilerplates
+    t = re.sub(r"^Updated by user [A-Za-z]+ \d+, \d+\s*(?:Company fixed the issue and)?\s*", "", t, flags=re.IGNORECASE)
+    t = t.replace("\ufffd", "'")
+    t = " ".join(t.split())
+    return t.strip()
 
 
 class Aggregator:
@@ -601,9 +616,24 @@ class Aggregator:
         limit: int = 5,
         min_confidence: float = 0.7,
     ) -> List[dict]:
-        """Fetch top representative quotes for given tags and optional source/rating filters."""
-        where_clauses = ["h.confidence >= :min_conf"]
-        params: dict = {"min_conf": min_confidence, "limit": limit}
+        """Fetch top representative, deduplicated quotes for given tags and optional source/rating filters."""
+        if tags and len(tags) > 1:
+            # Multi-tag diversity: get top representative quote for each distinct tag
+            result = []
+            seen_docs = set()
+            for tag in tags:
+                quotes = self.key_quotes(tags=[tag], sources=sources, max_rating=max_rating, limit=1, min_confidence=min_confidence)
+                for q in quotes:
+                    if q["source_id"] not in seen_docs:
+                        seen_docs.add(q["source_id"])
+                        result.append(q)
+                if len(result) >= limit:
+                    break
+            if len(result) >= min(limit, len(tags)):
+                return result[:limit]
+
+        where_clauses = ["h.confidence >= :min_conf", "LENGTH(d.content) >= 35"]
+        params: dict = {"min_conf": min_confidence, "limit": limit * 5}
 
         if tags:
             tag_placeholders = ", ".join(f":t{i}" for i, _ in enumerate(tags))
@@ -624,29 +654,273 @@ class Aggregator:
         where_sql = " AND ".join(where_clauses)
 
         rows = self._q(f"""
-            SELECT d.content, d.source, d.source_id, d.timestamp,
+            SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
                    h.confidence, h.reason, c.inferred_age_group, d.rating
             FROM hesitation_tags h
             JOIN documents d ON h.doc_id = d.doc_id
             JOIN classifications c ON h.doc_id = c.doc_id
             WHERE {where_sql}
-            ORDER BY h.confidence DESC, d.rating ASC
+            ORDER BY h.confidence DESC, (CASE WHEN d.content LIKE '%wishlist%' OR d.content LIKE '%cart%' THEN 0 ELSE 1 END), LENGTH(d.content) DESC
             LIMIT :limit
         """, params)
 
         result = []
+        seen_docs = set()
         for r in rows:
-            content = str(r[0] or "")
+            doc_id = r[0]
+            if doc_id in seen_docs:
+                continue
+            content = clean_quote_text(str(r[1] or ""))
+            if len(content) < 25:
+                continue
+            seen_docs.add(doc_id)
             result.append({
                 "text":       content[:300] + ("..." if len(content) > 300 else ""),
-                "source":     SOURCE_LABELS.get(r[1] or "", r[1] or ""),
-                "source_id":  str(r[2] or ""),
-                "date":       str(r[3] or "")[:10],
-                "confidence": round(float(r[4] or 0), 2),
-                "tags":       [r[5]] if r[5] else [],
+                "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                "source_id":  str(r[3] or ""),
+                "date":       str(r[4] or "")[:10],
+                "confidence": round(float(r[5] or 0), 2),
+                "tags":       [r[6]] if r[6] else [],
+                "segment":    str(r[7] or "unknown"),
+            })
+            if len(result) >= limit:
+                break
+        return result
+
+    def wishlist_intent_quotes(self, intents: Optional[List[str]] = None, limit: int = 5) -> List[dict]:
+        """Fetch distinct quotes illustrating user wishlist intent and motivations (for Q1 and Q8)."""
+        target_intents = intents or ["genuine_purchase_intent", "bookmarking", "aspiration", "comparison_shortlist", "gift_idea"]
+        result = []
+        seen_docs = set()
+
+        for intent in target_intents:
+            rows = self._q("""
+                SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
+                       c.wishlist_intent, c.inferred_age_group
+                FROM documents d
+                JOIN classifications c ON d.doc_id = c.doc_id
+                WHERE c.wishlist_intent = :intent
+                  AND LENGTH(d.content) BETWEEN 40 AND 350
+                ORDER BY (CASE WHEN d.content LIKE '%wishlist%' OR d.content LIKE '%save%' OR d.content LIKE '%buy%' THEN 0 ELSE 1 END),
+                         LENGTH(d.content) DESC
+                LIMIT 10
+            """, {"intent": intent})
+            for r in rows:
+                if r[0] in seen_docs:
+                    continue
+                content = clean_quote_text(str(r[1] or ""))
+                if len(content) < 25:
+                    continue
+                seen_docs.add(r[0])
+                result.append({
+                    "text":       content[:300] + ("..." if len(content) > 300 else ""),
+                    "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                    "source_id":  str(r[3] or ""),
+                    "date":       str(r[4] or "")[:10],
+                    "confidence": 0.85,
+                    "tags":       [r[5]],
+                    "segment":    str(r[6] or "unknown"),
+                })
+                break
+            if len(result) >= limit:
+                break
+        return result
+
+    def comparison_quotes(self, limit: int = 5) -> List[dict]:
+        """Fetch quotes relating to cross-platform and product comparison (for Q5)."""
+        rows = self._q("""
+            SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
+                   c.inferred_age_group
+            FROM documents d
+            JOIN classifications c ON d.doc_id = c.doc_id
+            WHERE (c.compares_across = 1 
+                   OR d.content LIKE '%compare%' 
+                   OR d.content LIKE '%amazon%' 
+                   OR d.content LIKE '%ajio%' 
+                   OR d.content LIKE '%flipkart%' 
+                   OR d.content LIKE '%meesho%' 
+                   OR d.content LIKE '%zara%' 
+                   OR d.content LIKE '%h&m%')
+              AND LENGTH(d.content) BETWEEN 45 AND 350
+            ORDER BY (CASE WHEN d.content LIKE '%compare%' THEN 0 ELSE 1 END), LENGTH(d.content) DESC
+            LIMIT 30
+        """)
+        result = []
+        seen_docs = set()
+        for r in rows:
+            if r[0] in seen_docs:
+                continue
+            content = clean_quote_text(str(r[1] or ""))
+            if len(content) < 25:
+                continue
+            seen_docs.add(r[0])
+            result.append({
+                "text":       content[:300] + ("..." if len(content) > 300 else ""),
+                "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                "source_id":  str(r[3] or ""),
+                "date":       str(r[4] or "")[:10],
+                "confidence": 0.85,
+                "tags":       ["comparison_paralysis"],
+                "segment":    str(r[5] or "unknown"),
+            })
+            if len(result) >= limit:
+                break
+        return result
+
+    def external_info_quotes(self, limit: int = 5) -> List[dict]:
+        """Fetch quotes relating to external information seeking (for Q6)."""
+        rows = self._q("""
+            SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
+                   c.inferred_age_group
+            FROM documents d
+            JOIN classifications c ON d.doc_id = c.doc_id
+            WHERE (c.seeks_external_info = 1 
+                   OR d.content LIKE '%youtube%' 
+                   OR d.content LIKE '%instagram%' 
+                   OR d.content LIKE '%review%' 
+                   OR d.content LIKE '%google%' 
+                   OR d.content LIKE '%ask%')
+              AND LENGTH(d.content) BETWEEN 45 AND 350
+            ORDER BY (CASE WHEN d.content LIKE '%youtube%' OR d.content LIKE '%instagram%' THEN 0 ELSE 1 END),
+                     LENGTH(d.content) DESC
+            LIMIT 30
+        """)
+        result = []
+        seen_docs = set()
+        for r in rows:
+            if r[0] in seen_docs:
+                continue
+            content = clean_quote_text(str(r[1] or ""))
+            if len(content) < 25:
+                continue
+            seen_docs.add(r[0])
+            result.append({
+                "text":       content[:300] + ("..." if len(content) > 300 else ""),
+                "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                "source_id":  str(r[3] or ""),
+                "date":       str(r[4] or "")[:10],
+                "confidence": 0.85,
+                "tags":       ["external_info_seeking"],
+                "segment":    str(r[5] or "unknown"),
+            })
+            if len(result) >= limit:
+                break
+        return result
+
+    def factor_quotes(self, factors: Optional[List[str]] = None, limit: int = 5) -> List[dict]:
+        """Fetch distinct quotes across factor mentions (for Q7)."""
+        target_factors = factors or ["fit_size", "price", "reviews_ratings", "styling", "delivery_returns", "social_validation", "brand_trust"]
+        result = []
+        seen_docs = set()
+
+        for factor in target_factors:
+            rows = self._q("""
+                SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
+                       f.factor, c.inferred_age_group
+                FROM factor_mentions f
+                JOIN documents d ON f.doc_id = d.doc_id
+                JOIN classifications c ON f.doc_id = c.doc_id
+                WHERE f.factor = :factor AND f.mentioned = 1
+                  AND LENGTH(d.content) BETWEEN 40 AND 350
+                ORDER BY (CASE WHEN d.content LIKE :kw THEN 0 ELSE 1 END), LENGTH(d.content) DESC
+                LIMIT 10
+            """, {"factor": factor, "kw": f"%{factor.split('_')[0]}%"})
+            for r in rows:
+                if r[0] in seen_docs:
+                    continue
+                content = clean_quote_text(str(r[1] or ""))
+                if len(content) < 25:
+                    continue
+                seen_docs.add(r[0])
+                result.append({
+                    "text":       content[:300] + ("..." if len(content) > 300 else ""),
+                    "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                    "source_id":  str(r[3] or ""),
+                    "date":       str(r[4] or "")[:10],
+                    "confidence": 0.85,
+                    "tags":       [r[5]],
+                    "segment":    str(r[6] or "unknown"),
+                })
+                break
+            if len(result) >= limit:
+                break
+        return result
+
+    def segment_quotes(self, segments: Optional[List[str]] = None, limit: int = 5) -> List[dict]:
+        """Fetch representative quotes covering different demographic segments (for Q9)."""
+        target_segments = segments or ["gen_z", "millennial", "gen_x"]
+        result = []
+        seen_docs = set()
+
+        for seg in target_segments:
+            rows = self._q("""
+                SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
+                       c.inferred_age_group, c.wishlist_intent
+                FROM documents d
+                JOIN classifications c ON d.doc_id = c.doc_id
+                WHERE c.inferred_age_group = :seg
+                  AND LENGTH(d.content) BETWEEN 40 AND 350
+                ORDER BY LENGTH(d.content) DESC
+                LIMIT 15
+            """, {"seg": seg})
+            added_for_seg = 0
+            for r in rows:
+                if r[0] in seen_docs:
+                    continue
+                content = clean_quote_text(str(r[1] or ""))
+                if len(content) < 25:
+                    continue
+                seen_docs.add(r[0])
+                result.append({
+                    "text":       content[:300] + ("..." if len(content) > 300 else ""),
+                    "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                    "source_id":  str(r[3] or ""),
+                    "date":       str(r[4] or "")[:10],
+                    "confidence": 0.85,
+                    "tags":       [r[6] or seg],
+                    "segment":    str(r[5] or "unknown"),
+                })
+                added_for_seg += 1
+                if added_for_seg >= 2:
+                    break
+            if len(result) >= limit:
+                break
+        return result
+
+    def unmet_needs_quotes(self, limit: int = 5) -> List[dict]:
+        """Fetch distinct quotes for unmet feature requests and wishlist enhancements (for Q10)."""
+        rows = self._q("""
+            SELECT d.doc_id, d.content, d.source, d.source_id, d.timestamp,
+                   u.need_text, c.inferred_age_group
+            FROM unmet_needs u
+            JOIN documents d ON u.doc_id = d.doc_id
+            JOIN classifications c ON u.doc_id = c.doc_id
+            WHERE LENGTH(d.content) BETWEEN 40 AND 350
+            ORDER BY LENGTH(d.content) DESC
+            LIMIT 30
+        """)
+        result = []
+        seen_docs = set()
+        for r in rows:
+            if r[0] in seen_docs:
+                continue
+            content = clean_quote_text(str(r[1] or ""))
+            if len(content) < 25:
+                continue
+            seen_docs.add(r[0])
+            result.append({
+                "text":       content[:300] + ("..." if len(content) > 300 else ""),
+                "source":     SOURCE_LABELS.get(r[2] or "", r[2] or ""),
+                "source_id":  str(r[3] or ""),
+                "date":       str(r[4] or "")[:10],
+                "confidence": 0.85,
+                "tags":       ["unmet_need"],
                 "segment":    str(r[6] or "unknown"),
             })
+            if len(result) >= limit:
+                break
         return result
+
 
     def systemic_complaint_quotes(self, limit: int = 6) -> List[dict]:
         """Fetch unique representative negative complaints specifically from secondary sources and low-rated reviews."""
