@@ -86,6 +86,16 @@ class RAGQueryEngine:
         except Exception as e:
             return ""
 
+    def _is_greeting(self, query: str) -> bool:
+        """Check if query is a simple greeting or identity question."""
+        q = query.lower().strip().strip("!?.,:;")
+        greetings = {
+            "hi", "hello", "hey", "hey there", "good morning", "good afternoon", "good evening",
+            "howdy", "namaste", "hola", "greetings", "hi there", "hello there", "what's up",
+            "whats up", "how are you", "who are you", "what can you do", "help", "start"
+        }
+        return q in greetings or q.startswith(("hi ", "hello ", "hey "))
+
     def generate_answer(
         self,
         query: str,
@@ -95,9 +105,25 @@ class RAGQueryEngine:
     ) -> Dict[str, Any]:
         """Generate a structured answer using Gemini Flash with retrieved context and strict guardrails."""
 
+        # 1. Handle Greetings Directly without semantic retrieval hallucination
+        if self._is_greeting(query):
+            return {
+                "answer": "Hello! 👋 I am the **Myntra AI Discovery Engine**, specialized in consumer shopping intelligence. I can help you analyze wishlist behavior, cart abandonment, sizing doubts, return fee friction, and platform comparisons across our **8,182 classified voice-of-customer reviews**.\n\nWhat would you like to explore today?",
+                "citations": [],
+                "filters_applied": {"segment": segment or "all", "source": source or "all"},
+                "docs_retrieved": 0,
+                "retrieved_docs": [],
+                "suggestions": [
+                    "Why do users hesitate to buy after wishlisting?",
+                    "What are the top sizing issues Gen-Z faces?",
+                    "How does Myntra compare to Ajio and Amazon?"
+                ],
+                "is_out_of_scope": False,
+            }
+
         if not retrieved_docs:
             return {
-                "answer": "I couldn't find any relevant reviews matching your query with the current filters. Try relaxing the demographic/source filters or rephrasing your question.",
+                "answer": "I couldn't find any relevant reviews or customer feedback matching your query with the current filters. Try relaxing the demographic/source filters or asking about wishlist drop-offs, sizing uncertainties, or pricing.",
                 "citations": [],
                 "filters_applied": {"segment": segment or "all", "source": source or "all"},
                 "docs_retrieved": 0,
@@ -137,13 +163,16 @@ class RAGQueryEngine:
         system_prompt = f"""You are an executive consumer intelligence analyst for Myntra's AI Discovery Engine (India's premier fashion e-commerce platform).
 You analyze grounded customer feedback across 8,182 reviews (YouTube, Play Store, Reddit, App Store, PissedConsumer, Trustpilot) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
 
-STRICT SCOPE GUARDRAILS:
-1. You MUST answer ONLY questions related to fashion e-commerce, consumer shopping behavior, Myntra features/policies, product uncertainties (fit, fabric, style), returns/refunds, pricing/sales, and platform comparisons.
-2. If the user asks an OUT-OF-SCOPE question (e.g. general programming/coding, mathematics, non-fashion trivia, cooking recipes, weather, politics, sports, general assistant chat), you MUST output exactly:
-[OUT_OF_SCOPE]
-This question is out of scope. I am specifically designed to analyze Myntra customer research, wishlist behavior, sizing/fit uncertainty, return friction, and fashion e-commerce insights across our 8,182 review corpus. Please ask a question related to consumer purchase intent, platform comparisons, or product experience on Myntra.
+STRICT SCOPE & HONESTY GUARDRAILS:
+1. OUT-OF-SCOPE: You MUST answer ONLY questions related to fashion e-commerce, shopping behavior, Myntra features/policies, product uncertainties (fit, fabric, style), returns/refunds, pricing/sales, and platform comparisons.
+   If the user asks an OUT-OF-SCOPE question (e.g. general programming/coding, mathematics, non-fashion trivia, cooking recipes, weather, politics, sports), you MUST output exactly:
+   [OUT_OF_SCOPE]
+   This question is out of scope. I am specifically designed to analyze Myntra customer research, wishlist behavior, sizing/fit uncertainty, return friction, and fashion e-commerce insights across our 8,182 review corpus. Please ask a question related to consumer purchase intent, platform comparisons, or product experience on Myntra.
 
-INSTRUCTIONS FOR IN-SCOPE QUESTIONS:
+2. NO ANSWER IN CORPUS: If the user's question is fashion/e-commerce related, but the retrieved reviews do NOT contain sufficient or relevant evidence to answer it, do NOT force-fit unrelated reviews or hallucinate answers. Instead, state clearly and honestly:
+   "I could not find specific data or customer feedback regarding this topic in our 8,182 review corpus. Here are some closely related areas with deep research available:" and briefly list relevant topics (e.g. wishlist drops, sizing doubts, return fee friction).
+
+INSTRUCTIONS FOR IN-SCOPE QUESTIONS WITH EVIDENCE:
 1. Provide a crisp executive summary followed by numbered analytical findings.
 2. Cite exact quantitative metrics from the database (e.g. percentages, counts) in **bold**.
 3. Quote authentic customer verbatims with their source using markdown blockquotes: `> "quote" — [Review X] (Source)`.
