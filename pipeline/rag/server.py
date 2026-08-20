@@ -79,6 +79,12 @@ class RetrievedDoc(BaseModel):
     tags: List[str]
     content: str
 
+class Citation(BaseModel):
+    source: str
+    confidence: float
+    color: str
+    count: int
+
 class AskResponse(BaseModel):
     answer: str
     citations: List[Citation]
