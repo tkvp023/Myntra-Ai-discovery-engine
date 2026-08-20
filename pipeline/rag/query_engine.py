@@ -127,27 +127,41 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
 
         user_prompt = f"Question: {query}\n\nSynthesize an actionable analysis based strictly on the voice-of-customer reviews above:"
 
-        try:
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            response = model.generate_content(
-                [{"role": "user", "parts": [system_prompt + "\n\n" + user_prompt]}],
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.2,
-                    max_output_tokens=1500,
-                ),
-            )
-            answer_text = response.text.strip()
-        except Exception as e:
-            # Log the Gemini error for debugging
-            print(f"⚠️ Gemini API failed: {type(e).__name__}: {e}", flush=True)
-            # Fallback to Groq
+        # Attempt answer generation via Gemini (trying candidate models)
+        candidate_gemini_models = [
+            os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+            "gemini-2.5-flash",
+            "gemini-1.5-flash",
+            "gemini-2.0-flash",
+        ]
+        answer_text = ""
+        for g_model_name in candidate_gemini_models:
+            try:
+                model = genai.GenerativeModel(g_model_name)
+                response = model.generate_content(
+                    [{"role": "user", "parts": [system_prompt + "\n\n" + user_prompt]}],
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.2,
+                        max_output_tokens=1500,
+                    ),
+                )
+                answer_text = response.text.strip()
+                if answer_text:
+                    break
+            except Exception as e:
+                print(f"⚠️ Gemini model '{g_model_name}' failed: {type(e).__name__}: {e}", flush=True)
+
+        # If Gemini didn't produce an answer, fallback to Groq
+        if not answer_text:
             answer_text = self._fallback_groq(system_prompt, user_prompt)
-            if not answer_text:
-                print("⚠️ Groq fallback also failed — returning raw reviews", flush=True)
-                answer_text = f"Analyzed {len(retrieved_docs)} relevant reviews from the corpus:\n\n"
-                for i, doc in enumerate(retrieved_docs[:5]):
-                    src_display = SOURCE_DISPLAY.get(doc["source"], (doc["source"],))[0]
-                    answer_text += f"{i+1}. **{src_display}**:\n> \"{(doc['content_preview'] or doc['content'])[:180]}...\"\n\n"
+
+        # If all LLMs fail, return raw reviews
+        if not answer_text:
+            print("⚠️ All LLM fallbacks failed — returning raw reviews", flush=True)
+            answer_text = f"Analyzed {len(retrieved_docs)} relevant reviews from the corpus:\n\n"
+            for i, doc in enumerate(retrieved_docs[:5]):
+                src_display = SOURCE_DISPLAY.get(doc["source"], (doc["source"],))[0]
+                answer_text += f"{i+1}. **{src_display}**:\n> \"{(doc['content_preview'] or doc['content'])[:180]}...\"\n\n"
 
         # Build citations
         citations = []
@@ -169,26 +183,44 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
         }
 
     def _fallback_groq(self, system_prompt: str, user_prompt: str) -> str:
-        """Attempt answer generation via Groq as fallback."""
+        """Attempt answer generation via Groq as fallback with model cascade."""
+        groq_key = os.getenv("GROQ_API_KEY", "")
+        if not groq_key:
+            print("⚠️ Groq fallback skipped — GROQ_API_KEY not set", flush=True)
+            return ""
+
+        candidate_groq_models = [
+            os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+            "llama-3.1-70b-versatile",
+            "llama-3.1-8b-instant",
+            "llama3-70b-8192",
+            "llama3-8b-8192",
+            "mixtral-8x7b-32768",
+        ]
+
         try:
             from groq import Groq
-            groq_key = os.getenv("GROQ_API_KEY", "")
-            if not groq_key:
-                print("⚠️ Groq fallback skipped — GROQ_API_KEY not set", flush=True)
-                return ""
             client = Groq(api_key=groq_key)
-            response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
-                temperature=0.2,
-                max_tokens=1200,
-            )
-            return response.choices[0].message.content.strip()
+            for m in candidate_groq_models:
+                try:
+                    response = client.chat.completions.create(
+                        model=m,
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_prompt},
+                        ],
+                        temperature=0.2,
+                        max_tokens=1200,
+                    )
+                    text = response.choices[0].message.content.strip()
+                    if text:
+                        print(f"✅ Groq fallback succeeded with model: {m}", flush=True)
+                        return text
+                except Exception as model_err:
+                    print(f"⚠️ Groq model '{m}' failed: {model_err}", flush=True)
+            return ""
         except Exception as e:
-            print(f"⚠️ Groq fallback error: {type(e).__name__}: {e}", flush=True)
+            print(f"⚠️ Groq client initialization error: {type(e).__name__}: {e}", flush=True)
             return ""
 
     def ask(

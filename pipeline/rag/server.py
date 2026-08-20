@@ -61,19 +61,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS — allow the Next.js dashboard (local dev + production)
-_cors_origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-_frontend_url = os.environ.get("FRONTEND_URL", "")
-if _frontend_url:
-    _cors_origins.append(_frontend_url.rstrip("/"))
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_cors_origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
