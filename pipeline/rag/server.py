@@ -37,20 +37,6 @@ import time
 from pipeline.rag.query_engine import get_engine
 
 # ─────────────────────────────────────────────────────────────
-# Lifespan — warm-load VectorStore on startup
-# ─────────────────────────────────────────────────────────────
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Pre-load VectorStore on server start."""
-    print("🚀 Initializing RAG engine (VectorStore + Gemini embeddings)...")
-    engine = get_engine()
-    count = engine.store.count()
-    print(f"✅ RAG engine ready — {count:,} vectors in VectorStore")
-    yield
-    # Shutdown cleanup (if needed in the future)
-
-# ─────────────────────────────────────────────────────────────
 # FastAPI App
 # ─────────────────────────────────────────────────────────────
 
@@ -58,7 +44,6 @@ app = FastAPI(
     title="AI Discovery Engine — RAG API",
     description="Retrieval-Augmented Generation over 8,182 classified Myntra reviews",
     version="1.0.0",
-    lifespan=lifespan,
 )
 
 app.add_middleware(
