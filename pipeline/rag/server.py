@@ -138,7 +138,7 @@ async def health():
     return {
         "status": "ok",
         "vectors": count,
-        "model": "gemini-embedding-001 + gemini-2.0-flash",
+        "model": "gemini-embedding-001 + gemini-3.7-flash",
     }
 
 

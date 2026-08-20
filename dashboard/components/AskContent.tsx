@@ -199,7 +199,7 @@ export default function AskContent() {
                 animation: isLive ? 'pulse 2s infinite' : 'none',
               }}
             />
-            {isLive ? 'Live RAG Engine (Gemini 2.0 Flash)' : 'RAG Standby'}
+            {isLive ? 'Live RAG Engine (Gemini 3.7 Flash)' : 'RAG Standby'}
           </span>
         </p>
       </div>

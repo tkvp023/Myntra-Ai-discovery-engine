@@ -129,10 +129,10 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
 
         # Attempt answer generation via Gemini (trying candidate models)
         candidate_gemini_models = [
-            os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+            os.getenv("GEMINI_MODEL", "gemini-3.7-flash"),
+            "gemini-3.6-flash",
             "gemini-2.5-flash",
             "gemini-1.5-flash",
-            "gemini-2.0-flash",
         ]
         answer_text = ""
         for g_model_name in candidate_gemini_models:
