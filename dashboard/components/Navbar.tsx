@@ -13,7 +13,7 @@ const QUESTIONS = [
   { id: 6, group: 'dynamics', short: 'External Info Seeking', desc: 'YouTube hauls & Instagram reels' },
   { id: 7, group: 'dynamics', short: 'Factor Importance', desc: 'Fit, price, styling & returns' },
   { id: 8, group: 'dynamics', short: 'Intent vs Bookmarking', desc: 'Immediate buy vs aesthetic saves' },
-  { id: 9, group: 'dynamics', short: 'Segment Differences', desc: 'Gen-Z, deal seekers & plus size' },
+  { id: 9, group: 'dynamics', short: 'Segment Differences', desc: 'Inferred behavioral segments' },
   { id: 10, group: 'dynamics', short: 'Unmet Needs', desc: 'High-frequency customer feature requests' },
 ];
 

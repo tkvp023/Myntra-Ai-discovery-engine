@@ -24,19 +24,6 @@ export const SOURCE_COLORS: Record<string, string> = {
   'Reviews.io':      '#6b7280',
 };
 
-export const SEGMENT_COLORS: Record<string, string> = {
-  gen_z:      '#a855f7',
-  millennial: '#3b82f6',
-  gen_x:      '#2dd4bf',
-  unknown:    '#6b7280',
-};
-
-export const SEGMENT_LABELS: Record<string, string> = {
-  gen_z:      'Gen-Z',
-  millennial: 'Millennial',
-  gen_x:      'Gen-X',
-  all:        'All Segments',
-};
 
 export const CONFIDENCE_THRESHOLDS = {
   high: 0.8,

@@ -96,7 +96,7 @@ export default function GapsContent({ data }: GapsContentProps) {
             {data.key_quotes.map((q: any, i: number) => (
               <QuoteCard
                 key={i}
-                quote={{ ...q, tags: [q.issue || ''], segment: 'unknown', source_id: '', confidence: 0.8 }}
+                quote={{ ...q, tags: [q.issue || ''], source_id: '', confidence: 0.8 }}
                 accent="var(--orange)"
               />
             ))}

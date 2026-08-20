@@ -3,16 +3,14 @@ import { useState } from 'react';
 
 interface Quote {
   text: string; source: string; source_id?: string;
-  date: string; confidence: number; tags: string[]; segment: string;
+  date: string; confidence: number; tags: string[]; segment?: string;
 }
 
 const SOURCE_COLORS: Record<string, string> = {
   'Play Store': '#ff3f6c', 'Reddit': '#ff7849', 'YouTube': '#a855f7',
   'App Store': '#2dd4bf', 'Trustpilot': '#3b82f6', 'PissedConsumer': '#fbbf24', 'Reviews.io': '#6b7280',
 };
-const SEGMENT_COLORS: Record<string, string> = {
-  gen_z: '#a855f7', millennial: '#3b82f6', gen_x: '#2dd4bf', unknown: '#6b7280',
-};
+
 
 function ConfBadge({ conf }: { conf: number }) {
   const cls = conf >= 0.8 ? 'badge-conf-high' : conf >= 0.6 ? 'badge-conf-mid' : 'badge-conf-low';
@@ -44,11 +42,7 @@ function QuoteCard({ quote, accent }: { quote: Quote; accent?: string }) {
             #{quote.tags[0].replace(/_/g, ' ')}
           </span>
         )}
-        {quote.segment && quote.segment !== 'unknown' && (
-          <span className="badge" style={{ background: `${SEGMENT_COLORS[quote.segment] || '#6b7280'}22`, color: SEGMENT_COLORS[quote.segment] || 'var(--text-secondary)' }}>
-            {quote.segment.replace('_', ' ')}
-          </span>
-        )}
+
         <ConfBadge conf={quote.confidence} />
         <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 'auto' }}>{quote.date}</span>
       </div>

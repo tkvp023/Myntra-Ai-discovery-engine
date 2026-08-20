@@ -4,7 +4,6 @@ import HorizontalBar from './HorizontalBar';
 import DonutChart from './DonutChart';
 import AreaTimeline from './AreaTimeline';
 import QuoteCarousel from './QuoteCarousel';
-import SegmentToggle from './SegmentToggle';
 import RadarChartComponent from './RadarChartComponent';
 import HeatmapChart from './HeatmapChart';
 import WordCloudChart from './WordCloudChart';
@@ -39,25 +38,14 @@ function ChartCard({ title, children, delay = 0 }: { title: string; children: Re
 }
 
 export default function QuestionSection({ data, questionId }: QuestionSectionProps) {
-  const [segment, setSegment] = useState('all');
   const [source, setSource] = useState('all');
 
-  const getBreakdown = () => {
-    if (segment === 'all') return data.breakdown || [];
-    const splits = data.segment_splits?.[segment];
-    if (!splits || splits.length === 0) return data.breakdown || [];
-    // Merge colors from main breakdown
-    const colorMap: Record<string, string> = {};
-    (data.breakdown || []).forEach((b: any) => { colorMap[b.tag] = b.color; });
-    return splits.map((s: any) => ({ ...s, color: colorMap[s.tag] || '#6b7280', avg_confidence: 0.72 }));
-  };
-
-  const breakdown = getBreakdown();
+  const breakdown = data.breakdown || [];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-      {/* Segment toggle + stat strip */}
+      {/* Stat strip */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', gap: 20 }}>
           <div>
@@ -93,7 +81,6 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
             </div>
           )}
         </div>
-        <SegmentToggle value={segment} onChange={setSegment} />
       </div>
 
       {/* Main breakdown + donut */}
@@ -101,7 +88,7 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
         <ChartCard title="Breakdown" delay={0}>
           {breakdown.length > 0
             ? <HorizontalBar data={breakdown} />
-            : <div className="empty-state"><div className="empty-state-icon">📊</div><div className="empty-state-text">No data for this segment</div></div>
+            : <div className="empty-state"><div className="empty-state-icon">📊</div><div className="empty-state-text">No data available</div></div>
           }
         </ChartCard>
 
@@ -162,9 +149,9 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
 
       {/* Q9: Segment × factor GroupedBar */}
       {questionId === 9 && data.segment_grouped_data && (
-        <ChartCard title="Hesitation Factor by Segment" delay={150}>
+        <ChartCard title="Hesitation Factor by Inferred Segment" delay={150}>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
-            % of segment mentioning each hesitation factor
+            % of inferred segment mentioning each hesitation factor
           </p>
           <GroupedBar
             data={data.segment_grouped_data}
@@ -205,9 +192,9 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
         </ChartCard>
       )}
 
-      {/* Segment comparison table */}
-      {segment === 'all' && data.segment_splits && (
-        <ChartCard title="Segment Comparison" delay={300}>
+      {/* Q9: Inferred segment comparison table */}
+      {questionId === 9 && data.segment_splits && (
+        <ChartCard title="Inferred Segment Comparison" delay={300}>
           <div className="grid-3" style={{ gap: 16 }}>
             {(['gen_z', 'millennial', 'gen_x'] as const).map((seg) => {
               const splits = data.segment_splits[seg] || [];
@@ -227,6 +214,42 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
             })}
           </div>
         </ChartCard>
+      )}
+
+      {/* Q9: Inference methodology disclaimer */}
+      {questionId === 9 && (
+        <div style={{
+          background: 'var(--glass-bg)',
+          border: '1px solid var(--border)',
+          borderLeft: '3px solid #fbbf24',
+          borderRadius: 10,
+          padding: '16px 20px',
+          fontSize: 13,
+          lineHeight: 1.6,
+          color: 'var(--text-secondary)',
+        }}>
+          <div style={{ fontWeight: 700, color: '#fbbf24', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>⚠️</span> Inferred Segments — Not Actual User Ages
+          </div>
+          <p style={{ margin: '0 0 8px 0' }}>
+            These generational segments (<strong>Gen-Z</strong>, <strong>Millennial</strong>, <strong>Gen-X</strong>) are
+            <em> inferred from review text</em>, not from verified user profile data. No review platform provides actual age information.
+          </p>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: 'var(--text-primary)' }}>
+            How we infer segments:
+          </p>
+          <ul style={{ margin: 0, paddingLeft: 20 }}>
+            <li><strong>LLM Analysis:</strong> Each review is analyzed by Gemini for language cues — slang, vocabulary, lifestyle references, and cultural context.</li>
+            <li><strong>Keyword Patterns:</strong> As a fallback, regex patterns detect generational signals:
+              <span style={{ color: '#a855f7', fontWeight: 600 }}> Gen-Z</span> → &quot;aesthetic&quot;, &quot;y2k&quot;, &quot;vibe&quot;, &quot;drip&quot;, &quot;reels&quot;, &quot;streetwear&quot; |
+              <span style={{ color: '#3b82f6', fontWeight: 600 }}> Millennial</span> → &quot;office&quot;, &quot;formal&quot;, &quot;premium&quot;, &quot;corporate&quot;, &quot;classic&quot;
+            </li>
+            <li><strong>Default:</strong> Reviews without clear signals default to &quot;Millennial&quot;.</li>
+          </ul>
+          <p style={{ margin: '8px 0 0 0', fontStyle: 'italic', fontSize: 12, color: 'var(--text-muted)' }}>
+            Treat these as behavioral proxies, not demographic facts. They reflect language style and topic patterns, not confirmed ages.
+          </p>
+        </div>
       )}
 
       {/* Key quotes */}
