@@ -2,43 +2,62 @@
 import { useEffect, useState } from 'react';
 
 type Mode = 'dark' | 'light';
-type Theme = 'sunset' | 'emerald' | 'nebula';
+export type Theme = 'tokyo-sakura' | 'cyber-matrix' | 'cosmic-nebula' | 'solar-flare';
 
-const THEMES: { id: Theme; name: string; icon: string; preview: string }[] = [
+export const THEMES: { id: Theme; name: string; tag: string; icon: string; preview: string; glow: string }[] = [
   {
-    id: 'sunset',
-    name: 'Sunset Coral',
+    id: 'tokyo-sakura',
+    name: 'Tokyo Sakura',
+    tag: 'Hot Pink & Amber',
     icon: '🌸',
-    preview: 'linear-gradient(135deg, #ff3f6c, #ff7849)',
+    preview: 'linear-gradient(135deg, #ff2d55, #ff9500)',
+    glow: 'rgba(255, 45, 85, 0.4)',
   },
   {
-    id: 'emerald',
-    name: 'Cyber Emerald',
-    icon: '🌿',
-    preview: 'linear-gradient(135deg, #10b981, #06b6d4)',
+    id: 'cyber-matrix',
+    name: 'Cyber Matrix',
+    tag: 'Neon Mint & Cyan',
+    icon: '⚡',
+    preview: 'linear-gradient(135deg, #00f5d4, #00bbf9)',
+    glow: 'rgba(0, 245, 212, 0.4)',
   },
   {
-    id: 'nebula',
-    name: 'Royal Nebula',
+    id: 'cosmic-nebula',
+    name: 'Cosmic Nebula',
+    tag: 'Ultra Violet & Fuchsia',
     icon: '🔮',
     preview: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+    glow: 'rgba(139, 92, 246, 0.4)',
+  },
+  {
+    id: 'solar-flare',
+    name: 'Solar Flare',
+    tag: 'Molten Ruby & Gold',
+    icon: '🔥',
+    preview: 'linear-gradient(135deg, #ff3838, #ffb300)',
+    glow: 'rgba(255, 56, 56, 0.4)',
   },
 ];
 
 export default function ThemeControls() {
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<Mode>('dark');
-  const [theme, setTheme] = useState<Theme>('sunset');
+  const [theme, setTheme] = useState<Theme>('tokyo-sakura');
 
   useEffect(() => {
     setMounted(true);
     const initialMode = (document.documentElement.getAttribute('data-mode') as Mode) || 
       (localStorage.getItem('app-mode') as Mode) || 'dark';
-    const initialTheme = (document.documentElement.getAttribute('data-theme') as Theme) || 
-      (localStorage.getItem('app-theme') as Theme) || 'sunset';
+    
+    // Map legacy 'sunset' / 'emerald' / 'nebula' if stored
+    let initialTheme = (document.documentElement.getAttribute('data-theme') as string) || 
+      localStorage.getItem('app-theme') || 'tokyo-sakura';
+    if (initialTheme === 'sunset') initialTheme = 'tokyo-sakura';
+    if (initialTheme === 'emerald') initialTheme = 'cyber-matrix';
+    if (initialTheme === 'nebula') initialTheme = 'cosmic-nebula';
 
     setMode(initialMode);
-    setTheme(initialTheme);
+    setTheme(initialTheme as Theme);
     document.documentElement.setAttribute('data-mode', initialMode);
     document.documentElement.setAttribute('data-theme', initialTheme);
   }, []);
@@ -60,9 +79,11 @@ export default function ThemeControls() {
 
   if (!mounted) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 34, minWidth: 160 }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 34, minWidth: 190 }} />
     );
   }
+
+  const currentThemeObj = THEMES.find((t) => t.id === theme) || THEMES[0];
 
   return (
     <div
@@ -72,34 +93,38 @@ export default function ThemeControls() {
         alignItems: 'center',
         gap: 8,
         background: 'var(--bg-card)',
-        border: '1px solid var(--border)',
+        border: '1px solid var(--border-strong)',
         borderRadius: 24,
-        padding: '3px 8px',
+        padding: '3px 10px',
         backdropFilter: 'var(--glass-blur)',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
       }}
     >
-      {/* 3 Unique Theme Palette Swatches */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      {/* 4 Eye-Catching Theme Swatches with glowing rings */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
         {THEMES.map((t) => {
           const isSelected = theme === t.id;
           return (
             <button
               key={t.id}
               onClick={() => selectTheme(t.id)}
-              title={`${t.name} Theme (${t.icon})`}
-              aria-label={`${t.name} color theme`}
+              title={`${t.name} — ${t.tag} (${t.icon})`}
+              aria-label={`${t.name} theme`}
               style={{
-                width: 20,
-                height: 20,
+                width: 22,
+                height: 22,
                 borderRadius: '50%',
                 background: t.preview,
-                border: isSelected ? '2px solid #ffffff' : '1px solid rgba(255,255,255,0.2)',
-                boxShadow: isSelected ? '0 0 10px rgba(0,0,0,0.5), 0 0 0 2px var(--brand-primary)' : 'none',
-                transform: isSelected ? 'scale(1.15)' : 'scale(1)',
+                border: isSelected ? '2px solid #ffffff' : '1px solid rgba(255,255,255,0.25)',
+                boxShadow: isSelected
+                  ? `0 0 14px ${t.glow}, 0 0 0 2px var(--brand-primary)`
+                  : '0 1px 4px rgba(0,0,0,0.2)',
+                transform: isSelected ? 'scale(1.22)' : 'scale(1)',
                 cursor: 'pointer',
-                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: 'all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 outline: 'none',
                 padding: 0,
+                position: 'relative',
               }}
             />
           );
@@ -108,10 +133,10 @@ export default function ThemeControls() {
 
       <div style={{ width: 1, height: 16, background: 'var(--border)', margin: '0 2px' }} />
 
-      {/* Dark / Light Mode Toggle */}
+      {/* Mode Switch Button (🌙 / ☀️) */}
       <button
         onClick={toggleMode}
-        title={mode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        title={mode === 'dark' ? 'Switch to Daylight Light Mode' : 'Switch to Midnight Dark Mode'}
         aria-label={`Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode`}
         style={{
           background: 'none',
@@ -124,11 +149,15 @@ export default function ThemeControls() {
           height: 26,
           borderRadius: '50%',
           color: 'var(--text-primary)',
-          transition: 'background 0.2s ease, transform 0.2s ease',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           fontSize: 14,
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = 'rotate(15deg) scale(1.1)')}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = 'rotate(0deg) scale(1)')}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'rotate(20deg) scale(1.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'rotate(0deg) scale(1)';
+        }}
       >
         {mode === 'dark' ? '🌙' : '☀️'}
       </button>

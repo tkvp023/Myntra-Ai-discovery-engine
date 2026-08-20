@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-mode="dark" data-theme="sunset" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-mode="dark" data-theme="tokyo-sakura" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -28,7 +28,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               (function() {
                 try {
                   var m = localStorage.getItem('app-mode') || 'dark';
-                  var t = localStorage.getItem('app-theme') || 'sunset';
+                  var t = localStorage.getItem('app-theme') || 'tokyo-sakura';
+                  if (t === 'sunset') t = 'tokyo-sakura';
+                  if (t === 'emerald') t = 'cyber-matrix';
+                  if (t === 'nebula') t = 'cosmic-nebula';
                   document.documentElement.setAttribute('data-mode', m);
                   document.documentElement.setAttribute('data-theme', t);
                 } catch (e) {}
