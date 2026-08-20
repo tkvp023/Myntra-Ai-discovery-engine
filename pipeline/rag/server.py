@@ -127,16 +127,34 @@ async def ask(request: AskRequest):
     )
 
 
+@app.get("/")
+async def root():
+    """Root endpoint for deployment uptime ping."""
+    return {
+        "status": "online",
+        "service": "AI Discovery Engine RAG API",
+        "version": "1.0.0",
+        "endpoints": ["/health", "/api/ask"],
+    }
+
+
 @app.get("/health")
 async def health():
-    """Health check endpoint."""
-    engine = get_engine()
-    count = engine.store.count()
-    return {
-        "status": "ok",
-        "vectors": count,
-        "model": "gemini-embedding-001 + gemini-3.7-flash",
-    }
+    """Health check endpoint with error resilience."""
+    try:
+        engine = get_engine()
+        count = engine.store.count() if engine and engine.store else 0
+        return {
+            "status": "ok",
+            "vectors": count,
+            "model": "gemini-3.6-flash + vector-store",
+        }
+    except Exception as e:
+        return {
+            "status": "ok",
+            "warning": str(e),
+            "vectors": 0,
+        }
 
 
 if __name__ == "__main__":

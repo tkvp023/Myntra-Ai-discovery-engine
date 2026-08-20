@@ -66,25 +66,35 @@ class RAGQueryEngine:
         )
 
     def _get_quantitative_context(self, query: str, segment: Optional[str] = None) -> str:
-        """Fetch real-time quantitative metrics from SQLite to supplement semantic retrieval."""
+        """Fetch real-time quantitative metrics to supplement semantic retrieval."""
         try:
-            from pipeline.db.connection import get_session
+            from pipeline.db.connection import DB_PATH, get_session
             from pipeline.quantification.aggregator import Aggregator
-            session = get_session()
-            agg = Aggregator(session)
-            
-            # Check hesitation tag frequency
-            tag_freq = agg.hesitation_frequency(segment=segment if segment != "all" else None)[:6]
-            intent_dist = agg.wishlist_intent_distribution(segment=segment if segment != "all" else None)
-            
-            lines = [
-                "QUANTITATIVE AGGREGATES FROM 8,182 CLASSIFIED REVIEWS:",
-                f"- Top Friction / Hesitation Drivers: " + ", ".join([f"{t['label']} ({t['pct']}% of issues, {t['count']} docs)" for t in tag_freq]),
-                f"- Wishlist Intent Breakdown: " + ", ".join([f"{i['intent'].replace('_', ' ').title()} ({i['pct']}%, {i['count']} docs)" for i in intent_dist[:4]])
-            ]
-            return "\n".join(lines)
-        except Exception as e:
-            return ""
+            if DB_PATH.exists():
+                session = get_session()
+                agg = Aggregator(session)
+                tag_freq = agg.hesitation_frequency(segment=segment if segment != "all" else None)[:6]
+                intent_dist = agg.wishlist_intent_distribution(segment=segment if segment != "all" else None)
+                lines = [
+                    "QUANTITATIVE AGGREGATES FROM 8,182 CLASSIFIED REVIEWS:",
+                    f"- Top Friction / Hesitation Drivers: " + ", ".join([f"{t['label']} ({t['pct']}% of issues, {t['count']} docs)" for t in tag_freq]),
+                    f"- Wishlist Intent Breakdown: " + ", ".join([f"{i['intent'].replace('_', ' ').title()} ({i['pct']}%, {i['count']} docs)" for i in intent_dist[:4]])
+                ]
+                return "\n".join(lines)
+        except Exception:
+            pass
+
+        # Fallback to pre-exported summary JSON (always available in repo)
+        try:
+            summary_path = PROJECT_ROOT / "data" / "exports" / "summary.json"
+            if summary_path.exists():
+                with open(summary_path, "r", encoding="utf-8") as f:
+                    summ = json.load(f)
+                kpi_str = ", ".join([f"{k['label']} ({k['value']}{'%' if k['unit'] == 'percent' else ' reviews'})" for k in summ.get("kpi_cards", [])])
+                return f"QUANTITATIVE AGGREGATES FROM 8,182 CLASSIFIED REVIEWS:\n- Key Indicators: {kpi_str}"
+        except Exception:
+            pass
+        return ""
 
     def _is_greeting(self, query: str) -> bool:
         """Check if query is a simple greeting or identity question."""
