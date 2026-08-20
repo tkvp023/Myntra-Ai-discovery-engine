@@ -372,7 +372,6 @@ h1, h2, h3, h4 {
   flex-direction: column;
   gap: 14px;
 }
-.bar-item {}
 .bar-meta {
   display: flex;
   justify-content: space-between;
@@ -519,6 +518,10 @@ select:focus-visible {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
 
 /* ─── Empty / Error states ──────────────────────────────────── */
 .empty-state {
@@ -539,19 +542,6 @@ select:focus-visible {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ─── Custom Scrollbar ──────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
 
 /* ─── Chat Filter Dropdowns ─────────────────────────────────── */
 .chat-filter-select {

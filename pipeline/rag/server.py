@@ -13,6 +13,7 @@ Usage:
 import sys
 import os
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 if hasattr(sys.stdout, "reconfigure"):
     try:
@@ -36,6 +37,20 @@ import time
 from pipeline.rag.query_engine import get_engine
 
 # ─────────────────────────────────────────────────────────────
+# Lifespan — warm-load VectorStore on startup
+# ─────────────────────────────────────────────────────────────
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Pre-load VectorStore on server start."""
+    print("🚀 Initializing RAG engine (VectorStore + Gemini embeddings)...")
+    engine = get_engine()
+    count = engine.store.count()
+    print(f"✅ RAG engine ready — {count:,} vectors in VectorStore")
+    yield
+    # Shutdown cleanup (if needed in the future)
+
+# ─────────────────────────────────────────────────────────────
 # FastAPI App
 # ─────────────────────────────────────────────────────────────
 
@@ -43,12 +58,21 @@ app = FastAPI(
     title="AI Discovery Engine — RAG API",
     description="Retrieval-Augmented Generation over 8,182 classified Myntra reviews",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
-# CORS — allow the Next.js dashboard
+# CORS — allow the Next.js dashboard (local dev + production)
+_cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+_frontend_url = os.environ.get("FRONTEND_URL", "")
+if _frontend_url:
+    _cors_origins.append(_frontend_url.rstrip("/"))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -79,19 +103,6 @@ class AskResponse(BaseModel):
     filters_applied: dict
     docs_retrieved: int
     latency_ms: int
-
-
-# ─────────────────────────────────────────────────────────────
-# Startup — warm load
-# ─────────────────────────────────────────────────────────────
-
-@app.on_event("startup")
-async def startup():
-    """Pre-load VectorStore on server start."""
-    print("🚀 Initializing RAG engine (VectorStore + Gemini embeddings)...")
-    engine = get_engine()
-    count = engine.store.count()
-    print(f"✅ RAG engine ready — {count:,} vectors in VectorStore")
 
 
 # ─────────────────────────────────────────────────────────────

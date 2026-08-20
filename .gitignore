@@ -25,6 +25,9 @@ data/checkpoints/
 data/chroma_db/
 data/vectors/
 data/vectors.npz
+# Allow vector store files needed by Railway RAG server
+!data/vector_model.joblib
+!data/vector_meta.json
 
 # Environment
 .env
