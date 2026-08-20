@@ -174,6 +174,7 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
             from groq import Groq
             groq_key = os.getenv("GROQ_API_KEY", "")
             if not groq_key:
+                print("⚠️ Groq fallback skipped — GROQ_API_KEY not set", flush=True)
                 return ""
             client = Groq(api_key=groq_key)
             response = client.chat.completions.create(
