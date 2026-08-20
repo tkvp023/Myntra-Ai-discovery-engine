@@ -138,9 +138,12 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
             )
             answer_text = response.text.strip()
         except Exception as e:
+            # Log the Gemini error for debugging
+            print(f"⚠️ Gemini API failed: {type(e).__name__}: {e}", flush=True)
             # Fallback to Groq
             answer_text = self._fallback_groq(system_prompt, user_prompt)
             if not answer_text:
+                print("⚠️ Groq fallback also failed — returning raw reviews", flush=True)
                 answer_text = f"Analyzed {len(retrieved_docs)} relevant reviews from the corpus:\n\n"
                 for i, doc in enumerate(retrieved_docs[:5]):
                     src_display = SOURCE_DISPLAY.get(doc["source"], (doc["source"],))[0]
@@ -183,7 +186,8 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
                 max_tokens=1200,
             )
             return response.choices[0].message.content.strip()
-        except Exception:
+        except Exception as e:
+            print(f"⚠️ Groq fallback error: {type(e).__name__}: {e}", flush=True)
             return ""
 
     def ask(
