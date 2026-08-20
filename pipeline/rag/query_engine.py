@@ -42,7 +42,7 @@ SOURCE_DISPLAY = {
 
 
 class RAGQueryEngine:
-    """Retrieval-Augmented Generation engine for the Myntra corpus."""
+    """Retrieval-Augmented Generation engine for the Myntra corpus with Hybrid SQL + Vector intelligence."""
 
     def __init__(self):
         self.store = VectorStore()
@@ -65,6 +65,27 @@ class RAGQueryEngine:
             source=source,
         )
 
+    def _get_quantitative_context(self, query: str, segment: Optional[str] = None) -> str:
+        """Fetch real-time quantitative metrics from SQLite to supplement semantic retrieval."""
+        try:
+            from pipeline.db.connection import get_session
+            from pipeline.quantification.aggregator import Aggregator
+            session = get_session()
+            agg = Aggregator(session)
+            
+            # Check hesitation tag frequency
+            tag_freq = agg.hesitation_frequency(segment=segment if segment != "all" else None)[:6]
+            intent_dist = agg.wishlist_intent_distribution(segment=segment if segment != "all" else None)
+            
+            lines = [
+                "QUANTITATIVE AGGREGATES FROM 8,182 CLASSIFIED REVIEWS:",
+                f"- Top Friction / Hesitation Drivers: " + ", ".join([f"{t['label']} ({t['pct']}% of issues, {t['count']} docs)" for t in tag_freq]),
+                f"- Wishlist Intent Breakdown: " + ", ".join([f"{i['intent'].replace('_', ' ').title()} ({i['pct']}%, {i['count']} docs)" for i in intent_dist[:4]])
+            ]
+            return "\n".join(lines)
+        except Exception as e:
+            return ""
+
     def generate_answer(
         self,
         query: str,
@@ -72,7 +93,7 @@ class RAGQueryEngine:
         segment: Optional[str] = None,
         source: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Generate a structured answer using Gemini Flash with retrieved context."""
+        """Generate a structured answer using Gemini Flash with retrieved context and strict guardrails."""
 
         if not retrieved_docs:
             return {
@@ -80,6 +101,9 @@ class RAGQueryEngine:
                 "citations": [],
                 "filters_applied": {"segment": segment or "all", "source": source or "all"},
                 "docs_retrieved": 0,
+                "retrieved_docs": [],
+                "suggestions": ["Why do users add items to wishlist?", "What causes fit and sizing uncertainty?", "How does Myntra compare to Ajio and Amazon?"],
+                "is_out_of_scope": False,
             }
 
         # Build context from retrieved documents
@@ -94,6 +118,7 @@ class RAGQueryEngine:
             )
 
         context_block = "\n\n---\n\n".join(context_parts)
+        quant_block = self._get_quantitative_context(query, segment)
 
         # Build source summary for citations
         source_counts: Dict[str, int] = {}
@@ -109,30 +134,41 @@ class RAGQueryEngine:
         if source and source != "all":
             filter_context += f"\nThe user has filtered for **{source}** reviews only."
 
-        system_prompt = f"""You are an executive consumer intelligence analyst for Myntra (India's premier fashion e-commerce platform).
-You provide grounded, executive-grade answers about customer behavior, wishlist-to-purchase hesitation, sizing issues, returns, and pricing.
+        system_prompt = f"""You are an executive consumer intelligence analyst for Myntra's AI Discovery Engine (India's premier fashion e-commerce platform).
+You analyze grounded customer feedback across 8,182 reviews (YouTube, Play Store, Reddit, App Store, PissedConsumer, Trustpilot) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
 
-All your answers MUST be synthesized directly from the retrieved customer reviews provided below.
+STRICT SCOPE GUARDRAILS:
+1. You MUST answer ONLY questions related to fashion e-commerce, consumer shopping behavior, Myntra features/policies, product uncertainties (fit, fabric, style), returns/refunds, pricing/sales, and platform comparisons.
+2. If the user asks an OUT-OF-SCOPE question (e.g. general programming/coding, mathematics, non-fashion trivia, cooking recipes, weather, politics, sports, general assistant chat), you MUST output exactly:
+[OUT_OF_SCOPE]
+This question is out of scope. I am specifically designed to analyze Myntra customer research, wishlist behavior, sizing/fit uncertainty, return friction, and fashion e-commerce insights across our 8,182 review corpus. Please ask a question related to consumer purchase intent, platform comparisons, or product experience on Myntra.
 
-INSTRUCTIONS:
-1. Provide a crisp executive summary followed by numbered findings highlighting core drivers.
-2. Quote authentic customer verbatims with their source using markdown blockquotes: `> "quote" — Source`.
-3. Highlight metrics, proportions, and recurring tag themes in **bold**.
-4. Frame findings with actionable product & UX recommendations (e.g. Fit tools, return policy transparency, dynamic pricing).
-5. If the evidence shows sharp demographic splits (Gen-Z vs Millennials vs Gen-X), call them out explicitly.
+INSTRUCTIONS FOR IN-SCOPE QUESTIONS:
+1. Provide a crisp executive summary followed by numbered analytical findings.
+2. Cite exact quantitative metrics from the database (e.g. percentages, counts) in **bold**.
+3. Quote authentic customer verbatims with their source using markdown blockquotes: `> "quote" — [Review X] (Source)`.
+4. Provide actionable product/UX recommendations for Myntra (e.g. size guides, video reviews, return fee clarity).
+5. At the very end of your response, ALWAYS provide 2 to 3 concise, highly relevant follow-up questions formatted exactly like this:
+[FOLLOW_UP_SUGGESTIONS]
+- Question 1?
+- Question 2?
+- Question 3?
+
 {filter_context}
+
+{quant_block}
 
 RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
 {context_block}"""
 
-        user_prompt = f"Question: {query}\n\nSynthesize an actionable analysis based strictly on the voice-of-customer reviews above:"
+        user_prompt = f"Question: {query}\n\nSynthesize an actionable analysis based strictly on the voice-of-customer reviews and quantitative evidence above:"
 
         # Attempt answer generation via Gemini (trying candidate models)
         candidate_gemini_models = [
-            os.getenv("GEMINI_MODEL", "gemini-3.7-flash"),
             "gemini-3.6-flash",
-            "gemini-2.5-flash",
-            "gemini-1.5-flash",
+            "gemini-3.5-flash",
+            "gemini-3.7-flash",
+            "gemini-flash-latest",
         ]
         answer_text = ""
         for g_model_name in candidate_gemini_models:
@@ -142,7 +178,7 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
                     [{"role": "user", "parts": [system_prompt + "\n\n" + user_prompt]}],
                     generation_config=genai.types.GenerationConfig(
                         temperature=0.2,
-                        max_output_tokens=1500,
+                        max_output_tokens=1600,
                     ),
                 )
                 answer_text = response.text.strip()
@@ -155,13 +191,34 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
         if not answer_text:
             answer_text = self._fallback_groq(system_prompt, user_prompt)
 
-        # If all LLMs fail, return raw reviews
-        if not answer_text:
-            print("⚠️ All LLM fallbacks failed — returning raw reviews", flush=True)
-            answer_text = f"Analyzed {len(retrieved_docs)} relevant reviews from the corpus:\n\n"
-            for i, doc in enumerate(retrieved_docs[:5]):
-                src_display = SOURCE_DISPLAY.get(doc["source"], (doc["source"],))[0]
-                answer_text += f"{i+1}. **{src_display}**:\n> \"{(doc['content_preview'] or doc['content'])[:180]}...\"\n\n"
+        # Parse OUT_OF_SCOPE and FOLLOW_UP_SUGGESTIONS
+        is_out_of_scope = False
+        suggestions = []
+
+        if "[OUT_OF_SCOPE]" in answer_text:
+            is_out_of_scope = True
+            answer_text = answer_text.replace("[OUT_OF_SCOPE]", "").strip()
+            suggestions = [
+                "Why do users add items to their wishlist?",
+                "What are the main causes of sizing uncertainty?",
+                "How do shoppers compare Myntra with Amazon and Ajio?"
+            ]
+        else:
+            if "[FOLLOW_UP_SUGGESTIONS]" in answer_text:
+                parts = answer_text.split("[FOLLOW_UP_SUGGESTIONS]")
+                answer_text = parts[0].strip()
+                suggestion_lines = parts[1].strip().split("\n")
+                for s in suggestion_lines:
+                    clean_s = s.strip().lstrip("-*•1234567890. ").strip()
+                    if clean_s and len(clean_s) > 5:
+                        suggestions.append(clean_s)
+
+        if not suggestions:
+            suggestions = [
+                "How do return processing fees affect cart conversion?",
+                "What differences exist between Gen-Z and Millennials?",
+                "What are the top unmet customer feature requests?"
+            ]
 
         # Build citations
         citations = []
@@ -175,11 +232,31 @@ RETRIEVED VOICE-OF-CUSTOMER EVIDENCE ({len(retrieved_docs)} reviews):
                 "count": count,
             })
 
+        # Format full retrieved docs payload for frontend inspector
+        formatted_retrieved_docs = []
+        for i, doc in enumerate(retrieved_docs):
+            src_display = SOURCE_DISPLAY.get(doc["source"], (doc["source"], "#6b7280"))[0]
+            formatted_retrieved_docs.append({
+                "index": i + 1,
+                "doc_id": doc.get("doc_id", ""),
+                "source": src_display,
+                "raw_source": doc.get("source", ""),
+                "source_id": doc.get("source_id", ""),
+                "date": doc.get("timestamp", "")[:10] if doc.get("timestamp") else "2026",
+                "segment": doc.get("segment", "unknown"),
+                "similarity": round(float(doc.get("similarity", 0.8)), 2),
+                "tags": [t.strip() for t in doc.get("hesitation_tags", "").split(",") if t.strip()],
+                "content": doc.get("content", doc.get("content_preview", "")),
+            })
+
         return {
             "answer": answer_text,
             "citations": citations,
             "filters_applied": {"segment": segment or "all", "source": source or "all"},
             "docs_retrieved": len(retrieved_docs),
+            "retrieved_docs": formatted_retrieved_docs,
+            "suggestions": suggestions[:3],
+            "is_out_of_scope": is_out_of_scope,
         }
 
     def _fallback_groq(self, system_prompt: str, user_prompt: str) -> str:

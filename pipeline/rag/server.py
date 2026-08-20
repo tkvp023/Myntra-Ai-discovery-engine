@@ -82,17 +82,26 @@ class AskRequest(BaseModel):
     query: str = Field(..., min_length=2, max_length=500, description="Natural-language question")
     filters: Optional[AskFilters] = None
 
-class Citation(BaseModel):
+class RetrievedDoc(BaseModel):
+    index: int
+    doc_id: str
     source: str
-    confidence: float
-    color: str
-    count: int
+    raw_source: str
+    source_id: str
+    date: str
+    segment: str
+    similarity: float
+    tags: List[str]
+    content: str
 
 class AskResponse(BaseModel):
     answer: str
     citations: List[Citation]
     filters_applied: dict
     docs_retrieved: int
+    retrieved_docs: List[RetrievedDoc] = []
+    suggestions: List[str] = []
+    is_out_of_scope: bool = False
     latency_ms: int
 
 
@@ -126,6 +135,9 @@ async def ask(request: AskRequest):
         citations=[Citation(**c) for c in result["citations"]],
         filters_applied=result["filters_applied"],
         docs_retrieved=result["docs_retrieved"],
+        retrieved_docs=[RetrievedDoc(**d) for d in result.get("retrieved_docs", [])],
+        suggestions=result.get("suggestions", []),
+        is_out_of_scope=result.get("is_out_of_scope", False),
         latency_ms=elapsed_ms,
     )
 
