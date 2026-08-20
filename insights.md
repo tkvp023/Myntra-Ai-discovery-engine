@@ -1,6 +1,8 @@
 # 📊 Comprehensive Data Insights & Intelligence Report
 ### Myntra AI-Powered Discovery Engine
-**Pipeline Execution Date:** August 2026 | **Corpus Version:** 1.0.0 | **Processed Database Records:** 8,182 Verified Documents
+**Pipeline Execution Date:** August 2026 | **Corpus Version:** 1.0.0 | **Processed Database Records:** 8,182 Verified Documents  
+**Dashboard:** Next.js 16.3 Interactive Analytics | **RAG Chatbot:** FastAPI + Gemini Flash + TF-IDF Vector Store  
+**Deployment:** Railway (Nixpacks) | **Repository:** [github.com/tkvp023/Myntra-Ai-discovery-engine](https://github.com/tkvp023/Myntra-Ai-discovery-engine)
 
 ---
 
@@ -18,13 +20,15 @@ This document synthesizes findings across the **end-to-end data pipeline** for t
   > 🗣️ *"The studio pictures look like ₹3,000 premium cotton, but in real life the fabric is semi-transparent and feels rough. I wishlisted three kurtas but I am scared to checkout because you can't feel the material."*
   > — **Source:** YouTube Try-on Review `[DB doc_id: d1f04554]`
 
-* **3. Gen Z vs. Millennial Divergence:** 
-  - **Gen Z** is blocked primarily by **Social Validation Gaps (53.4%)** and **Occasion/Style Mismatch (13.9%)**.
+* **3. Inferred Generational Divergence (⚠️ Behavioral Proxy, Not Verified Age Data):** 
+  - Generational segments are **inferred from review text** using LLM language-cue analysis (Gemini) and keyword pattern matching — **no review platform provides actual user age data**.
+  - **Inferred Gen Z** signals: `aesthetic`, `y2k`, `vibe`, `drip`, `reels`, `streetwear`, `college`. Blocked primarily by **Social Validation Gaps (53.4%)** and **Occasion/Style Mismatch (13.9%)**.
     > 🗣️ *"Aditi my Sunday is incomplete without your haul videos... please make a footwear and styling try-on haul in long format so I know how to pair with college outfits."*
     > — **Source:** YouTube / Reddit `[DB doc_id: 1e3555b7]`
-  - **Millennials** are blocked by **Quality Doubt (49.8%)**, **Waiting for Sales/Discounts (14.7%)**, and **Return Policy Friction (9.0%)**.
+  - **Inferred Millennials** signals: `office`, `formal`, `premium`, `corporate`, `classic`. Blocked by **Quality Doubt (49.8%)**, **Waiting for Sales/Discounts (14.7%)**, and **Return Policy Friction (9.0%)**.
     > 🗣️ *"Myntra has announced sale, but products were actually cheaper before the sale, while prices increased during the sale. I added tops to cart and wishlist but holding off."*
     > — **Source:** Play Store `[DB doc_id: 5e772206]`
+  - ⚠️ **Methodology Note:** Reviews without clear generational signals default to "Millennial". These segments should be treated as **behavioral proxies reflecting language style and topic patterns**, not confirmed demographics.
 
 * **4. External Validation Dependency:** **31.9%** of users consult friends via WhatsApp/Instagram DMs and **26.7%** seek Instagram creator styling videos before committing to buy.
   > 🗣️ *"Bus dono me fark kya hai ye check krne ke liye try-on haul dekhte hai. Studio photos don't show how the fabric drapes when walking."*
@@ -107,10 +111,13 @@ This document synthesizes findings across the **end-to-end data pipeline** for t
   [Q6] External Information ───► 31.9% Friends | 26.7% Instagram | 22.5% Google Search
   [Q7] Decision Factors ───────► 30.3% Delivery/Returns | 15.8% Price | 15.4% Brand Trust
   [Q8] Funnel Qualification ───► 94.4% Active Purchase Journey vs 4.7% Passive Bookmarking
-  [Q9] Segment Divergence ─────► Gen Z: 53.4% Validation | Millennials: 49.8% Quality Doubt
+  [Q9] Segment Divergence ─────► ⚠️ INFERRED from text, not verified ages
+  [Q9]   (Inferred)  ──────────► Gen Z: 53.4% Validation | Millennials: 49.8% Quality Doubt
   [Q10] Top Unmet Needs ───────► 48.9% Video Fabric Reviews | 14.4% Price-Drop Thresholds
 ========================================================================================
 ```
+
+> **⚠️ Important Note on Q9 Segments:** Generational segments (Gen-Z, Millennial, Gen-X) throughout this report are **inferred from review language cues** — not from verified user profile data. No review platform provides actual age information. The inference uses: (1) LLM analysis of slang, vocabulary, lifestyle references, and cultural context via Gemini, and (2) keyword pattern fallback (e.g., "y2k", "aesthetic", "reels" → Gen-Z; "office", "formal", "premium" → Millennial). Reviews without clear signals default to "Millennial". **Treat these as behavioral proxies, not demographic facts.**
 
 ---
 
@@ -267,16 +274,26 @@ Uncertainty Breakdown:
 
 ---
 
-### 📌 Q9: How do these behaviors differ across user segments? *(Segment Divergence)*
-* **Comparative Sample**: Gen Z ($n=266$) vs. Millennials ($n=9,198$ signal tags)
+### 📌 Q9: How do these behaviors differ across user segments? *(Inferred Segment Divergence)*
+* **Comparative Sample**: Inferred Gen Z ($n=266$) vs. Inferred Millennials ($n=9,198$ signal tags)
 
-| Rank | Gen Z Hesitation Drivers | Share (%) | Database Gen Z Quote | Millennial Hesitation Drivers | Share (%) | Database Millennial Quote |
+> **⚠️ Inference Disclaimer:** These segments are **inferred from review text**, not from verified user profiles. No review platform provides actual user age data.
+>
+> **How segments are inferred:**
+> - **LLM Analysis (Primary):** Each review is analyzed by Gemini for language cues — slang ("drip", "slay", "vibe"), vocabulary, lifestyle references ("college", "reels"), and cultural context.
+> - **Keyword Patterns (Fallback):** Regex patterns detect generational signals: Gen-Z → "aesthetic", "y2k", "oversized", "streetwear", "cargo", "haul" | Millennial → "office", "formal", "workwear", "blazer", "corporate", "premium", "classic"
+> - **Default:** Reviews without clear generational signals default to "Millennial".
+> - **Treat these as behavioral proxies reflecting language style and topic patterns, not confirmed demographics.**
+
+| Rank | Inferred Gen Z Hesitation Drivers | Share (%) | Database Quote | Inferred Millennial Hesitation Drivers | Share (%) | Database Quote |
 |:---:|---|:---:|---|---|:---:|---|
 | 1 | **Social Validation** | **53.4%** | 🗣️ *"I love your haul videos... looking so beautiful in kurti, need styling advice!"* `[DB: d1f04554]` | **Quality Doubt** | **49.8%** | 🗣️ *"Service with quality is asset, but fabric thickness is often lower than photo."* `[DB: 846a1547]` |
 | 2 | **Quality Doubt** | **13.5%** | 🗣️ *"Fabric looks thin in try-on video."* | **Waiting for Sale** | **14.7%** | 🗣️ *"Prices increased during sale so waiting for real discount."* `[DB: 5e772206]` |
 | 3 | **Occasion Mismatch** | **9.0%** | 🗣️ *"Can I wear this crop jacket to college?"* | **Return Policy Concerns** | **9.0%** | 🗣️ *"They didn't give refund, giving silly reasons."* `[DB: aea1f86b]` |
 | 4 | **Style Uncertainty** | **4.9%** | 🗣️ *"Not sure how to style with chunky boots."* | **Price Sensitivity** | **6.6%** | 🗣️ *"Convenience fee added at checkout made me drop cart."* `[DB: f513e3ba]` |
 | 5 | **Price Sensitivity** | **4.5%** | 🗣️ *"Looking for pocket-friendly trendy pieces."* | **Social Validation** | **5.7%** | 🗣️ *"Checked reviews and ratings before ordering expensive item."* `[DB: 0852dc08]` |
+
+> ℹ️ **Dashboard Note:** Segment filters have been removed from all other question pages in the dashboard. Q9 is the only page that displays segment-based visualizations, and it includes a prominent methodology disclaimer explaining how segments are inferred.
 
 ---
 
@@ -337,8 +354,8 @@ Based on the quantitative and qualitative findings, the following 5 strategic in
 * **Database Quote**: *"Prices have increased during the sale so waiting for real discount."* `[DB doc_id: 5e772206]`
 * **Solution**: Proactive price drop predictor and automated *"Add ₹150 to unlock ₹400 coupon on your wishlisted item"* cart boosters.
 
-### 🚀 3. Gen Z "Share-with-Friends" Co-Shopping Modal
-* **Problem Addressed**: Social Validation Gap (**53.4%** of Gen Z hesitation).
+### 🚀 3. "Share-with-Friends" Co-Shopping Modal
+* **Problem Addressed**: Social Validation Gap (**53.4%** of inferred Gen Z hesitation — see Q9 inference methodology).
 * **Database Quote**: *"Aditi my Sunday is incomplete without your try-on haul... need styling advice."* `[DB doc_id: d1f04554]`
 * **Solution**: 1-tap WhatsApp poll generator and quick outfit pairing assistant right inside the Wishlist view.
 
@@ -354,7 +371,53 @@ Based on the quantitative and qualitative findings, the following 5 strategic in
 
 ---
 
-## 7. Summary Data Reference & Source Manifest
+## 7. RAG Chatbot — Conversational Intelligence Layer
+
+The discovery engine includes a **Retrieval-Augmented Generation (RAG) chatbot** accessible via the dashboard's "Ask" page, enabling natural-language queries over the full 8,182-document corpus.
+
+### Architecture
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                          RAG Query Pipeline                         │
+├──────────────────────────────────────────────────────────────────────┤
+│  User Query                                                         │
+│    │                                                                │
+│    ├── Greeting Detection ──► Natural conversational response        │
+│    │                                                                │
+│    ├── Scope Guardrails ──► [OUT_OF_SCOPE] if non-fashion query      │
+│    │                                                                │
+│    ├── TF-IDF Vector Retrieval (top-12 documents)                   │
+│    │     └── N-gram (1-2) vectorization, cosine similarity           │
+│    │                                                                │
+│    ├── Quantitative Context Injection (SQLite aggregates)            │
+│    │     └── Fallback to pre-exported summary.json on cloud          │
+│    │                                                                │
+│    ├── LLM Answer Generation (Gemini Flash → Groq fallback)         │
+│    │     └── Strict honesty: admits when corpus has no answer        │
+│    │                                                                │
+│    └── Follow-up Suggestion Generation                              │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Features
+- **Hybrid SQL + Vector retrieval** — combines semantic TF-IDF search with real-time quantitative aggregates from SQLite
+- **Strict domain guardrails** — rejects out-of-scope queries (coding, math, weather, etc.) with guidance
+- **Honest no-answer handling** — when the corpus lacks evidence, states so clearly instead of hallucinating
+- **Natural greeting detection** — responds conversationally to "hi", "hello", etc. without forcing semantic search
+- **Interactive source inspector** — users can click citation chips to view full raw reviews, source badges, segments, and similarity scores
+- **Follow-up suggestion chips** — dynamically generated relevant follow-up questions
+- **Multi-model resilience** — cascading Gemini model fallback (3.6 → 3.5 → 3.7 → latest) with Groq as final fallback
+
+### API Endpoints
+| Endpoint | Method | Description |
+|---|---|---|
+| `/` | GET | Service info and available endpoints |
+| `/health` | GET | Health check with vector count |
+| `/api/ask` | POST | RAG query with optional segment/source filters |
+
+---
+
+## 8. Summary Data Reference & Source Manifest
 
 - **SQLite Database Source**: [`data/db.sqlite`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/db.sqlite) (Tables: `documents`, `classifications`, `hesitation_tags`, `factor_mentions`, `unmet_needs`)
 - **Corpus Metadata**: [`data/exports/corpus_meta.json`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/exports/corpus_meta.json)
@@ -362,6 +425,9 @@ Based on the quantitative and qualitative findings, the following 5 strategic in
 - **Systemic Complaint Gaps**: [`data/exports/systemic_gaps.json`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/exports/systemic_gaps.json)
 - **Cleaning & Filtering Audit**: [`data/cleaning_stats.json`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/cleaning_stats.json)
 - **Individual Question Exports**: `data/exports/q1.json` through `data/exports/q10.json`
+- **Vector Store Model**: [`data/vector_model.joblib`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/vector_model.joblib) (TF-IDF + metadata)
+- **Vector Store Metadata**: [`data/vector_meta.json`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/vector_meta.json) (8,182 indexed documents)
+- **LLM-Curated Quotes**: [`data/exports/llm_curated_quotes.json`](file:///c:/Users/THARUN/Videos/AI%20discovery%20engine(GP)/data/exports/llm_curated_quotes.json)
 
 ---
 *Report generated autonomously by the Myntra AI Discovery Engine Pipeline.*
