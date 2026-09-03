@@ -256,15 +256,15 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
 
       {/* Q9: Segment × factor GroupedBar */}
       {questionId === 9 && data.segment_grouped_data && (
-        <ChartCard title="Hesitation Factor by Inferred Segment" delay={150}>
+        <ChartCard title="Hesitation Factor by Implied Demographic Segment" delay={150}>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
-            % of inferred segment mentioning each hesitation factor
+            % of implied demographic cohort mentioning each hesitation factor
           </p>
           <GroupedBar
             data={data.segment_grouped_data}
             categoryKey="factor"
             seriesKeys={['gen_z', 'millennial', 'gen_x']}
-            seriesLabels={{ gen_z: 'Gen-Z', millennial: 'Millennial', gen_x: 'Gen-X' }}
+            seriesLabels={{ gen_z: 'Implied Gen-Z', millennial: 'Implied Millennial', gen_x: 'Implied Gen-X' }}
             colors={['#a855f7', '#3b82f6', '#2dd4bf']}
             unit="%"
             height={300}
@@ -301,11 +301,11 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
 
       {/* Q9: Inferred segment comparison table */}
       {questionId === 9 && data.segment_splits && (
-        <ChartCard title="Inferred Segment Comparison" delay={300}>
+        <ChartCard title="Implied Segment Comparison" delay={300}>
           <div className="grid-3" style={{ gap: 16 }}>
             {(['gen_z', 'millennial', 'gen_x'] as const).map((seg) => {
               const splits = data.segment_splits[seg] || [];
-              const label = seg === 'gen_z' ? 'Gen-Z' : seg === 'millennial' ? 'Millennial' : 'Gen-X';
+              const label = seg === 'gen_z' ? 'Implied Gen-Z' : seg === 'millennial' ? 'Implied Millennial' : 'Implied Gen-X';
               const color = seg === 'gen_z' ? '#a855f7' : seg === 'millennial' ? '#3b82f6' : '#2dd4bf';
               return (
                 <div key={seg}>
@@ -336,25 +336,26 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
           color: 'var(--text-secondary)',
         }}>
           <div style={{ fontWeight: 700, color: '#fbbf24', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>⚠️</span> Inferred Segments — Not Actual User Ages
+            <span>⚠️</span> Implied / Inferred Cohorts — Behavioral Proxies (No Age Data Provided)
           </div>
           <p style={{ margin: '0 0 8px 0' }}>
-            These generational segments (<strong>Gen-Z</strong>, <strong>Millennial</strong>, <strong>Gen-X</strong>) are
-            <em> inferred from review text</em>, not from verified user profile data. No review platform provides actual age information.
+            All generational cohorts (<strong>Implied Gen-Z</strong>, <strong>Implied Millennial</strong>, <strong>Implied Gen-X</strong>) are
+            <em> inferred from textual signals and linguistic context</em>. E-commerce review and video platforms do not collect or expose user ages or birth years.
           </p>
           <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: 'var(--text-primary)' }}>
-            How we infer segments:
+            Categorization Methodology & Justification:
           </p>
           <ul style={{ margin: 0, paddingLeft: 20 }}>
-            <li><strong>LLM Analysis:</strong> Each review is analyzed by Gemini for language cues — slang, vocabulary, lifestyle references, and cultural context.</li>
-            <li><strong>Keyword Patterns:</strong> As a fallback, regex patterns detect generational signals:
-              <span style={{ color: '#a855f7', fontWeight: 600 }}> Gen-Z</span> → &quot;aesthetic&quot;, &quot;y2k&quot;, &quot;vibe&quot;, &quot;drip&quot;, &quot;reels&quot;, &quot;streetwear&quot; |
-              <span style={{ color: '#3b82f6', fontWeight: 600 }}> Millennial</span> → &quot;office&quot;, &quot;formal&quot;, &quot;premium&quot;, &quot;corporate&quot;, &quot;classic&quot;
+            <li><strong>LLM Semantic Cue Analysis:</strong> Reviews are classified using Gemini for generational language cues, slang, lifestyle themes, and contextual markers.</li>
+            <li><strong>Linguistic Signal Markers:</strong>
+              <span style={{ color: '#a855f7', fontWeight: 600 }}> Implied Gen-Z</span> → &quot;aesthetic&quot;, &quot;y2k&quot;, &quot;vibe&quot;, &quot;drip&quot;, &quot;reels&quot;, &quot;streetwear&quot;, &quot;college&quot; |
+              <span style={{ color: '#3b82f6', fontWeight: 600 }}> Implied Millennial</span> → &quot;office&quot;, &quot;formal&quot;, &quot;workwear&quot;, &quot;premium&quot;, &quot;corporate&quot;, &quot;classic&quot; |
+              <span style={{ color: '#2dd4bf', fontWeight: 600 }}> Implied Gen-X</span> → &quot;family&quot;, &quot;kids&quot;, &quot;traditional&quot;, &quot;comfort&quot;, &quot;practical&quot;
             </li>
-            <li><strong>Default:</strong> Reviews without clear signals default to &quot;Millennial&quot;.</li>
+            <li><strong>Baseline Default:</strong> Unlabeled general reviews default to &quot;Implied Millennial&quot; as the baseline consumer majority.</li>
           </ul>
           <p style={{ margin: '8px 0 0 0', fontStyle: 'italic', fontSize: 12, color: 'var(--text-muted)' }}>
-            Treat these as behavioral proxies, not demographic facts. They reflect language style and topic patterns, not confirmed ages.
+            These segments represent behavioral and stylistic patterns across customer discussions, not verified demographic data.
           </p>
         </div>
       )}

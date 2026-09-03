@@ -121,7 +121,7 @@ function generateFallbackAnswer(query: string, segment?: string, source?: string
     analysis = `### Executive Findings: Sizing & Fit Uncertainty
 1. **Fit Doubt Drives Abandonment:** Sizing uncertainty accounts for **34.0%** of customer hesitation moments, particularly in ethnic wear and fitted western dresses.
 2. **Missing Real-Life Draping:** Shoppers frequently note that standard numerical charts (S/M/L) do not translate accurately across different brands on Myntra.
-3. **Gen-Z Dependency on Try-Ons:** Inferred Gen-Z users rely heavily on YouTube try-on hauls to verify chest, waist, and length proportions before checking out.`;
+3. **Implied Gen-Z Dependency on Try-Ons:** Implied Gen-Z users (inferred from slang, college, and try-on vocabulary) rely heavily on YouTube try-on hauls to verify proportions before checking out.`;
   } else if (qLower.includes('price') || qLower.includes('discount') || qLower.includes('sale')) {
     analysis = `### Executive Findings: Price Sensitivity & Sale Strategy
 1. **The Wishlist as a Price Tracker:** **14.4% to 22.0%** of wishlisted items are parked while users actively wait for flash discounts or Big Billion Day promotions.

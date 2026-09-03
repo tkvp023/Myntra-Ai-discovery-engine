@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 
 const SUGGESTED = [
   'Why do users hesitate to buy after wishlisting?',
-  'What is the top sizing issue Gen-Z faces in ethnic wear?',
+  'What is the top sizing issue Implied Gen-Z faces in ethnic wear?',
   'Which platform do users compare Myntra with most?',
   'What are the top unmet needs in fashion discovery?',
-  'How does price sensitivity differ by demographic segment?',
+  'How does price sensitivity differ by implied demographic segment?',
   'What systemic issues appear in customer complaint forums?',
 ];
 
@@ -698,7 +698,7 @@ export default function AskContent() {
                   sendMessage(input);
                 }
               }}
-              placeholder="Ask anything about wishlist drops, fit issues, Gen-Z vs Millennial patterns..."
+              placeholder="Ask anything about wishlist drops, fit issues, Implied Gen-Z vs Millennial patterns..."
               style={{
                 flex: 1,
                 background: 'var(--glass-bg)',
@@ -756,10 +756,10 @@ export default function AskContent() {
                 fontSize: 12,
               }}
             >
-              <option value="all">All Demographics</option>
-              <option value="gen_z">Gen-Z Only</option>
-              <option value="millennial">Millennial Only</option>
-              <option value="gen_x">Gen-X Only</option>
+              <option value="all">All Cohorts (Implied)</option>
+              <option value="gen_z">Implied Gen-Z (Slang, Y2K signals)</option>
+              <option value="millennial">Implied Millennial (Office, Formal signals)</option>
+              <option value="gen_x">Implied Gen-X (Family, Practical signals)</option>
             </select>
             <select
               className="chat-filter-select"

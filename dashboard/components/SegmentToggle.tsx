@@ -2,10 +2,10 @@
 
 interface Segment { label: string; value: string; }
 const SEGMENTS: Segment[] = [
-  { label: 'All', value: 'all' },
-  { label: 'Gen-Z', value: 'gen_z' },
-  { label: 'Millennial', value: 'millennial' },
-  { label: 'Gen-X', value: 'gen_x' },
+  { label: 'All Segments', value: 'all' },
+  { label: 'Implied Gen-Z', value: 'gen_z' },
+  { label: 'Implied Millennial', value: 'millennial' },
+  { label: 'Implied Gen-X', value: 'gen_x' },
 ];
 
 interface SegmentToggleProps {
