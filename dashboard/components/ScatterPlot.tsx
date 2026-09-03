@@ -54,7 +54,7 @@ export default function ScatterPlot({
     <div ref={ref} style={{ width: '100%', height }}>
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 8, right: 8, left: -16, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.6} />
           <XAxis
             dataKey="x"
             type="number"
@@ -76,7 +76,7 @@ export default function ScatterPlot({
           />
           {hasZ && <ZAxis dataKey="z" range={[40, 400]} name={zLabel} />}
           <Tooltip
-            cursor={{ strokeDasharray: '3 3', stroke: 'rgba(255,255,255,0.1)' }}
+            cursor={{ strokeDasharray: '3 3', stroke: 'var(--border)' }}
             content={({ payload }) => {
               if (!payload || payload.length === 0) return null;
               const d = payload[0]?.payload as ScatterPoint;

@@ -59,7 +59,7 @@ export default function StackedBar({
           margin={{ top: 8, right: 8, left: -16, bottom: 0 }}
           barCategoryGap="30%"
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.6} vertical={false} />
           <XAxis
             dataKey={categoryKey}
             tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
@@ -79,7 +79,7 @@ export default function StackedBar({
               `${value ?? 0}${unit}`,
               seriesLabels?.[String(name)] ?? String(name ?? ''),
             ]) as any}
-            cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+            cursor={{ fill: 'var(--bg-card-hover)', opacity: 0.5 }}
           />
           <Legend
             wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)', paddingTop: 12 }}

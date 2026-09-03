@@ -56,14 +56,14 @@ export default function SankeyDiagram({ nodes, links, height = 360 }: SankeyDiag
         labelPadding={12}
         labelTextColor={{ from: 'color', modifiers: [['brighter', 2]] }}
         theme={{
-          text: { fill: 'rgba(255,255,255,0.65)', fontSize: 12 },
+          text: { fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 500 },
           tooltip: {
             container: {
-              background: '#13131f',
-              border: '1px solid rgba(255,255,255,0.08)',
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--border)',
               borderRadius: 8,
               fontSize: 12,
-              color: 'rgba(255,255,255,0.9)',
+              color: 'var(--text-primary)',
             },
           },
         }}

@@ -22,18 +22,18 @@ export default function AreaTimeline({ data, title }: { data: TemporalPoint[]; t
               <stop offset="100%" stopColor="#ff3f6c" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.6} />
           <XAxis
             dataKey="month"
-            tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
             tickLine={false}
-            axisLine={false}
+            axisLine={{ stroke: 'var(--border)', opacity: 0.5 }}
             tickFormatter={(v) => v.slice(2)}
           />
           <YAxis
-            tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }}
+            tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
             tickLine={false}
-            axisLine={false}
+            axisLine={{ stroke: 'var(--border)', opacity: 0.5 }}
           />
           <Tooltip
             contentStyle={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 10, fontSize: 12 }}

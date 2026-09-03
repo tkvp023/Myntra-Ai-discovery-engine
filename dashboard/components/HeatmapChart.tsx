@@ -16,7 +16,7 @@ export default function HeatmapChart({ matrix }: { matrix: Matrix }) {
   }
 
   function getTextColor(val: number): string {
-    return val / maxVal > 0.5 ? '#fff' : 'rgba(255,255,255,0.5)';
+    return val / maxVal > 0.35 ? '#ffffff' : 'var(--text-primary)';
   }
 
   return (

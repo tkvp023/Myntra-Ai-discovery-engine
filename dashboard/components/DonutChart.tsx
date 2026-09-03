@@ -23,7 +23,8 @@ function CustomLabel({ cx, cy, midAngle, innerRadius, outerRadius, pct }: any) {
 
 export default function DonutChart({ data, title, centerLabel }: DonutChartProps) {
   const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true });
-  const total = data.reduce((s, d) => s + d.count, 0);
+  const total = data?.reduce((s, d) => s + (d.count || 0), 0) || 0;
+  const safeTotal = total || 1;
 
   return (
     <div ref={ref}>
@@ -61,7 +62,7 @@ export default function DonutChart({ data, title, centerLabel }: DonutChartProps
             }}
             itemStyle={{ color: 'var(--text-primary)' }}
             formatter={(val: any, name: any) => [
-              `${Number(val).toLocaleString()} (${((Number(val) / total) * 100).toFixed(1)}%)`,
+              `${Number(val).toLocaleString()} (${((Number(val) / safeTotal) * 100).toFixed(1)}%)`,
               String(name ?? ''),
             ]}
           />

@@ -5,15 +5,15 @@ export default function RadarChartComponent({ data }: { data: any[] }) {
   return (
     <ResponsiveContainer width="100%" height={320}>
       <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-        <PolarGrid stroke="rgba(255,255,255,0.08)" />
+        <PolarGrid stroke="var(--border)" opacity={0.7} />
         <PolarAngleAxis
           dataKey="factor"
-          tick={{ fill: 'rgba(255,255,255,0.65)', fontSize: 12 }}
+          tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 500 }}
         />
         <PolarRadiusAxis
           angle={90}
           domain={[0, 40]}
-          tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }}
+          tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
           axisLine={false}
         />
         <Radar

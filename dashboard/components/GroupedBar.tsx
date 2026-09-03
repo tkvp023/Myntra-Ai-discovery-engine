@@ -62,7 +62,7 @@ export default function GroupedBar({
           barCategoryGap="25%"
           barGap={3}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.6} vertical={false} />
           <XAxis
             dataKey={categoryKey}
             tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
@@ -82,7 +82,7 @@ export default function GroupedBar({
               `${value ?? 0}${unit}`,
               seriesLabels?.[String(name)] ?? String(name ?? ''),
             ]) as any}
-            cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+            cursor={{ fill: 'var(--bg-card-hover)', opacity: 0.5 }}
           />
           <Legend
             wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)', paddingTop: 12 }}
