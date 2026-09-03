@@ -58,13 +58,11 @@ export const MOCK_SUMMARY = {
     { id: "unmet_needs", label: "Unmet Needs Identified", value: 12, unit: "count", sparkline: [5, 7, 9, 11, 12], trend: "up", trend_pct: 9.1 },
   ],
   source_distribution: [
-    { source: "Play Store", count: 45521, pct: 52.1, color: "#ff3f6c" },
-    { source: "Reddit", count: 18234, pct: 20.9, color: "#ff7849" },
-    { source: "YouTube", count: 12876, pct: 14.7, color: "#a855f7" },
-    { source: "App Store", count: 5432, pct: 6.2, color: "#2dd4bf" },
-    { source: "Trustpilot", count: 3210, pct: 3.7, color: "#3b82f6" },
-    { source: "PissedConsumer", count: 1567, pct: 1.8, color: "#fbbf24" },
-    { source: "Reviews.io", count: 592, pct: 0.7, color: "#6b7280" },
+    { source: "YouTube", count: 42876, pct: 49.0, color: "#a855f7" },
+    { source: "Play Store", count: 25521, pct: 29.2, color: "#ff3f6c" },
+    { source: "Reddit", count: 12234, pct: 14.0, color: "#ff7849" },
+    { source: "PissedConsumer", count: 4567, pct: 5.2, color: "#fbbf24" },
+    { source: "App Store", count: 2234, pct: 2.6, color: "#2dd4bf" },
   ],
   top_opportunities: [
     { rank: 1, label: "Sizing Uncertainty", question_id: 3, pct: 34.0, count: 16127, avg_confidence: 0.78, impact_score: 9.2 },
@@ -152,9 +150,9 @@ export const MOCK_SYSTEMIC_GAPS = {
     { systemic_issue: "App/Website Bugs", related_hesitation: "style_uncertainty", correlation_hint: 0.43, systemic_frequency: 469, hesitation_frequency: 2560 },
   ],
   key_quotes: [
-    { text: "Ordered a dress for a wedding, arrived 2 weeks late and was the wrong size. Refund took another 3 weeks.", source: "Trustpilot", date: "2026-02-10", issue: "delivery_problems" },
+    { text: "Ordered a dress for an event, arrived 2 weeks late and was the wrong size. Return courier refused pickup.", source: "PissedConsumer", date: "2026-02-10", issue: "delivery_problems" },
     { text: "Return process is a nightmare. They rejected my return saying item was 'used' when I just tried it on. Lost ₹1,800.", source: "PissedConsumer", date: "2026-04-03", issue: "refund_return" },
-    { text: "Customer care just sends automated replies. Nobody actually reads what I wrote. Gave up after 5 emails.", source: "Trustpilot", date: "2026-05-18", issue: "customer_service" },
+    { text: "Customer care just sends automated replies in app. Nobody actually reads what I wrote. Gave up after 5 attempts.", source: "Play Store", date: "2026-05-18", issue: "customer_service" },
   ],
 };
 

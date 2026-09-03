@@ -46,7 +46,7 @@ Plus a **Systemic Gaps** analysis from secondary sources (Trustpilot, PissedCons
 ┌─────────────────────────────────────────────────────────────┐
 │                     Data Pipeline (Python)                   │
 │  Scrapers → Cleaning → LLM Classification → Quantification │
-│              (7 sources)    (Gemini/Groq)      (Export JSON) │
+│              (5 sources)    (Gemini/Groq)      (Export JSON) │
 └──────────────────────────┬──────────────────────────────────┘
                            │ JSON files
                            ▼
@@ -57,17 +57,18 @@ Plus a **Systemic Gaps** analysis from secondary sources (Trustpilot, PissedCons
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Data Sources (7 platforms)
+### Data Sources (5 platforms)
 
-| Source | Type | Volume |
-|---|---|---|
-| Google Play Store | Primary | ~50K reviews |
-| Reddit (r/IndianFashionAddicts, etc.) | Primary | ~18K posts |
-| YouTube (haul/review comments) | Primary | ~13K comments |
-| Apple App Store | Primary | ~5K reviews |
-| Trustpilot | Secondary | ~3K reviews |
-| PissedConsumer | Secondary | ~1.5K complaints |
-| Reviews.io | Secondary | ~600 reviews |
+| Source | Type | Volume (Raw) | Classified in DB |
+|---|---|---|---|
+| YouTube (haul/try-on/review comments) | Primary | 17,470 comments | 5,319 docs |
+| Google Play Store (`com.myntra.android`) | Primary | 2,600 reviews | 1,180 docs |
+| Reddit (`r/IndianFashionAddicts`, `r/MyntraSucks`, etc.) | Primary | 1,234 posts/threads | 1,039 docs |
+| PissedConsumer (dispute & complaint forum) | Secondary | 511 complaints | 507 docs |
+| Apple App Store (iTunes RSS) | Primary | 250 reviews | 137 docs |
+| **Total** | | **22,065 raw** | **8,182 classified** |
+
+> *Note: Scrapers for Trustpilot and Reviews.io were developed and tested, but yielded 0 records due to Cloudflare anti-bot blocks and negligible presence for Myntra India. The corpus is solidly grounded in the 5 high-yield platforms above.*
 
 ### Tech Stack
 
@@ -130,7 +131,7 @@ ai-discovery-engine/
 │   └── ...
 │
 ├── pipeline/                          # Python data pipeline
-│   ├── scrapers/                      # 7 platform scrapers
+│   ├── scrapers/                      # Platform scrapers (5 active data sources)
 │   ├── cleaning/                      # Dedup, normalization
 │   ├── classification/                # LLM-powered tagging
 │   ├── quantification/                # Aggregation & JSON export

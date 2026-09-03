@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Systemic Gaps',
-  description: 'Secondary-source analysis: delivery issues, return friction, authenticity concerns and trust deficits from Trustpilot, PissedConsumer, Reviews.io.',
+  description: 'Secondary-source analysis: delivery issues, return friction, authenticity concerns and trust deficits from customer complaint and dispute forums (PissedConsumer).',
 };
 
 export default async function GapsPage() {
@@ -21,7 +21,7 @@ export default async function GapsPage() {
         </h1>
         <p>
           Secondary-source analysis from {data.total_secondary_docs.toLocaleString()} reviews across
-          Trustpilot, PissedConsumer, and Reviews.io — systemic issues that amplify hesitation
+          customer dispute forums (PissedConsumer) — systemic issues that amplify hesitation
         </p>
       </div>
 

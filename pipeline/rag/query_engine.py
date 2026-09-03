@@ -36,8 +36,6 @@ SOURCE_DISPLAY = {
     "reddit": ("Reddit", "#ff7849"),
     "youtube": ("YouTube", "#a855f7"),
     "pissedconsumer": ("PissedConsumer", "#fbbf24"),
-    "trustpilot": ("Trustpilot", "#3b82f6"),
-    "reviewsio": ("Reviews.io", "#10b981"),
 }
 
 
@@ -171,7 +169,7 @@ class RAGQueryEngine:
             filter_context += f"\nThe user has filtered for **{source}** reviews only."
 
         system_prompt = f"""You are an executive consumer intelligence analyst for Myntra's AI Discovery Engine (India's premier fashion e-commerce platform).
-You analyze grounded customer feedback across 8,182 reviews (YouTube, Play Store, Reddit, App Store, PissedConsumer, Trustpilot) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
+You analyze grounded customer feedback across 8,182 reviews across 5 data sources (YouTube, Google Play Store, Reddit, Apple App Store, PissedConsumer) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
 
 STRICT SCOPE & HONESTY GUARDRAILS:
 1. OUT-OF-SCOPE: You MUST answer ONLY questions related to fashion e-commerce, shopping behavior, Myntra features/policies, product uncertainties (fit, fabric, style), returns/refunds, pricing/sales, and platform comparisons.

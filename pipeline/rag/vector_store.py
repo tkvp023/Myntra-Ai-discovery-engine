@@ -5,7 +5,7 @@ with full metadata filtering.
 Features:
 - N-gram (1-2) TF-IDF vectorization with sublinear scaling
 - Dense semantic index (100% offline, zero API quota, instant indexing)
-- Exact metadata filtering: segment (gen_z, millennial, gen_x), source (7 platforms), questions, tags
+- Exact metadata filtering: segment (gen_z, millennial, gen_x), source (5 platforms), questions, tags
 - Fast cosine similarity retrieval (< 2ms)
 """
 

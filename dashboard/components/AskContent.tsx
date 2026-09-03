@@ -56,8 +56,6 @@ function SourceInspectorModal({
     'YouTube': '#a855f7',
     'App Store': '#2dd4bf',
     'PissedConsumer': '#fbbf24',
-    'Trustpilot': '#3b82f6',
-    'Reviews.io': '#10b981',
   };
   const color = sourceColors[doc.source] || '#6b7280';
 
@@ -764,14 +762,12 @@ export default function AskContent() {
                 fontSize: 12,
               }}
             >
-              <option value="all">All Sources (7 Platforms)</option>
+              <option value="all">All Sources (5 Platforms)</option>
+              <option value="YouTube">YouTube</option>
               <option value="Play Store">Play Store</option>
               <option value="Reddit">Reddit</option>
-              <option value="YouTube">YouTube</option>
-              <option value="App Store">App Store</option>
               <option value="PissedConsumer">PissedConsumer</option>
-              <option value="Trustpilot">Trustpilot</option>
-              <option value="Reviews.io">Reviews.io</option>
+              <option value="App Store">App Store</option>
             </select>
             <span
               style={{

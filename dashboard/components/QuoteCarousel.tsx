@@ -7,8 +7,8 @@ interface Quote {
 }
 
 const SOURCE_COLORS: Record<string, string> = {
-  'Play Store': '#ff3f6c', 'Reddit': '#ff7849', 'YouTube': '#a855f7',
-  'App Store': '#2dd4bf', 'Trustpilot': '#3b82f6', 'PissedConsumer': '#fbbf24', 'Reviews.io': '#6b7280',
+  'YouTube': '#a855f7', 'Play Store': '#ff3f6c', 'Reddit': '#ff7849',
+  'PissedConsumer': '#fbbf24', 'App Store': '#2dd4bf',
 };
 
 

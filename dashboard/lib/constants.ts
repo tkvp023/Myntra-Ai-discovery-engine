@@ -15,13 +15,11 @@ export const QUESTION_META: Record<number, { text: string; short: string; color:
 };
 
 export const SOURCE_COLORS: Record<string, string> = {
+  'YouTube':         '#a855f7',
   'Play Store':      '#ff3f6c',
   'Reddit':          '#ff7849',
-  'YouTube':         '#a855f7',
-  'App Store':       '#2dd4bf',
-  'Trustpilot':      '#3b82f6',
   'PissedConsumer':  '#fbbf24',
-  'Reviews.io':      '#6b7280',
+  'App Store':       '#2dd4bf',
 };
 
 

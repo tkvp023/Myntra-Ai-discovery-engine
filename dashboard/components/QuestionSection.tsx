@@ -61,9 +61,9 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
           {/* Source filter pills */}
           {data.source_attribution && data.source_attribution.length > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              {['all', 'Play Store', 'Reddit', 'YouTube', 'App Store'].map((src) => {
+              {['all', 'YouTube', 'Play Store', 'Reddit', 'PissedConsumer', 'App Store'].map((src) => {
                 const active = src === source;
-                const color = ({ 'Play Store': '#ff3f6c', Reddit: '#ff7849', YouTube: '#a855f7', 'App Store': '#2dd4bf', all: 'var(--teal)' } as Record<string, string>)[src] || '#6b7280';
+                const color = ({ 'Play Store': '#ff3f6c', Reddit: '#ff7849', YouTube: '#a855f7', 'App Store': '#2dd4bf', PissedConsumer: '#fbbf24', all: 'var(--teal)' } as Record<string, string>)[src] || '#6b7280';
                 return (
                   <button
                     key={src}
@@ -182,7 +182,7 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
                 <HorizontalBar
                   data={item.sources.map((s: any, si: number) => ({
                     label: s.source, tag: `${s.source}-${si}`, count: s.count, pct: s.pct,
-                    color: ({ 'Play Store': '#ff3f6c', Reddit: '#ff7849', YouTube: '#a855f7', 'App Store': '#2dd4bf' } as Record<string, string>)[s.source] || '#6b7280',
+                    color: ({ 'Play Store': '#ff3f6c', Reddit: '#ff7849', YouTube: '#a855f7', 'App Store': '#2dd4bf', PissedConsumer: '#fbbf24' } as Record<string, string>)[s.source] || '#6b7280',
                   }))}
                   showCount={true}
                 />

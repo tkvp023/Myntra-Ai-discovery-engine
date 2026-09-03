@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Summary',
-  description: 'Executive summary of 87,000+ Myntra reviews: top hesitation drivers, source breakdown, KPI snapshot.',
+  description: 'Executive summary of 8,182+ Myntra reviews: top hesitation drivers, 5-source breakdown, KPI snapshot.',
 };
 
 export default async function SummaryPage() {
