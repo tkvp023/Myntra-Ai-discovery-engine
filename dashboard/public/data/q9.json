@@ -1,7 +1,7 @@
 {
   "question_id": 9,
-  "question_text": "How do these behaviors differ across user segments?",
-  "question_short": "Segment Differences",
+  "question_text": "How do behaviors and friction differ across discovery platforms?",
+  "question_short": "Platform Differences",
   "total_relevant_docs": 8182,
   "avg_confidence": 0.69,
   "breakdown": [

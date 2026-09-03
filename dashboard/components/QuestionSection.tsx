@@ -9,8 +9,6 @@ import HeatmapChart from './HeatmapChart';
 import WordCloudChart from './WordCloudChart';
 import TreemapChart from './TreemapChart';
 import SankeyDiagram from './SankeyDiagram';
-import GroupedBar from './GroupedBar';
-import SegmentToggle from './SegmentToggle';
 import { useInView } from 'react-intersection-observer';
 
 interface QuestionSectionProps {
@@ -40,23 +38,13 @@ function ChartCard({ title, children, delay = 0 }: { title: string; children: Re
 
 export default function QuestionSection({ data, questionId }: QuestionSectionProps) {
   const [source, setSource] = useState('all');
-  const [segment, setSegment] = useState('all');
 
-  // Compute active breakdown based on source and demographic filters
+  // Compute active breakdown based on source filter
   let activeBreakdown = data.breakdown || [];
   let activeDocsCount = data.total_relevant_docs;
   let activeQuotes = data.key_quotes || [];
 
-  if (segment !== 'all' && data.segment_splits?.[segment]?.length > 0) {
-    const rawSplits = data.segment_splits[segment];
-    const totalSegCount = rawSplits.reduce((acc: number, it: any) => acc + (it.count || 0), 0) || 1;
-    activeBreakdown = rawSplits.map((item: any, i: number) => ({
-      ...item,
-      pct: item.pct || Number(((item.count / totalSegCount) * 100).toFixed(1)),
-      color: item.color || ['#a855f7', '#3b82f6', '#2dd4bf', '#fbbf24', '#ff7849', '#ff3f6c'][i % 6],
-    }));
-    activeDocsCount = totalSegCount;
-  } else if (source !== 'all' && data.source_attribution && data.source_attribution.length > 0) {
+  if (source !== 'all' && data.source_attribution && data.source_attribution.length > 0) {
     const computedItems: any[] = [];
     data.source_attribution.forEach((attr: any, i: number) => {
       const match = attr.sources?.find((s: any) => s.source.toLowerCase() === source.toLowerCase());
@@ -84,15 +72,11 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
     }
   }
 
-  // Filter quotes by active source & segment
+  // Filter quotes by active source
   if (data.key_quotes && data.key_quotes.length > 0) {
     let filtered = [...data.key_quotes];
     if (source !== 'all') {
       const match = filtered.filter((q: any) => q.source?.toLowerCase() === source.toLowerCase());
-      if (match.length > 0) filtered = match;
-    }
-    if (segment !== 'all') {
-      const match = filtered.filter((q: any) => q.segment?.toLowerCase() === segment.toLowerCase());
       if (match.length > 0) filtered = match;
     }
     activeQuotes = filtered;
@@ -121,7 +105,7 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
               {activeDocsCount?.toLocaleString() || data.total_relevant_docs?.toLocaleString()}
             </div>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {source !== 'all' ? `${source} docs` : segment !== 'all' ? `${segment.replace('_', ' ')} docs` : 'relevant docs'}
+              {source !== 'all' ? `${source} reviews` : 'verified reviews'}
             </div>
           </div>
           <div>
@@ -134,25 +118,11 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
           </div>
         </div>
 
-        {/* Demographic segment filter */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Demographic:
-          </span>
-          <SegmentToggle
-            value={segment}
-            onChange={(v) => {
-              setSegment(v);
-              if (v !== 'all') setSource('all'); // prioritize segment
-            }}
-          />
-        </div>
-
         {/* Source filter pills */}
         {data.source_attribution && data.source_attribution.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 2 }}>
-              Platform:
+              Platform Filter:
             </span>
             {['all', 'YouTube', 'Play Store', 'Reddit', 'PissedConsumer', 'App Store'].map((src) => {
               const active = src === source;
@@ -160,14 +130,11 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
               return (
                 <button
                   key={src}
-                  onClick={() => {
-                    setSource(src);
-                    if (src !== 'all') setSegment('all'); // prioritize source
-                  }}
+                  onClick={() => setSource(src)}
                   style={{
-                    padding: '3px 10px',
+                    padding: '4px 12px',
                     borderRadius: 20,
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: 600,
                     cursor: 'pointer',
                     border: `1px solid ${active ? color : 'var(--border)'}`,
@@ -187,7 +154,7 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
       {/* Main breakdown + donut */}
       <div className="grid-2">
         <ChartCard
-          title={`Breakdown ${source !== 'all' ? `— ${source}` : segment !== 'all' ? `— ${segment.replace('_', ' ').toUpperCase()}` : ''}`}
+          title={`Breakdown ${source !== 'all' ? `— ${source}` : ''}`}
           delay={0}
         >
           {activeBreakdown.length > 0
@@ -197,78 +164,48 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
         </ChartCard>
 
         <ChartCard
-          title={`Distribution ${source !== 'all' ? `— ${source}` : segment !== 'all' ? `— ${segment.replace('_', ' ').toUpperCase()}` : ''}`}
-          delay={100}
+          title={`Distribution ${source !== 'all' ? `— ${source}` : ''}`}
+          delay={50}
         >
           {activeBreakdown.length > 0
-            ? <DonutChart data={activeBreakdown} centerLabel="signals" />
-            : <div className="empty-state"><div className="empty-state-icon">🍩</div><div className="empty-state-text">No data</div></div>
+            ? <DonutChart data={activeBreakdown} centerLabel={source !== 'all' ? source : 'Total Reviews'} />
+            : <div className="empty-state"><div className="empty-state-icon">🍩</div><div className="empty-state-text">No distribution data</div></div>
           }
         </ChartCard>
       </div>
 
-      {/* Q5: Platform comparison heatmap */}
-      {questionId === 5 && data.platform_matrix && (
-        <ChartCard title="Platform × Criterion Co-mention Matrix" delay={150}>
-          <HeatmapChart matrix={data.platform_matrix} />
+      {/* Q5: Heatmap */}
+      {questionId === 5 && data.comparison_matrix && (
+        <ChartCard title="Brand vs Platform Comparison Heatmap" delay={100}>
+          <HeatmapChart matrix={data.comparison_matrix} />
         </ChartCard>
       )}
 
-      {/* Q6: External info-seeking Sankey */}
-      {questionId === 6 && data.sankey_data && (
-        <ChartCard title="Information-Seeking Flow — Where Users Go Before Buying" delay={150}>
-          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
-            From Myntra listing → external research platform → purchase outcome
-          </p>
-          <SankeyDiagram
-            nodes={data.sankey_data.nodes}
-            links={data.sankey_data.links}
-            height={380}
-          />
+      {/* Q6: Sankey Flow Diagram */}
+      {questionId === 6 && data.sankey_nodes && data.sankey_links && (
+        <ChartCard title="Information Seeking Flow (External Discovery → Impact)" delay={100}>
+          <SankeyDiagram nodes={data.sankey_nodes} links={data.sankey_links} />
+        </ChartCard>
+      )}
+
+      {/* Q6: Word cloud */}
+      {questionId === 6 && data.word_cloud && (
+        <ChartCard title="Common External Discovery Search Phrases" delay={150}>
+          <WordCloudChart words={data.word_cloud} />
         </ChartCard>
       )}
 
       {/* Q7: Radar chart */}
       {questionId === 7 && data.radar_data && (
-        <ChartCard title="Factor Importance Radar" delay={150}>
+        <ChartCard title="Factor Importance Radar" delay={100}>
           <RadarChartComponent data={data.radar_data} />
         </ChartCard>
-      )}
-
-      {/* Q8: Word cloud */}
-      {questionId === 8 && data.word_cloud_data && (
-        <div className="grid-2">
-          <ChartCard title="Genuine Purchase Intent — Common Phrases" delay={150}>
-            <WordCloudChart words={data.word_cloud_data.genuine_purchase_intent || []} color="#ff3f6c" />
-          </ChartCard>
-          <ChartCard title="Bookmarking / Aspiration — Common Phrases" delay={200}>
-            <WordCloudChart words={data.word_cloud_data.bookmarking || []} color="#a855f7" />
-          </ChartCard>
-        </div>
       )}
 
       {/* Q10: Treemap */}
       {questionId === 10 && data.treemap_data && (
         <ChartCard title="Unmet Needs Treemap" delay={150}>
           <TreemapChart data={data.treemap_data} />
-        </ChartCard>
-      )}
-
-      {/* Q9: Segment × factor GroupedBar */}
-      {questionId === 9 && data.segment_grouped_data && (
-        <ChartCard title="Hesitation Factor by Implied Demographic Segment" delay={150}>
-          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
-            % of implied demographic cohort mentioning each hesitation factor
-          </p>
-          <GroupedBar
-            data={data.segment_grouped_data}
-            categoryKey="factor"
-            seriesKeys={['gen_z', 'millennial', 'gen_x']}
-            seriesLabels={{ gen_z: 'Implied Gen-Z', millennial: 'Implied Millennial', gen_x: 'Implied Gen-X' }}
-            colors={['#a855f7', '#3b82f6', '#2dd4bf']}
-            unit="%"
-            height={300}
-          />
         </ChartCard>
       )}
 
@@ -281,9 +218,9 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
 
       {/* Source attribution */}
       {data.source_attribution && data.source_attribution.length > 0 && (
-        <ChartCard title="Source Attribution" delay={250}>
+        <ChartCard title="Cross-Platform Attribution" delay={250}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {data.source_attribution.slice(0, 3).map((item: any, i: number) => (
+            {data.source_attribution.slice(0, 4).map((item: any, i: number) => (
               <div key={`${item.tag || item.label || 'attr'}-${i}`}>
                 <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 8 }}>{item.label}</p>
                 <HorizontalBar
@@ -299,70 +236,9 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
         </ChartCard>
       )}
 
-      {/* Q9: Inferred segment comparison table */}
-      {questionId === 9 && data.segment_splits && (
-        <ChartCard title="Implied Segment Comparison" delay={300}>
-          <div className="grid-3" style={{ gap: 16 }}>
-            {(['gen_z', 'millennial', 'gen_x'] as const).map((seg) => {
-              const splits = data.segment_splits[seg] || [];
-              const label = seg === 'gen_z' ? 'Implied Gen-Z' : seg === 'millennial' ? 'Implied Millennial' : 'Implied Gen-X';
-              const color = seg === 'gen_z' ? '#a855f7' : seg === 'millennial' ? '#3b82f6' : '#2dd4bf';
-              return (
-                <div key={seg}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color, marginBottom: 10 }}>{label}</div>
-                  <HorizontalBar data={splits.slice(0, 4).map((s: any, i: number) => ({
-                    ...s,
-                    tag: s.tag || s.intent || s.label || `${seg}-${i}`,
-                    color: ['#ff3f6c','#ff7849','#a855f7','#2dd4bf'][i] || '#6b7280',
-                    avg_confidence: undefined,
-                  }))} showCount={false} />
-                </div>
-              );
-            })}
-          </div>
-        </ChartCard>
-      )}
-
-      {/* Q9: Inference methodology disclaimer */}
-      {questionId === 9 && (
-        <div style={{
-          background: 'var(--glass-bg)',
-          border: '1px solid var(--border)',
-          borderLeft: '3px solid #fbbf24',
-          borderRadius: 10,
-          padding: '16px 20px',
-          fontSize: 13,
-          lineHeight: 1.6,
-          color: 'var(--text-secondary)',
-        }}>
-          <div style={{ fontWeight: 700, color: '#fbbf24', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>⚠️</span> Implied / Inferred Cohorts — Behavioral Proxies (No Age Data Provided)
-          </div>
-          <p style={{ margin: '0 0 8px 0' }}>
-            All generational cohorts (<strong>Implied Gen-Z</strong>, <strong>Implied Millennial</strong>, <strong>Implied Gen-X</strong>) are
-            <em> inferred from textual signals and linguistic context</em>. E-commerce review and video platforms do not collect or expose user ages or birth years.
-          </p>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: 'var(--text-primary)' }}>
-            Categorization Methodology & Justification:
-          </p>
-          <ul style={{ margin: 0, paddingLeft: 20 }}>
-            <li><strong>LLM Semantic Cue Analysis:</strong> Reviews are classified using Gemini for generational language cues, slang, lifestyle themes, and contextual markers.</li>
-            <li><strong>Linguistic Signal Markers:</strong>
-              <span style={{ color: '#a855f7', fontWeight: 600 }}> Implied Gen-Z</span> → &quot;aesthetic&quot;, &quot;y2k&quot;, &quot;vibe&quot;, &quot;drip&quot;, &quot;reels&quot;, &quot;streetwear&quot;, &quot;college&quot; |
-              <span style={{ color: '#3b82f6', fontWeight: 600 }}> Implied Millennial</span> → &quot;office&quot;, &quot;formal&quot;, &quot;workwear&quot;, &quot;premium&quot;, &quot;corporate&quot;, &quot;classic&quot; |
-              <span style={{ color: '#2dd4bf', fontWeight: 600 }}> Implied Gen-X</span> → &quot;family&quot;, &quot;kids&quot;, &quot;traditional&quot;, &quot;comfort&quot;, &quot;practical&quot;
-            </li>
-            <li><strong>Baseline Default:</strong> Unlabeled general reviews default to &quot;Implied Millennial&quot; as the baseline consumer majority.</li>
-          </ul>
-          <p style={{ margin: '8px 0 0 0', fontStyle: 'italic', fontSize: 12, color: 'var(--text-muted)' }}>
-            These segments represent behavioral and stylistic patterns across customer discussions, not verified demographic data.
-          </p>
-        </div>
-      )}
-
       {/* Key quotes */}
       {activeQuotes && activeQuotes.length > 0 && (
-        <ChartCard title={`Key Quotes ${source !== 'all' ? `(${source})` : segment !== 'all' ? `(${segment.replace('_', ' ').toUpperCase()})` : ''}`} delay={350}>
+        <ChartCard title={`Key Customer Quotes ${source !== 'all' ? `(${source})` : ''}`} delay={300}>
           <QuoteCarousel quotes={activeQuotes} />
         </ChartCard>
       )}

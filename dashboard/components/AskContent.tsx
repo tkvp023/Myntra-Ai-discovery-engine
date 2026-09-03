@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 
 const SUGGESTED = [
   'Why do users hesitate to buy after wishlisting?',
-  'What is the top sizing issue Implied Gen-Z faces in ethnic wear?',
+  'What are the primary sizing and fit uncertainties in ethnic wear?',
   'Which platform do users compare Myntra with most?',
   'What are the top unmet needs in fashion discovery?',
-  'How does price sensitivity differ by implied demographic segment?',
+  'How does price sensitivity impact purchase postponement?',
   'What systemic issues appear in customer complaint forums?',
 ];
 
@@ -123,19 +123,7 @@ function SourceInspectorModal({
             >
               {doc.source.toLowerCase().includes('pissed') ? 'Secondary Source (Dispute & Complaint Forum)' : 'Primary Source (Discovery & Reviews)'}
             </span>
-            <span
-              style={{
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid var(--border)',
-                color: 'var(--text-secondary)',
-                padding: '4px 10px',
-                borderRadius: 12,
-                fontSize: 11,
-                fontWeight: 600,
-              }}
-            >
-              Demographic: {doc.segment.replace('_', ' ').toUpperCase()}
-            </span>
+
             <span
               style={{
                 background: 'rgba(16,185,129,0.12)',
@@ -349,7 +337,6 @@ export default function AskContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [segment, setSegment] = useState('all');
   const [source, setSource] = useState('all');
   const [copied, setCopied] = useState<number | null>(null);
   const [isLive, setIsLive] = useState(true);
@@ -374,7 +361,7 @@ export default function AskContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: q,
-          filters: { segment, source },
+          filters: { source },
         }),
       }).catch(() => null);
 
@@ -384,7 +371,7 @@ export default function AskContent() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             query: q,
-            filters: { segment, source },
+            filters: { source },
           }),
         }).catch(() => null);
       }
@@ -698,7 +685,7 @@ export default function AskContent() {
                   sendMessage(input);
                 }
               }}
-              placeholder="Ask anything about wishlist drops, fit issues, Implied Gen-Z vs Millennial patterns..."
+              placeholder="Ask anything about wishlist drops, fit issues, pricing, return friction, platform comparisons..."
               style={{
                 flex: 1,
                 background: 'var(--glass-bg)',
@@ -740,27 +727,8 @@ export default function AskContent() {
 
           <div style={{ display: 'flex', gap: 12, marginTop: 12, alignItems: 'center', flexWrap: 'wrap' }}>
             <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Vector Filter:
+              Platform Filter:
             </span>
-            <select
-              className="chat-filter-select"
-              value={segment}
-              onChange={(e) => setSegment(e.target.value)}
-              aria-label="Filter by demographic segment"
-              style={{
-                background: 'var(--glass-bg)',
-                border: '1px solid var(--border)',
-                color: 'var(--text-secondary)',
-                borderRadius: 8,
-                padding: '4px 10px',
-                fontSize: 12,
-              }}
-            >
-              <option value="all">All Cohorts (Implied)</option>
-              <option value="gen_z">Implied Gen-Z (Slang, Y2K signals)</option>
-              <option value="millennial">Implied Millennial (Office, Formal signals)</option>
-              <option value="gen_x">Implied Gen-X (Family, Practical signals)</option>
-            </select>
             <select
               className="chat-filter-select"
               value={source}

@@ -38,14 +38,13 @@ export const MOCK_Q6_SANKEY = {
   ],
 };
 
-// ─── Q9 Segment cross-tab (GroupedBar) ─────────────────────────────────────
+// ─── Q9 Platform cross-tab (GroupedBar) ─────────────────────────────────────
 export const MOCK_Q9_GROUPED = [
-  { factor: 'Sizing Uncertainty', gen_z: 38, millennial: 31, gen_x: 28 },
-  { factor: 'Price Sensitivity',  gen_z: 25, millennial: 19, gen_x: 13 },
-  { factor: 'Quality Doubt',      gen_z: 12, millennial: 15, gen_x: 20 },
-  { factor: 'Social Validation',  gen_z: 18, millennial: 8,  gen_x: 4  },
-  { factor: 'Return Anxiety',     gen_z: 7,  millennial: 11, gen_x: 16 },
-  { factor: 'Style Uncertainty',  gen_z: 15, millennial: 9,  gen_x: 6  },
+  { factor: 'Quality Doubt',      youtube: 74, play_store: 11, reddit: 9, pissed_consumer: 4, app_store: 2 },
+  { factor: 'Waiting for Sale',   youtube: 42, play_store: 28, reddit: 20, pissed_consumer: 6, app_store: 4 },
+  { factor: 'Return Anxiety',     youtube: 5,  play_store: 18, reddit: 12, pissed_consumer: 62, app_store: 3 },
+  { factor: 'Social Validation',  youtube: 82, play_store: 4,  reddit: 11, pissed_consumer: 1, app_store: 2 },
+  { factor: 'Price Sensitivity',  youtube: 35, play_store: 25, reddit: 30, pissed_consumer: 8, app_store: 2 },
 ];
 
 export const MOCK_SUMMARY = {
@@ -86,27 +85,14 @@ export const MOCK_Q2 = {
   total_relevant_docs: 7557,
   avg_confidence: 0.678,
   breakdown: [
-    { label: "Quality Doubt", tag: "quality_doubt", count: 4617, pct: 52.5, avg_confidence: 0.57, color: "#a855f7" },
-    { label: "Waiting for Sale", tag: "waiting_for_sale", count: 1364, pct: 15.5, avg_confidence: 0.689, color: "#2dd4bf" },
-    { label: "Social Validation Needed", tag: "social_validation_needed", count: 669, pct: 7.6, avg_confidence: 0.85, color: "#fbbf24" },
-    { label: "Price Sensitivity", tag: "price_sensitivity", count: 620, pct: 7.0, avg_confidence: 0.85, color: "#ff7849" },
+    { label: "Quality Doubt", tag: "quality_doubt", count: 4617, pct: 48.7, avg_confidence: 0.57, color: "#a855f7" },
+    { label: "Waiting for Sale", tag: "waiting_for_sale", count: 1364, pct: 14.4, avg_confidence: 0.689, color: "#2dd4bf" },
     { label: "Return Policy Concern", tag: "return_policy_concern", count: 836, pct: 8.8, avg_confidence: 0.85, color: "#06b6d4" },
-    { label: "Sizing Uncertainty", tag: "sizing_uncertainty", count: 411, pct: 4.7, avg_confidence: 0.85, color: "#ff3f6c" },
-    { label: "Style Uncertainty", tag: "style_uncertainty", count: 366, pct: 4.2, avg_confidence: 0.85, color: "#3b82f6" },
+    { label: "Social Validation Needed", tag: "social_validation_needed", count: 669, pct: 7.1, avg_confidence: 0.85, color: "#fbbf24" },
+    { label: "Price Sensitivity", tag: "price_sensitivity", count: 620, pct: 6.5, avg_confidence: 0.85, color: "#ff7849" },
+    { label: "Sizing Uncertainty", tag: "sizing_uncertainty", count: 411, pct: 4.3, avg_confidence: 0.85, color: "#ff3f6c" },
+    { label: "Style Uncertainty", tag: "style_uncertainty", count: 366, pct: 3.9, avg_confidence: 0.85, color: "#3b82f6" },
   ],
-  segment_splits: {
-    gen_z: [
-      { label: "Social Validation Needed", tag: "social_validation_needed", count: 142, pct: 53.8 },
-      { label: "Quality Doubt", tag: "quality_doubt", count: 36, pct: 13.6 },
-      { label: "Occasion Mismatch", tag: "occasion_mismatch", count: 24, pct: 9.1 },
-    ],
-    millennial: [
-      { label: "Quality Doubt", tag: "quality_doubt", count: 4578, pct: 53.7 },
-      { label: "Waiting for Sale", tag: "waiting_for_sale", count: 1353, pct: 15.9 },
-      { label: "Price Sensitivity", tag: "price_sensitivity", count: 608, pct: 7.1 },
-    ],
-    gen_x: [],
-  },
   source_attribution: [
     { label: "Quality Doubt", tag: "quality_doubt", sources: [
       { source: "YouTube", count: 3414, pct: 73.9 },
@@ -117,9 +103,9 @@ export const MOCK_Q2 = {
     ]},
   ],
   key_quotes: [
-    { text: "Size chart is so confusing, I ordered M and it fits like XL. Never trusting Myntra sizing again.", source: "Play Store", source_id: "gp_001", date: "2026-03-15", confidence: 0.92, tags: ["sizing_uncertainty"], segment: "gen_z" },
-    { text: "Been waiting 3 months for this kurta to go on sale. Price is too high for this brand.", source: "Reddit", source_id: "reddit_001", date: "2026-05-22", confidence: 0.88, tags: ["waiting_for_sale"], segment: "millennial" },
-    { text: "Studio pictures look like pure cotton, but fabric in reality is rough and thin.", source: "YouTube", source_id: "yt_001", date: "2026-04-10", confidence: 0.85, tags: ["quality_doubt"], segment: "millennial" },
+    { text: "Size chart is so confusing, I ordered M and it fits like XL. Never trusting Myntra sizing again.", source: "Play Store", source_id: "gp_001", date: "2026-03-15", confidence: 0.92, tags: ["sizing_uncertainty"] },
+    { text: "Been waiting 3 months for this kurta to go on sale. Price is too high for this brand.", source: "Reddit", source_id: "reddit_001", date: "2026-05-22", confidence: 0.88, tags: ["waiting_for_sale"] },
+    { text: "Studio pictures look like pure cotton, but fabric in reality is rough and thin.", source: "YouTube", source_id: "yt_001", date: "2026-04-10", confidence: 0.85, tags: ["quality_doubt"] },
   ],
   temporal_trend: [
     { month: "2025-01", count: 320, pct: 30.0 },
@@ -165,6 +151,6 @@ export const QUESTION_META: Record<number, { text: string; short: string }> = {
   6: { text: "What information do users seek outside Myntra before purchasing?", short: "External Info Seeking" },
   7: { text: "What role do fit, size, styling, price, reviews, occasion, social validation play?", short: "Factor Importance" },
   8: { text: "When is the wishlist genuine purchase intent vs bookmarking?", short: "Intent vs Bookmarking" },
-  9: { text: "How do these behaviors differ across user segments?", short: "Segment Differences" },
+  9: { text: "How do behaviors and friction differ across discovery platforms?", short: "Platform Differences" },
   10: { text: "What unmet needs emerge consistently across the corpus?", short: "Unmet Needs" },
 };

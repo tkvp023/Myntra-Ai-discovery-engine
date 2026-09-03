@@ -48,7 +48,7 @@ function generateMockQuestion(id: number) {
     6:  ["What information do users seek outside Myntra?", "External Info Seeking"],
     7:  ["What role do fit, size, styling, price, reviews, occasion, social validation play?", "Factor Importance"],
     8:  ["When is the wishlist genuine purchase intent vs bookmarking?", "Intent vs Bookmarking"],
-    9:  ["How do these behaviors differ across user segments?", "Segment Differences"],
+    9:  ["How do behaviors and friction differ across discovery platforms?", "Platform Differences"],
     10: ["What unmet needs emerge consistently?", "Unmet Needs"],
   };
   const [text, short] = metas[id] || [`Question ${id}`, `Q${id}`];
@@ -65,24 +65,10 @@ function generateMockQuestion(id: number) {
       { label: "Social Validation Needed", tag: "social_validation_needed", count: 669, pct: 7.1, avg_confidence: 0.85, color: "#fbbf24" },
       { label: "Price Sensitivity", tag: "price_sensitivity", count: 620, pct: 6.5, avg_confidence: 0.85, color: "#ff7849" },
     ],
-    segment_splits: {
-      gen_z: [
-        { label: "Sizing Uncertainty", tag: "sizing_uncertainty", count: 2100, pct: 38.0 },
-        { label: "Price Sensitivity", tag: "price_sensitivity", count: 1380, pct: 25.0 },
-      ],
-      millennial: [
-        { label: "Sizing Uncertainty", tag: "sizing_uncertainty", count: 1710, pct: 31.0 },
-        { label: "Price Sensitivity", tag: "price_sensitivity", count: 1048, pct: 19.0 },
-      ],
-      gen_x: [
-        { label: "Sizing Uncertainty", tag: "sizing_uncertainty", count: 390, pct: 28.0 },
-        { label: "Quality Doubt", tag: "quality_doubt", count: 278, pct: 20.0 },
-      ],
-    },
     source_attribution: [],
     key_quotes: [
-      { text: "Size chart is so confusing, I ordered M and it fits like XL. Never trusting Myntra sizing again.", source: "Play Store", source_id: "gp_001", date: "2026-03-15", confidence: 0.92, tags: ["sizing_uncertainty"], segment: "gen_z" },
-      { text: "Been waiting 3 months for this kurta to go on sale. Price is too high for this brand.", source: "Reddit", source_id: "reddit_001", date: "2026-05-22", confidence: 0.88, tags: ["waiting_for_sale"], segment: "millennial" },
+      { text: "Size chart is so confusing, I ordered M and it fits like XL. Never trusting Myntra sizing again.", source: "Play Store", source_id: "gp_001", date: "2026-03-15", confidence: 0.92, tags: ["sizing_uncertainty"] },
+      { text: "Been waiting 3 months for this kurta to go on sale. Price is too high for this brand.", source: "Reddit", source_id: "reddit_001", date: "2026-05-22", confidence: 0.88, tags: ["waiting_for_sale"] },
     ],
     temporal_trend: [
       { month: "2025-01", count: 300, pct: 29.0 },

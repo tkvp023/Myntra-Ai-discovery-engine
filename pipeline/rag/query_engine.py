@@ -123,7 +123,7 @@ class RAGQueryEngine:
                 "retrieved_docs": [],
                 "suggestions": [
                     "Why do users hesitate to buy after wishlisting?",
-                    "What are the top sizing issues Gen-Z faces?",
+                    "What are the primary sizing and fit issues?",
                     "How does Myntra compare to Ajio and Amazon?"
                 ],
                 "is_out_of_scope": False,
@@ -131,9 +131,9 @@ class RAGQueryEngine:
 
         if not retrieved_docs:
             return {
-                "answer": "I couldn't find any relevant reviews or customer feedback matching your query with the current filters. Try relaxing the demographic/source filters or asking about wishlist drop-offs, sizing uncertainties, or pricing.",
+                "answer": "I couldn't find any relevant reviews or customer feedback matching your query with the current filters. Try relaxing the source filters or asking about wishlist drop-offs, sizing uncertainties, or pricing.",
                 "citations": [],
-                "filters_applied": {"segment": segment or "all", "source": source or "all"},
+                "filters_applied": {"source": source or "all"},
                 "docs_retrieved": 0,
                 "retrieved_docs": [],
                 "suggestions": ["Why do users add items to wishlist?", "What causes fit and sizing uncertainty?", "How does Myntra compare to Ajio and Amazon?"],
@@ -146,13 +146,13 @@ class RAGQueryEngine:
             src_display = SOURCE_DISPLAY.get(doc["source"], (doc["source"], "#6b7280"))[0]
             tags = doc.get("hesitation_tags", "")
             context_parts.append(
-                f"[Review {i+1}] Source: {src_display} | Demographic: {doc['segment']} | "
+                f"[Review {i+1}] Source: {src_display} | "
                 f"Tags: {tags or 'none'} | Relevance: {doc['similarity']:.0%}\n"
                 f"\"{doc['content_preview'] or doc['content']}\""
             )
 
         context_block = "\n\n---\n\n".join(context_parts)
-        quant_block = self._get_quantitative_context(query, segment)
+        quant_block = self._get_quantitative_context(query)
 
         # Build source summary for citations
         source_counts: Dict[str, int] = {}
@@ -163,16 +163,11 @@ class RAGQueryEngine:
             source_similarities.setdefault(src, []).append(doc["similarity"])
 
         filter_context = ""
-        if segment and segment != "all":
-            filter_context += f"\nThe user has filtered specifically for the **{segment.replace('_', ' ').title()}** demographic."
         if source and source != "all":
             filter_context += f"\nThe user has filtered for **{source}** reviews only."
 
         system_prompt = f"""You are an executive consumer intelligence analyst for Myntra's AI Discovery Engine (India's premier fashion e-commerce platform).
 You analyze grounded customer feedback across 8,182 reviews spanning 4 primary data sources (YouTube hauls, Google Play Store, Reddit discussions, Apple App Store for discovery sentiment and styling) and 1 secondary data source (PissedConsumer for escalated dispute, refund, and customer service dynamics) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
-
-DEMOGRAPHIC METHODOLOGY NOTE:
-All generational cohorts (Gen-Z, Millennial, Gen-X) are **implied / inferred behavioral proxies** derived via semantic language cues and lifestyle topics, as no review platform collects or exposes user age. When referring to generational segments, qualify them as **Implied Gen-Z** (slang, Y2K, try-on focus), **Implied Millennial** (office, quality, baseline focus), or **Implied Gen-X** (family, practical focus).
 
 STRICT SCOPE & HONESTY GUARDRAILS:
 1. OUT-OF-SCOPE: You MUST answer ONLY questions related to fashion e-commerce, shopping behavior, Myntra features/policies, product uncertainties (fit, fabric, style), returns/refunds, pricing/sales, and platform comparisons.

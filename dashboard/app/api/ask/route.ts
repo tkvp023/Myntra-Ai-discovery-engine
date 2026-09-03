@@ -51,7 +51,7 @@ function generateFallbackAnswer(query: string, segment?: string, source?: string
       retrieved_docs: [],
       suggestions: [
         'Why do users hesitate to buy after wishlisting?',
-        'What is the top sizing issue Gen-Z faces in ethnic wear?',
+        'What are the primary sizing and fit uncertainties in ethnic wear?',
         'What systemic issues appear in customer complaint forums?'
       ],
       is_out_of_scope: false,
@@ -80,7 +80,6 @@ function generateFallbackAnswer(query: string, segment?: string, source?: string
     });
 
     if (source && source !== 'all' && q.source?.toLowerCase() === source.toLowerCase()) score += 5;
-    if (segment && segment !== 'all' && q.segment?.toLowerCase() === segment.toLowerCase()) score += 5;
 
     return { ...q, matchScore: score };
   }).filter((q) => q.matchScore > 0).sort((a, b) => b.matchScore - a.matchScore);
@@ -94,7 +93,7 @@ function generateFallbackAnswer(query: string, segment?: string, source?: string
     raw_source: (doc.source || 'youtube').toLowerCase().replace(/\s+/g, ''),
     source_id: doc.source_id || `src_${idx}`,
     date: doc.date || '2026-04-12',
-    segment: doc.segment || 'millennial',
+    segment: 'all',
     similarity: Math.min(0.96, Math.max(0.72, 0.75 + (doc.matchScore || 1) * 0.03)),
     tags: doc.tags || ['discovery_insight'],
     content: doc.text || '',
@@ -121,7 +120,7 @@ function generateFallbackAnswer(query: string, segment?: string, source?: string
     analysis = `### Executive Findings: Sizing & Fit Uncertainty
 1. **Fit Doubt Drives Abandonment:** Sizing uncertainty accounts for **34.0%** of customer hesitation moments, particularly in ethnic wear and fitted western dresses.
 2. **Missing Real-Life Draping:** Shoppers frequently note that standard numerical charts (S/M/L) do not translate accurately across different brands on Myntra.
-3. **Implied Gen-Z Dependency on Try-Ons:** Implied Gen-Z users (inferred from slang, college, and try-on vocabulary) rely heavily on YouTube try-on hauls to verify proportions before checking out.`;
+3. **Cross-Platform Try-On Dependency:** Shoppers rely heavily on external YouTube try-on hauls to verify chest, waist, and length proportions before completing checkout.`;
   } else if (qLower.includes('price') || qLower.includes('discount') || qLower.includes('sale')) {
     analysis = `### Executive Findings: Price Sensitivity & Sale Strategy
 1. **The Wishlist as a Price Tracker:** **14.4% to 22.0%** of wishlisted items are parked while users actively wait for flash discounts or Big Billion Day promotions.

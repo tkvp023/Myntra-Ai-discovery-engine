@@ -10,7 +10,7 @@ export const QUESTION_META: Record<number, { text: string; short: string; color:
   6:  { text: 'What information do users seek outside Myntra before purchasing?',                      short: 'External Info Seeking',    color: '#fbbf24' },
   7:  { text: 'What role do fit, size, styling, price, reviews, occasion, and social validation play?', short: 'Factor Importance',        color: '#ec4899' },
   8:  { text: 'When is the wishlist genuine purchase intent vs bookmarking?',                          short: 'Intent vs Bookmarking',    color: '#84cc16' },
-  9:  { text: 'How do these behaviors differ across user segments?',                                   short: 'Segment Differences',      color: '#f97316' },
+  9:  { text: 'How do behaviors and friction differ across discovery platforms?', short: 'Platform Differences', color: '#f97316' },
   10: { text: 'What unmet needs emerge consistently across the corpus?',                               short: 'Unmet Needs',              color: '#8b5cf6' },
 };
 
