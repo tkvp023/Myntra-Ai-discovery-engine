@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 const QUESTIONS = [
   [1,  'Wishlist Motivation',     '#ff3f6c'],
@@ -17,7 +18,7 @@ export default function QuestionGrid() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 10 }}>
       {QUESTIONS.map(([id, label, color]) => (
-        <a
+        <Link
           key={id}
           href={`/questions/${id}`}
           style={{
@@ -49,7 +50,7 @@ export default function QuestionGrid() {
           <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 500 }}>
             {label}
           </span>
-        </a>
+        </Link>
       ))}
     </div>
   );

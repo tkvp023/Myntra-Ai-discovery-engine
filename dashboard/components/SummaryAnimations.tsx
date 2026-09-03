@@ -77,6 +77,7 @@ export default function SummaryAnimations({ data }: SummaryAnimationsProps) {
                 pct: op.pct,
                 avg_confidence: op.avg_confidence,
                 color: ['#ff3f6c','#ff7849','#a855f7','#2dd4bf','#3b82f6'][op.rank - 1] || '#6b7280',
+                href: `/questions/${op.question_id || 2}`,
               }))}
             />
           </div>

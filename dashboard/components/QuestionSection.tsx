@@ -10,6 +10,7 @@ import WordCloudChart from './WordCloudChart';
 import TreemapChart from './TreemapChart';
 import SankeyDiagram from './SankeyDiagram';
 import GroupedBar from './GroupedBar';
+import SegmentToggle from './SegmentToggle';
 import { useInView } from 'react-intersection-observer';
 
 interface QuestionSectionProps {
@@ -39,62 +40,168 @@ function ChartCard({ title, children, delay = 0 }: { title: string; children: Re
 
 export default function QuestionSection({ data, questionId }: QuestionSectionProps) {
   const [source, setSource] = useState('all');
+  const [segment, setSegment] = useState('all');
 
-  const breakdown = data.breakdown || [];
+  // Compute active breakdown based on source and demographic filters
+  let activeBreakdown = data.breakdown || [];
+  let activeDocsCount = data.total_relevant_docs;
+  let activeQuotes = data.key_quotes || [];
+
+  if (segment !== 'all' && data.segment_splits?.[segment]?.length > 0) {
+    const rawSplits = data.segment_splits[segment];
+    const totalSegCount = rawSplits.reduce((acc: number, it: any) => acc + (it.count || 0), 0) || 1;
+    activeBreakdown = rawSplits.map((item: any, i: number) => ({
+      ...item,
+      pct: item.pct || Number(((item.count / totalSegCount) * 100).toFixed(1)),
+      color: item.color || ['#a855f7', '#3b82f6', '#2dd4bf', '#fbbf24', '#ff7849', '#ff3f6c'][i % 6],
+    }));
+    activeDocsCount = totalSegCount;
+  } else if (source !== 'all' && data.source_attribution && data.source_attribution.length > 0) {
+    const computedItems: any[] = [];
+    data.source_attribution.forEach((attr: any, i: number) => {
+      const match = attr.sources?.find((s: any) => s.source.toLowerCase() === source.toLowerCase());
+      if (match && match.count > 0) {
+        computedItems.push({
+          label: attr.label,
+          tag: attr.tag,
+          count: match.count,
+          pct: match.pct || 0,
+          avg_confidence: attr.avg_confidence || data.avg_confidence,
+          color: attr.color || ['#ff3f6c', '#ff7849', '#a855f7', '#2dd4bf', '#3b82f6', '#fbbf24'][i % 6],
+        });
+      }
+    });
+
+    if (computedItems.length > 0) {
+      const totalCount = computedItems.reduce((acc, it) => acc + it.count, 0) || 1;
+      activeBreakdown = computedItems
+        .map((it) => ({
+          ...it,
+          pct: Number(((it.count / totalCount) * 100).toFixed(1)),
+        }))
+        .sort((a, b) => b.count - a.count);
+      activeDocsCount = totalCount;
+    }
+  }
+
+  // Filter quotes by active source & segment
+  if (data.key_quotes && data.key_quotes.length > 0) {
+    let filtered = [...data.key_quotes];
+    if (source !== 'all') {
+      const match = filtered.filter((q: any) => q.source?.toLowerCase() === source.toLowerCase());
+      if (match.length > 0) filtered = match;
+    }
+    if (segment !== 'all') {
+      const match = filtered.filter((q: any) => q.segment?.toLowerCase() === segment.toLowerCase());
+      if (match.length > 0) filtered = match;
+    }
+    activeQuotes = filtered;
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-      {/* Stat strip */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <div style={{ display: 'flex', gap: 20 }}>
+      {/* Interactive Filter and Stat strip */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 16,
+          padding: '14px 18px',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-md)',
+        }}
+      >
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
           <div>
-            <div style={{ fontSize: 22, fontFamily: 'Outfit', fontWeight: 800 }}>{data.total_relevant_docs.toLocaleString()}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>relevant docs</div>
+            <div style={{ fontSize: 22, fontFamily: 'Outfit', fontWeight: 800 }}>
+              {activeDocsCount?.toLocaleString() || data.total_relevant_docs?.toLocaleString()}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {source !== 'all' ? `${source} docs` : segment !== 'all' ? `${segment.replace('_', ' ')} docs` : 'relevant docs'}
+            </div>
           </div>
           <div>
             <div style={{ fontSize: 22, fontFamily: 'Outfit', fontWeight: 800, color: 'var(--teal)' }}>
               {(data.avg_confidence * 100).toFixed(0)}%
             </div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>avg confidence</div>
-          </div>
-          {/* Source filter pills */}
-          {data.source_attribution && data.source_attribution.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              {['all', 'YouTube', 'Play Store', 'Reddit', 'PissedConsumer', 'App Store'].map((src) => {
-                const active = src === source;
-                const color = ({ 'Play Store': '#ff3f6c', Reddit: '#ff7849', YouTube: '#a855f7', 'App Store': '#2dd4bf', PissedConsumer: '#fbbf24', all: 'var(--teal)' } as Record<string, string>)[src] || '#6b7280';
-                return (
-                  <button
-                    key={src}
-                    onClick={() => setSource(src)}
-                    style={{
-                      padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer',
-                      border: `1px solid ${active ? color : 'var(--border)'}`,
-                      background: active ? `${color}22` : 'transparent',
-                      color: active ? color : 'var(--text-muted)',
-                      transition: 'all 0.15s',
-                    }}
-                  >{src === 'all' ? 'All Sources' : src}</button>
-                );
-              })}
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              avg confidence
             </div>
-          )}
+          </div>
         </div>
+
+        {/* Demographic segment filter */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Demographic:
+          </span>
+          <SegmentToggle
+            value={segment}
+            onChange={(v) => {
+              setSegment(v);
+              if (v !== 'all') setSource('all'); // prioritize segment
+            }}
+          />
+        </div>
+
+        {/* Source filter pills */}
+        {data.source_attribution && data.source_attribution.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginRight: 2 }}>
+              Platform:
+            </span>
+            {['all', 'YouTube', 'Play Store', 'Reddit', 'PissedConsumer', 'App Store'].map((src) => {
+              const active = src === source;
+              const color = ({ 'Play Store': '#ff3f6c', Reddit: '#ff7849', YouTube: '#a855f7', 'App Store': '#2dd4bf', PissedConsumer: '#fbbf24', all: 'var(--teal)' } as Record<string, string>)[src] || '#6b7280';
+              return (
+                <button
+                  key={src}
+                  onClick={() => {
+                    setSource(src);
+                    if (src !== 'all') setSegment('all'); // prioritize source
+                  }}
+                  style={{
+                    padding: '3px 10px',
+                    borderRadius: 20,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: `1px solid ${active ? color : 'var(--border)'}`,
+                    background: active ? `${color}22` : 'transparent',
+                    color: active ? color : 'var(--text-muted)',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {src === 'all' ? 'All Sources' : src}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Main breakdown + donut */}
       <div className="grid-2">
-        <ChartCard title="Breakdown" delay={0}>
-          {breakdown.length > 0
-            ? <HorizontalBar data={breakdown} />
-            : <div className="empty-state"><div className="empty-state-icon">📊</div><div className="empty-state-text">No data available</div></div>
+        <ChartCard
+          title={`Breakdown ${source !== 'all' ? `— ${source}` : segment !== 'all' ? `— ${segment.replace('_', ' ').toUpperCase()}` : ''}`}
+          delay={0}
+        >
+          {activeBreakdown.length > 0
+            ? <HorizontalBar data={activeBreakdown} />
+            : <div className="empty-state"><div className="empty-state-icon">📊</div><div className="empty-state-text">No data available for this filter</div></div>
           }
         </ChartCard>
 
-        <ChartCard title="Distribution" delay={100}>
-          {breakdown.length > 0
-            ? <DonutChart data={breakdown} centerLabel="signals" />
+        <ChartCard
+          title={`Distribution ${source !== 'all' ? `— ${source}` : segment !== 'all' ? `— ${segment.replace('_', ' ').toUpperCase()}` : ''}`}
+          delay={100}
+        >
+          {activeBreakdown.length > 0
+            ? <DonutChart data={activeBreakdown} centerLabel="signals" />
             : <div className="empty-state"><div className="empty-state-icon">🍩</div><div className="empty-state-text">No data</div></div>
           }
         </ChartCard>
@@ -253,9 +360,9 @@ export default function QuestionSection({ data, questionId }: QuestionSectionPro
       )}
 
       {/* Key quotes */}
-      {data.key_quotes && data.key_quotes.length > 0 && (
-        <ChartCard title="Key Quotes" delay={350}>
-          <QuoteCarousel quotes={data.key_quotes} />
+      {activeQuotes && activeQuotes.length > 0 && (
+        <ChartCard title={`Key Quotes ${source !== 'all' ? `(${source})` : segment !== 'all' ? `(${segment.replace('_', ' ').toUpperCase()})` : ''}`} delay={350}>
+          <QuoteCarousel quotes={activeQuotes} />
         </ChartCard>
       )}
     </div>
