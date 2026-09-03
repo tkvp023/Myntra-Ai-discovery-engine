@@ -53,3 +53,4 @@ logs/
 # Misc
 *.bak
 *.tmp
+scratch/

@@ -147,7 +147,7 @@ export default async function SummaryPage() {
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid-4" style={{ marginBottom: 32 }}>
+      <div className="grid-3" style={{ marginBottom: 32 }}>
         {data.kpi_cards.map((card, i) => (
           <StatCard key={card.id} {...card as any} delay={i * 80} />
         ))}

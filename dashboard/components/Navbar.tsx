@@ -155,7 +155,6 @@ export default function Navbar() {
                 background: 'var(--dropdown-bg)',
                 border: '1px solid var(--border-strong)',
                 borderRadius: '16px',
-                boxShadow: 'var(--shadow-card), 0 0 24px var(--theme-accent-border)',
                 backdropFilter: 'var(--glass-blur)',
                 WebkitBackdropFilter: 'var(--glass-blur)',
                 position: 'absolute',

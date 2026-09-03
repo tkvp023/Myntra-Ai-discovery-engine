@@ -23,8 +23,8 @@
   --border-highlight: rgba(255, 255, 255, 0.16);
   --border-strong:    rgba(255, 255, 255, 0.22);
 
-  --shadow-card:      0 8px 30px -4px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
-  --shadow-elevated:  0 20px 40px -8px rgba(0, 0, 0, 0.7), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --shadow-card:      none;
+  --shadow-elevated:  none;
   --navbar-bg:        rgba(8, 9, 15, 0.85);
   --dropdown-bg:      rgba(14, 17, 26, 0.98);
 
@@ -64,8 +64,8 @@
   --border-highlight: rgba(255, 255, 255, 0.8);
   --border-strong:    rgba(15, 23, 42, 0.16);
 
-  --shadow-card:      0 4px 20px -2px rgba(15, 23, 42, 0.07), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
-  --shadow-elevated:  0 16px 36px -4px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+  --shadow-card:      none;
+  --shadow-elevated:  none;
   --navbar-bg:        rgba(255, 255, 255, 0.92);
   --dropdown-bg:      rgba(255, 255, 255, 0.98);
 
@@ -366,13 +366,13 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-lg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--shadow-card);
-  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+  box-shadow: none;
+  transition: transform var(--t-fast), border-color var(--t-fast);
   overflow: hidden;
 }
 .card:hover {
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-elevated);
+  box-shadow: none;
 }
 
 .card-header {
@@ -419,12 +419,13 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--border);
   border-top: 1px solid var(--border-highlight);
   border-radius: var(--radius-lg);
+  box-shadow: none;
   transition: all var(--t-fast);
 }
 .stat-card:hover {
   transform: translateY(-2px);
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-elevated);
+  box-shadow: none;
 }
 .stat-card::before {
   content: '';
@@ -473,7 +474,7 @@ h1, h2, h3, h4, h5, h6 {
   border-left: 3px solid var(--pink);
   background: rgba(255, 255, 255, 0.02);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  transition: transform var(--t-fast), background var(--t-fast);
 }
 .quote-card:hover {
   transform: translateY(-1px);
@@ -678,3 +679,25 @@ select:focus-visible {
   background: var(--bg-elevated);
   color: var(--text-primary);
 }
+
+/* ─── Inquiry Stepper Ribbon & Utilities ─────────────────────────────────── */
+.inquiry-stepper-container::-webkit-scrollbar {
+  height: 4px;
+}
+.inquiry-stepper-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+.inquiry-stepper-container::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+.inquiry-step-pill:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-primary) !important;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
