@@ -116,7 +116,7 @@ class RAGQueryEngine:
         # 1. Handle Greetings Directly without semantic retrieval hallucination
         if self._is_greeting(query):
             return {
-                "answer": "Hello! 👋 I am the **Myntra AI Discovery Engine**, specialized in consumer shopping intelligence. I can help you analyze wishlist behavior, cart abandonment, sizing doubts, return fee friction, and platform comparisons across our **8,182 classified voice-of-customer reviews**.\n\nWhat would you like to explore today?",
+                "answer": "Hello! 👋 I am the **Myntra AI Discovery Engine**, specialized in consumer shopping intelligence. I can help you analyze wishlist behavior, cart abandonment, sizing doubts, return fee friction, and platform comparisons across our **8,182 classified voice-of-customer reviews** — spanning **4 Primary Sources** (YouTube, Play Store, Reddit, App Store) and **1 Secondary Source** (PissedConsumer for dispute & complaint dynamics).\n\nWhat would you like to explore today?",
                 "citations": [],
                 "filters_applied": {"segment": segment or "all", "source": source or "all"},
                 "docs_retrieved": 0,
@@ -169,7 +169,7 @@ class RAGQueryEngine:
             filter_context += f"\nThe user has filtered for **{source}** reviews only."
 
         system_prompt = f"""You are an executive consumer intelligence analyst for Myntra's AI Discovery Engine (India's premier fashion e-commerce platform).
-You analyze grounded customer feedback across 8,182 reviews across 5 data sources (YouTube, Google Play Store, Reddit, Apple App Store, PissedConsumer) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
+You analyze grounded customer feedback across 8,182 reviews spanning 4 primary data sources (YouTube hauls, Google Play Store, Reddit discussions, Apple App Store for discovery sentiment and styling) and 1 secondary data source (PissedConsumer for escalated dispute, refund, and customer service dynamics) regarding wishlist habits, cart abandonment, sizing doubts, pricing, return fees, and platform comparisons (Ajio, Amazon, Meesho, Zara).
 
 STRICT SCOPE & HONESTY GUARDRAILS:
 1. OUT-OF-SCOPE: You MUST answer ONLY questions related to fashion e-commerce, shopping behavior, Myntra features/policies, product uncertainties (fit, fabric, style), returns/refunds, pricing/sales, and platform comparisons.

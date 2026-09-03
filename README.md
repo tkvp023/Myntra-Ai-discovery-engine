@@ -57,18 +57,21 @@ Plus a **Systemic Gaps** analysis from secondary sources (Trustpilot, PissedCons
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Data Sources (5 platforms)
+### Data Sources (4 Primary + 1 Secondary)
 
-| Source | Type | Volume (Raw) | Classified in DB |
-|---|---|---|---|
-| YouTube (haul/try-on/review comments) | Primary | 17,470 comments | 5,319 docs |
-| Google Play Store (`com.myntra.android`) | Primary | 2,600 reviews | 1,180 docs |
-| Reddit (`r/IndianFashionAddicts`, `r/MyntraSucks`, etc.) | Primary | 1,234 posts/threads | 1,039 docs |
-| PissedConsumer (dispute & complaint forum) | Secondary | 511 complaints | 507 docs |
-| Apple App Store (iTunes RSS) | Primary | 250 reviews | 137 docs |
-| **Total** | | **22,065 raw** | **8,182 classified** |
+| Source | Role | Nature of Data | Raw Volume | Classified in DB |
+|---|---|---|---|---|
+| **YouTube** | **Primary** | Try-on/haul videos & comments (fit & aesthetic validation) | 17,470 comments | 5,319 docs |
+| **Google Play Store** | **Primary** | App store user reviews & star ratings (`com.myntra.android`) | 2,600 reviews | 1,180 docs |
+| **Reddit** | **Primary** | Fashion community threads (`r/IndianFashionAddicts`, `r/dealsforindia`) | 1,234 threads | 1,039 docs |
+| **Apple App Store** | **Primary** | iOS user reviews via iTunes RSS API | 250 reviews | 137 docs |
+| **PissedConsumer** | **Secondary** | Escalated consumer dispute & complaint records (return/refund friction) | 511 complaints | 507 docs |
+| **Total** | | | **22,065 raw** | **8,182 classified** |
 
-> *Note: Scrapers for Trustpilot and Reviews.io were developed and tested, but yielded 0 records due to Cloudflare anti-bot blocks and negligible presence for Myntra India. The corpus is solidly grounded in the 5 high-yield platforms above.*
+> **Architecture Delineation:**
+> - **4 Primary Sources (8,182 docs - 93.8%):** Focus on authentic discovery habits, wishlist motivations, sizing hesitation, and cross-platform price comparisons.
+> - **1 Secondary Source (PissedConsumer - 6.2%):** Mined specifically to capture systemic post-purchase friction (courier pickup failures, return fee disputes, customer service gaps) that feeds back into shopper hesitation.
+> - *(Note: Scrapers for Trustpilot and Reviews.io were developed but returned 0 reviews due to Cloudflare anti-bot blocks & low India volume, standardizing the corpus on the 5 verified channels above).*
 
 ### Tech Stack
 

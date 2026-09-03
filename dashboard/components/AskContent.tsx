@@ -112,6 +112,19 @@ function SourceInspectorModal({
             </span>
             <span
               style={{
+                background: doc.source.toLowerCase().includes('pissed') ? 'rgba(251,191,36,0.15)' : 'rgba(168,85,247,0.15)',
+                border: `1px solid ${doc.source.toLowerCase().includes('pissed') ? 'rgba(251,191,36,0.4)' : 'rgba(168,85,247,0.4)'}`,
+                color: doc.source.toLowerCase().includes('pissed') ? '#fbbf24' : '#c084fc',
+                padding: '4px 10px',
+                borderRadius: 12,
+                fontSize: 11,
+                fontWeight: 700,
+              }}
+            >
+              {doc.source.toLowerCase().includes('pissed') ? 'Secondary Source (Dispute & Complaint Forum)' : 'Primary Source (Discovery & Reviews)'}
+            </span>
+            <span
+              style={{
                 background: 'rgba(255,255,255,0.06)',
                 border: '1px solid var(--border)',
                 color: 'var(--text-secondary)',
@@ -431,7 +444,7 @@ export default function AskContent() {
           the Data
         </h1>
         <p style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-          <span>Natural-language RAG over 8,182 classified voice-of-customer reviews</span>
+          <span>Natural-language RAG over 8,182 reviews (4 Primary Sources + 1 Secondary Source: PissedConsumer)</span>
           <span
             style={{
               background: isLive ? 'rgba(16,185,129,0.1)' : 'rgba(251,191,36,0.1)',
@@ -522,8 +535,8 @@ export default function AskContent() {
             <div className="empty-state" style={{ opacity: 0.7, padding: '40px 20px' }}>
               <div className="empty-state-icon" style={{ fontSize: 44 }}>🧠</div>
               <div className="empty-state-text" style={{ fontSize: 16, fontWeight: 600 }}>Query the Myntra Consumer Knowledge Graph</div>
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', maxWidth: 460, marginTop: 6, lineHeight: 1.5 }}>
-                Ask questions about wishlist hesitation, sizing uncertainties, cross-platform pricing, return friction, or unmet needs. Every response is synthesized with exact grounded citations and raw review inspection.
+              <div style={{ fontSize: 13, color: 'var(--text-muted)', maxWidth: 480, marginTop: 6, lineHeight: 1.5 }}>
+                Ask questions about wishlist hesitation, sizing uncertainties, cross-platform pricing, return friction, or unmet needs. Grounded across <strong>4 Primary Discovery Sources</strong> (YouTube, Play Store, Reddit, App Store) and <strong>1 Secondary Source</strong> (PissedConsumer for dispute & complaint dynamics).
               </div>
             </div>
           )}
@@ -666,7 +679,7 @@ export default function AskContent() {
                   <span className="typing-dot" />
                 </div>
                 <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                  Searching 8,182 vector embeddings, calculating SQL metrics & synthesizing insights with Gemini Flash...
+                  Searching 8,182 vector embeddings across 4 primary + 1 secondary sources & synthesizing insights with Gemini Flash...
                 </span>
               </div>
             </div>
@@ -762,12 +775,16 @@ export default function AskContent() {
                 fontSize: 12,
               }}
             >
-              <option value="all">All Sources (5 Platforms)</option>
-              <option value="YouTube">YouTube</option>
-              <option value="Play Store">Play Store</option>
-              <option value="Reddit">Reddit</option>
-              <option value="PissedConsumer">PissedConsumer</option>
-              <option value="App Store">App Store</option>
+              <option value="all">All Sources (4 Primary + 1 Secondary)</option>
+              <optgroup label="Primary Sources (Discovery & Reviews)">
+                <option value="YouTube">YouTube (Primary)</option>
+                <option value="Play Store">Play Store (Primary)</option>
+                <option value="Reddit">Reddit (Primary)</option>
+                <option value="App Store">App Store (Primary)</option>
+              </optgroup>
+              <optgroup label="Secondary Sources (Dispute Forums)">
+                <option value="PissedConsumer">PissedConsumer (Secondary)</option>
+              </optgroup>
             </select>
             <span
               style={{

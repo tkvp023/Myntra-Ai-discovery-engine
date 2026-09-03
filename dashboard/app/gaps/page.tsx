@@ -20,8 +20,8 @@ export default async function GapsPage() {
           Gaps
         </h1>
         <p>
-          Secondary-source analysis from {data.total_secondary_docs.toLocaleString()} reviews across
-          customer dispute forums (PissedConsumer) — systemic issues that amplify hesitation
+          Secondary-source intelligence from {data.total_secondary_docs.toLocaleString()} reviews across
+          customer complaint forums (<strong>PissedConsumer</strong>) — capturing systemic operational gaps (courier pickups, return friction, refund delays) that amplify purchase hesitation
         </p>
       </div>
 

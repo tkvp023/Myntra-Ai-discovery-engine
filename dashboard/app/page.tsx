@@ -25,8 +25,9 @@ export default async function SummaryPage() {
           Discovery Engine
         </h1>
         <p>
-          {data.primary_signal_docs.toLocaleString()} primary-signal documents across{' '}
-          {data.source_distribution.length} sources · Overall confidence{' '}
+          {data.primary_signal_docs.toLocaleString()} classified documents across{' '}
+          <strong>4 Primary Sources</strong> (YouTube, Play Store, Reddit, App Store) +{' '}
+          <strong>1 Secondary Source</strong> (PissedConsumer) · Overall confidence{' '}
           <span style={{ color: 'var(--teal)', fontWeight: 600 }}>
             {(data.overall_confidence * 100).toFixed(0)}%
           </span>

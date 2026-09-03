@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary
 
-This document synthesizes findings across the **end-to-end data pipeline** for the **Myntra AI-Powered Discovery Engine**. We scraped **22,065 customer discussions and reviews** across 5 multi-channel platforms (YouTube, Google Play Store, Reddit, Apple App Store, and PissedConsumer), filtered and deduplicated them into **8,182 high-signal documents stored in SQLite (`data/db.sqlite`)**, and passed them through a tiered LLM classification architecture powered by **Gemini 3.7 Flash** and deterministic validation.
+This document synthesizes findings across the **end-to-end data pipeline** for the **Myntra AI-Powered Discovery Engine**. We scraped **22,065 customer discussions and reviews** across **4 Primary Discovery Sources** (YouTube hauls, Google Play Store, Reddit communities, Apple App Store) and **1 Secondary Escalation Source** (PissedConsumer for dispute dynamics), filtered and deduplicated them into **8,182 high-signal documents stored in SQLite (`data/db.sqlite`)**, and passed them through a tiered LLM classification architecture powered by **Gemini 3.7 Flash** and deterministic validation.
 
 ### 🌟 Core Discovery Theses & Database Evidence
 

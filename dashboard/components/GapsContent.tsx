@@ -32,6 +32,25 @@ interface GapsContentProps {
 export default function GapsContent({ data }: GapsContentProps) {
   return (
     <>
+      <div
+        className="card"
+        style={{
+          marginBottom: 24,
+          padding: '16px 20px',
+          background: 'rgba(251, 191, 36, 0.05)',
+          border: '1px solid rgba(251, 191, 36, 0.25)',
+          borderRadius: 'var(--radius-md)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 14,
+        }}
+      >
+        <span style={{ fontSize: 24 }}>⚠️</span>
+        <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          <strong style={{ color: 'var(--yellow)' }}>Secondary Source Methodology:</strong> While our <strong>4 Primary Sources</strong> (YouTube, Play Store, Reddit, App Store) track discovery patterns and styling intent, <strong>PissedConsumer</strong> is ingested as our <strong>Secondary Source</strong> — specifically analyzed for post-order friction (courier pickup rejections, automated customer service, refund disputes) that cause high-intent users to hesitate at checkout.
+        </div>
+      </div>
+
       <div className="grid-2" style={{ marginBottom: 24 }}>
         {/* Issue breakdown */}
         <AnimatedCard delay={0}>
