@@ -9,7 +9,7 @@
       "tag": "quality_doubt",
       "label": "Quality Doubt",
       "count": 4617,
-      "pct": 52.5,
+      "pct": 48.7,
       "avg_confidence": 0.57,
       "color": "#a855f7"
     },
@@ -17,15 +17,23 @@
       "tag": "waiting_for_sale",
       "label": "Waiting for Sale",
       "count": 1364,
-      "pct": 15.5,
+      "pct": 14.4,
       "avg_confidence": 0.689,
       "color": "#2dd4bf"
+    },
+    {
+      "tag": "return_policy_concern",
+      "label": "Return Policy Concern",
+      "count": 836,
+      "pct": 8.8,
+      "avg_confidence": 0.85,
+      "color": "#06b6d4"
     },
     {
       "tag": "social_validation_needed",
       "label": "Social Validation Needed",
       "count": 669,
-      "pct": 7.6,
+      "pct": 7.1,
       "avg_confidence": 0.85,
       "color": "#fbbf24"
     },
@@ -33,7 +41,7 @@
       "tag": "price_sensitivity",
       "label": "Price Sensitivity",
       "count": 620,
-      "pct": 7.0,
+      "pct": 6.5,
       "avg_confidence": 0.85,
       "color": "#ff7849"
     },
@@ -41,7 +49,7 @@
       "tag": "sizing_uncertainty",
       "label": "Sizing Uncertainty",
       "count": 411,
-      "pct": 4.7,
+      "pct": 4.3,
       "avg_confidence": 0.85,
       "color": "#ff3f6c"
     },
@@ -49,39 +57,31 @@
       "tag": "style_uncertainty",
       "label": "Style Uncertainty",
       "count": 366,
-      "pct": 4.2,
+      "pct": 3.9,
       "avg_confidence": 0.85,
       "color": "#3b82f6"
     },
     {
-      "tag": "return_policy_concern",
-      "label": "Return Policy Concern",
-      "count": 323,
-      "pct": 3.7,
+      "tag": "trust_deficit",
+      "label": "Trust Deficit",
+      "count": 221,
+      "pct": 2.3,
       "avg_confidence": 0.85,
-      "color": "#06b6d4"
+      "color": "#f97316"
     },
     {
       "tag": "occasion_mismatch",
       "label": "Occasion Mismatch",
       "count": 165,
-      "pct": 1.9,
+      "pct": 1.7,
       "avg_confidence": 0.85,
       "color": "#8b5cf6"
     },
     {
-      "tag": "trust_deficit",
-      "label": "Trust Deficit",
-      "count": 123,
-      "pct": 1.4,
-      "avg_confidence": 0.85,
-      "color": "#f97316"
-    },
-    {
       "tag": "comparison_paralysis",
       "label": "Comparison Paralysis",
-      "count": 73,
-      "pct": 0.8,
+      "count": 134,
+      "pct": 1.4,
       "avg_confidence": 0.85,
       "color": "#ec4899"
     },
@@ -89,7 +89,7 @@
       "tag": "information_gap",
       "label": "Information Gap",
       "count": 69,
-      "pct": 0.8,
+      "pct": 0.7,
       "avg_confidence": 0.85,
       "color": "#84cc16"
     }

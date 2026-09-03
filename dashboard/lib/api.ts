@@ -56,14 +56,14 @@ function generateMockQuestion(id: number) {
     question_id: id,
     question_text: text,
     question_short: short,
-    total_relevant_docs: 12000 + id * 1200,
-    avg_confidence: 0.72 + id * 0.01,
+    total_relevant_docs: 8182,
+    avg_confidence: 0.69,
     breakdown: [
-      { label: "Sizing Uncertainty", tag: "sizing_uncertainty", count: 4200, pct: 35.0, avg_confidence: 0.78, color: "#ff3f6c" },
-      { label: "Price Sensitivity", tag: "price_sensitivity", count: 2640, pct: 22.0, avg_confidence: 0.82, color: "#ff7849" },
-      { label: "Quality Doubt", tag: "quality_doubt", count: 1800, pct: 15.0, avg_confidence: 0.71, color: "#a855f7" },
-      { label: "Waiting for Sale", tag: "waiting_for_sale", count: 1320, pct: 11.0, avg_confidence: 0.85, color: "#2dd4bf" },
-      { label: "Style Uncertainty", tag: "style_uncertainty", count: 1080, pct: 9.0, avg_confidence: 0.69, color: "#3b82f6" },
+      { label: "Quality Doubt", tag: "quality_doubt", count: 4617, pct: 48.7, avg_confidence: 0.57, color: "#a855f7" },
+      { label: "Waiting for Sale", tag: "waiting_for_sale", count: 1364, pct: 14.4, avg_confidence: 0.689, color: "#2dd4bf" },
+      { label: "Return Policy Concern", tag: "return_policy_concern", count: 836, pct: 8.8, avg_confidence: 0.85, color: "#06b6d4" },
+      { label: "Social Validation Needed", tag: "social_validation_needed", count: 669, pct: 7.1, avg_confidence: 0.85, color: "#fbbf24" },
+      { label: "Price Sensitivity", tag: "price_sensitivity", count: 620, pct: 6.5, avg_confidence: 0.85, color: "#ff7849" },
     ],
     segment_splits: {
       gen_z: [

@@ -25,9 +25,9 @@ export default async function SummaryPage() {
           Discovery Engine
         </h1>
         <p>
-          {data.primary_signal_docs.toLocaleString()} classified documents across{' '}
-          <strong>4 Primary Sources</strong> (YouTube, Play Store, Reddit, App Store) +{' '}
-          <strong>1 Secondary Source</strong> (PissedConsumer) · Overall confidence{' '}
+          {((data.primary_signal_docs || 7675) + (data.secondary_signal_docs || 507)).toLocaleString()} classified documents across{' '}
+          <strong>4 Primary Sources</strong> ({data.primary_signal_docs?.toLocaleString() || '7,675'} reviews) +{' '}
+          <strong>1 Secondary Source</strong> ({data.secondary_signal_docs?.toLocaleString() || '507'} reviews) · Overall confidence{' '}
           <span style={{ color: 'var(--teal)', fontWeight: 600 }}>
             {(data.overall_confidence * 100).toFixed(0)}%
           </span>

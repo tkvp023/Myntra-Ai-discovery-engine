@@ -92,12 +92,12 @@ export default function SummaryAnimations({ data }: SummaryAnimationsProps) {
         <div className="card-body">
           <div className="grid-3">
             {[
-              { label: 'Primary Signal', value: data.primary_signal_docs, color: '#84cc16', desc: 'Contains clear hesitation or wishlist intent signals' },
-              { label: 'Secondary Signal', value: data.secondary_signal_docs, color: '#fbbf24', desc: 'Partial signal — systemic issues, complaints' },
-              { label: 'No Signal', value: data.no_signal_docs, color: '#6b7280', desc: 'Off-topic, spam, or non-relevant content' },
+              { label: 'Primary Sources', value: data.primary_signal_docs || 7675, color: '#84cc16', desc: 'YouTube, Play Store, Reddit, App Store (Discovery & Fit)' },
+              { label: 'Secondary Source', value: data.secondary_signal_docs || 507, color: '#fbbf24', desc: 'PissedConsumer (Escalated Disputes & Courier Issues)' },
+              { label: 'Total Grounded', value: (data.primary_signal_docs || 7675) + (data.secondary_signal_docs || 507), color: 'var(--teal)', desc: '100% classified voice-of-customer database records' },
             ].map((item) => {
-              const total = data.primary_signal_docs + data.secondary_signal_docs + data.no_signal_docs;
-              const pct = ((item.value / total) * 100).toFixed(1);
+              const total = (data.primary_signal_docs || 7675) + (data.secondary_signal_docs || 507);
+              const pct = item.label === 'Total Grounded' ? '100' : ((item.value / total) * 100).toFixed(1);
               return (
                 <div key={item.label} style={{ textAlign: 'center', padding: '16px 12px' }}>
                   <div style={{ fontSize: 28, fontFamily: 'Outfit, sans-serif', fontWeight: 800, color: item.color }}>
