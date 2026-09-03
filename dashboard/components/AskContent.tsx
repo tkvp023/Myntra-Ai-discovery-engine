@@ -434,13 +434,13 @@ export default function AskContent() {
           <span>Natural-language RAG over 8,182 reviews (4 Primary Sources + 1 Secondary Source: PissedConsumer)</span>
           <span
             style={{
-              background: isLive ? 'rgba(16,185,129,0.1)' : 'rgba(251,191,36,0.1)',
+              background: isLive ? 'rgba(16,185,129,0.12)' : 'rgba(251,191,36,0.12)',
               border: `1px solid ${isLive ? 'rgba(16,185,129,0.3)' : 'rgba(251,191,36,0.3)'}`,
-              borderRadius: 12,
-              padding: '2px 10px',
+              borderRadius: 16,
+              padding: '3px 12px',
               fontSize: 12,
-              color: isLive ? 'var(--green)' : 'var(--yellow)',
-              fontWeight: 600,
+              color: isLive ? '#10b981' : '#fbbf24',
+              fontWeight: 700,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
@@ -448,14 +448,14 @@ export default function AskContent() {
           >
             <span
               style={{
-                width: 6,
-                height: 6,
+                width: 7,
+                height: 7,
                 borderRadius: '50%',
-                background: isLive ? 'var(--green)' : 'var(--yellow)',
-                animation: isLive ? 'pulse 2s infinite' : 'none',
+                background: isLive ? '#10b981' : '#fbbf24',
+                boxShadow: isLive ? '0 0 8px #10b981' : 'none',
               }}
             />
-            {isLive ? 'Live RAG Engine (Gemini 3.6 Flash)' : 'RAG Standby'}
+            {isLive ? 'Live RAG Engine (Gemini 3.7 Flash)' : 'RAG Standby'}
           </span>
         </p>
       </div>

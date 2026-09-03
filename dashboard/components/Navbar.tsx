@@ -13,7 +13,7 @@ const QUESTIONS = [
   { id: 6, group: 'dynamics', short: 'External Info Seeking', desc: 'YouTube hauls & Instagram reels' },
   { id: 7, group: 'dynamics', short: 'Factor Importance', desc: 'Fit, price, styling & returns' },
   { id: 8, group: 'dynamics', short: 'Intent vs Bookmarking', desc: 'Immediate buy vs aesthetic saves' },
-  { id: 9, group: 'dynamics', short: 'Segment Differences', desc: 'Inferred behavioral segments' },
+  { id: 9, group: 'dynamics', short: 'Platform Differences', desc: 'Platform behavioral cross-comparison' },
   { id: 10, group: 'dynamics', short: 'Unmet Needs', desc: 'High-frequency customer feature requests' },
 ];
 
@@ -36,7 +36,6 @@ export default function Navbar() {
 
   const handleMouseLeave = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    // 250ms grace period so accidental mouse slips do not close the menu
     timeoutRef.current = setTimeout(() => {
       setQuestionsOpen(false);
     }, 250);
@@ -74,7 +73,11 @@ export default function Navbar() {
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
       <Link href="/" className="navbar-logo">
-        AI Discovery Engine
+        <span className="navbar-logo-badge">M</span>
+        <span style={{ background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          Myntra
+        </span>
+        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Discovery Engine</span>
       </Link>
 
       {/* Hamburger (mobile only) */}
