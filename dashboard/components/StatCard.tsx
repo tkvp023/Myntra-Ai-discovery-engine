@@ -10,8 +10,8 @@ interface StatCardProps {
   value: number;
   unit: 'count' | 'percent';
   sparkline: number[];
-  trend: 'up' | 'down' | 'stable';
-  trend_pct: number;
+  trend?: 'up' | 'down' | 'stable';
+  trend_pct?: number;
   delay?: number;
 }
 
@@ -42,13 +42,10 @@ function AnimatedNumber({ target, unit, duration = 1200 }: { target: number; uni
 }
 
 export default function StatCard({
-  label, value, unit, sparkline, trend, trend_pct, delay = 0,
+  label, value, unit, sparkline, delay = 0,
 }: StatCardProps) {
   const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true });
   const sparkData = sparkline.map((v, i) => ({ v, i }));
-
-  const trendArrow = trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→';
-  const trendClass = trend === 'up' ? 'up' : trend === 'down' ? 'down' : 'stable';
 
   return (
     <div
@@ -60,12 +57,6 @@ export default function StatCard({
         minHeight: 140,
       }}
     >
-      <div className="stat-trend" style={{}} data-trend={trendClass}>
-        <span className={`stat-trend ${trendClass}`}>
-          {trendArrow}{trend_pct}%
-        </span>
-      </div>
-
       <div className="stat-value">
         {inView ? <AnimatedNumber target={value} unit={unit} /> : '0'}
       </div>
