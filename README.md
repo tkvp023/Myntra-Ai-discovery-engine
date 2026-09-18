@@ -6,6 +6,26 @@ A full-stack consumer insights platform that ingests, classifies, quantifies, an
 
 ---
 
+## 🎬 Product Walkthrough & Demo
+
+Explore the full video demonstration of the AI Discovery Engine platform, showcasing all 38+ interactive charts, 10 discovery question deep-dives, generational cohort analysis, systemic gap investigations, and the real-time "Ask the Data" conversational AI:
+
+https://github.com/tkvp023/Myntra-Ai-discovery-engine/raw/main/demo-walkthrough.mp4
+
+<div align="center">
+  <video src="demo-walkthrough.mp4" controls width="100%" style="max-height: 540px; border-radius: 8px;">
+    Your browser does not support video playback.
+  </video>
+  <p>
+    <a href="demo-walkthrough.mp4">
+      <img src="https://img.shields.io/badge/▶_Watch_Full_Demo-MP4_Walkthrough-ff3f6c?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch Demo Video" />
+    </a>
+  </p>
+  <p><em>Direct link: <a href="demo-walkthrough.mp4"><strong>demo-walkthrough.mp4</strong></a> (171 MB HD walkthrough)</em></p>
+</div>
+
+---
+
 ## 🎯 Problem Statement
 
 Myntra users add millions of products to their wishlist but hesitate to purchase. This project answers **10 strategic discovery questions** about that hesitation gap:
