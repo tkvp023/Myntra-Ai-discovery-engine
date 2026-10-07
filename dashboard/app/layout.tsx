@@ -19,18 +19,24 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const isLightMode = process.env.NEXT_PUBLIC_LIGHT_MODE === 'true' ||
+    process.env.NEXT_PUBLIC_DEFAULT_MODE === 'light' ||
+    !process.env.NEXT_PUBLIC_DEFAULT_MODE;
+  const defaultMode = isLightMode ? 'light' : 'dark';
+
   return (
-    <html lang="en" data-mode="light" data-theme="tokyo-sakura" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-mode={defaultMode} data-theme="tokyo-sakura" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
+                  var forceLight = ${isLightMode};
                   var m = localStorage.getItem('app-mode-v2');
                   if (!m) {
-                    m = 'light';
-                    localStorage.setItem('app-mode-v2', 'light');
+                    m = forceLight ? 'light' : 'dark';
+                    localStorage.setItem('app-mode-v2', m);
                   }
                   var t = localStorage.getItem('app-theme') || 'tokyo-sakura';
                   if (t === 'sunset') t = 'tokyo-sakura';

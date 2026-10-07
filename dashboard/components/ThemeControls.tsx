@@ -41,14 +41,20 @@ export const THEMES: { id: Theme; name: string; tag: string; icon: string; previ
 
 export default function ThemeControls() {
   const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<Mode>('light');
+  const isEnvLight = process.env.NEXT_PUBLIC_LIGHT_MODE === 'true' ||
+    process.env.NEXT_PUBLIC_DEFAULT_MODE === 'light' ||
+    !process.env.NEXT_PUBLIC_DEFAULT_MODE;
+  const envDefault: Mode = isEnvLight ? 'light' : 'dark';
+
+  const [mode, setMode] = useState<Mode>(envDefault);
   const [theme, setTheme] = useState<Theme>('tokyo-sakura');
 
   useEffect(() => {
     setMounted(true);
     const initialMode = (document.documentElement.getAttribute('data-mode') as Mode) || 
       (localStorage.getItem('app-mode-v2') as Mode) || 
-      (localStorage.getItem('app-mode') as Mode) || 'light';
+      (localStorage.getItem('app-mode') as Mode) || 
+      envDefault;
     
     // Map legacy 'sunset' / 'emerald' / 'nebula' if stored
     let initialTheme = (document.documentElement.getAttribute('data-theme') as string) || 
