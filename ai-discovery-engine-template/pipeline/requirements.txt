@@ -1,0 +1,32 @@
+# Scrapers
+google-play-scraper==1.2.7
+praw==7.7.1
+apify-client>=1.6.0
+google-api-python-client==2.131.0
+beautifulsoup4==4.12.3
+requests==2.32.3
+feedparser==6.0.11
+lxml==5.2.2
+
+# Cleaning
+langdetect==1.0.9
+datasketch==1.6.4
+emoji==2.12.1
+regex==2024.5.15
+
+# LLM Classification
+google-generativeai==0.8.5
+groq==0.9.0
+
+# Database
+sqlalchemy==2.0.30
+
+# RAG (needed later but install now)
+chromadb==0.5.5
+sentence-transformers==3.0.1
+
+# Utilities
+python-dotenv==1.0.1
+tqdm==4.66.4
+tenacity==8.3.0
+pydantic==2.7.4

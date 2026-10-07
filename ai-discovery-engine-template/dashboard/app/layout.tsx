@@ -4,15 +4,15 @@ import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: {
-    default: 'AI Discovery Engine — Myntra Insights Dashboard',
+    default: 'Swiggy AI Discovery Engine — Insights Dashboard',
     template: '%s — AI Discovery Engine',
   },
-  description: 'Quantified analysis of 8,182+ user reviews across 5 platforms revealing why shoppers add to wishlist but hesitate to buy on Myntra.',
-  keywords: ['Myntra', 'fashion analytics', 'wishlist behavior', 'consumer insights', 'e-commerce research', 'sizing uncertainty', 'price sensitivity'],
+  description: 'Analyzing food delivery user friction — why users abandon carts, cancel orders, or switch to competitor platforms.',
+  keywords: ['Swiggy', 'analytics', 'consumer insights', 'discovery engine', 'AI research'],
   authors: [{ name: 'AI Discovery Engine' }],
   openGraph: {
-    title: 'AI Discovery Engine — Myntra Insights Dashboard',
-    description: 'Deep-dive into 8,182+ reviews across 5 sources: sizing uncertainty, price sensitivity, and 10 strategic questions answered with data.',
+    title: 'Swiggy AI Discovery Engine — Insights Dashboard',
+    description: 'Analyzing food delivery user friction — why users abandon carts, cancel orders, or switch to competitor platforms.',
     type: 'website',
     siteName: 'AI Discovery Engine',
   },
@@ -20,18 +20,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-mode="light" data-theme="tokyo-sakura" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-mode="dark" data-theme="tokyo-sakura" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  var m = localStorage.getItem('app-mode-v2');
-                  if (!m) {
-                    m = 'light';
-                    localStorage.setItem('app-mode-v2', 'light');
-                  }
+                  var m = localStorage.getItem('app-mode') || 'dark';
                   var t = localStorage.getItem('app-theme') || 'tokyo-sakura';
                   if (t === 'sunset') t = 'tokyo-sakura';
                   if (t === 'emerald') t = 'cyber-matrix';

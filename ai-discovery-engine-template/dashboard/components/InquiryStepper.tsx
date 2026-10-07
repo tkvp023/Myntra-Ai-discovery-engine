@@ -44,7 +44,7 @@ export default function InquiryStepper({ activeId }: InquiryStepperProps) {
           <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' }}>
             Inquiries
           </span>
-          <span style={{ fontSize: 11, background: 'var(--input-bg)', border: '1px solid var(--border)', padding: '2px 6px', borderRadius: 8, color: 'var(--text-secondary)', fontWeight: 600 }}>
+          <span style={{ fontSize: 11, background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: 8, color: 'var(--text-secondary)', fontWeight: 600 }}>
             {activeId}/10
           </span>
         </div>

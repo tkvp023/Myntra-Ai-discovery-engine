@@ -244,7 +244,7 @@ export default function ExecutiveFindingsCard({ questionId, data, color }: Execu
               fontSize: 13,
               color: 'var(--text-secondary)',
               lineHeight: 1.55,
-              background: 'var(--input-bg)',
+              background: 'rgba(255,255,255,0.015)',
               border: '1px solid var(--border)',
               padding: '10px 14px',
               borderRadius: 'var(--radius-sm)',

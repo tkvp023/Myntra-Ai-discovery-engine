@@ -41,14 +41,13 @@ export const THEMES: { id: Theme; name: string; tag: string; icon: string; previ
 
 export default function ThemeControls() {
   const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<Mode>('light');
+  const [mode, setMode] = useState<Mode>('dark');
   const [theme, setTheme] = useState<Theme>('tokyo-sakura');
 
   useEffect(() => {
     setMounted(true);
     const initialMode = (document.documentElement.getAttribute('data-mode') as Mode) || 
-      (localStorage.getItem('app-mode-v2') as Mode) || 
-      (localStorage.getItem('app-mode') as Mode) || 'light';
+      (localStorage.getItem('app-mode') as Mode) || 'dark';
     
     // Map legacy 'sunset' / 'emerald' / 'nebula' if stored
     let initialTheme = (document.documentElement.getAttribute('data-theme') as string) || 
@@ -67,7 +66,6 @@ export default function ThemeControls() {
     const nextMode: Mode = mode === 'dark' ? 'light' : 'dark';
     setMode(nextMode);
     document.documentElement.setAttribute('data-mode', nextMode);
-    localStorage.setItem('app-mode-v2', nextMode);
     localStorage.setItem('app-mode', nextMode);
     window.dispatchEvent(new Event('theme-change'));
   };
@@ -117,12 +115,10 @@ export default function ThemeControls() {
                 height: 22,
                 borderRadius: '50%',
                 background: t.preview,
-                border: isSelected
-                  ? (mode === 'dark' ? '2px solid #ffffff' : '2px solid #0f172a')
-                  : (mode === 'dark' ? '1px solid rgba(255,255,255,0.25)' : '1px solid rgba(0,0,0,0.15)'),
+                border: isSelected ? '2px solid #ffffff' : '1px solid rgba(255,255,255,0.25)',
                 boxShadow: isSelected
                   ? `0 0 14px ${t.glow}, 0 0 0 2px var(--brand-primary)`
-                  : '0 1px 4px rgba(0,0,0,0.15)',
+                  : '0 1px 4px rgba(0,0,0,0.2)',
                 transform: isSelected ? 'scale(1.22)' : 'scale(1)',
                 cursor: 'pointer',
                 transition: 'all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -143,26 +139,24 @@ export default function ThemeControls() {
         title={mode === 'dark' ? 'Switch to Daylight Light Mode' : 'Switch to Midnight Dark Mode'}
         aria-label={`Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode`}
         style={{
-          background: 'var(--input-bg)',
-          border: '1px solid var(--border)',
+          background: 'none',
+          border: 'none',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 28,
-          height: 28,
+          width: 26,
+          height: 26,
           borderRadius: '50%',
           color: 'var(--text-primary)',
           transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           fontSize: 14,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.15)';
-          e.currentTarget.style.borderColor = 'var(--brand-primary)';
+          e.currentTarget.style.transform = 'rotate(20deg) scale(1.15)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.borderColor = 'var(--border)';
+          e.currentTarget.style.transform = 'rotate(0deg) scale(1)';
         }}
       >
         {mode === 'dark' ? '🌙' : '☀️'}

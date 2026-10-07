@@ -540,7 +540,7 @@ export default function AskContent() {
                     padding: '18px 22px',
                     fontSize: 13.5,
                     lineHeight: 1.6,
-                    background: msg.isOutOfScope ? 'rgba(239, 68, 68, 0.05)' : 'var(--input-bg)',
+                    background: msg.isOutOfScope ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255,255,255,0.03)',
                     border: msg.isOutOfScope ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid var(--border)',
                     borderRadius: 'var(--radius-md)',
                   }}
@@ -629,7 +629,7 @@ export default function AskContent() {
                       className="copy-btn"
                       onClick={() => copyResponse(i, msg.content)}
                       style={{
-                        background: 'var(--input-bg)',
+                        background: 'rgba(255,255,255,0.04)',
                         border: '1px solid var(--border)',
                         borderRadius: 6,
                         color: 'var(--text-muted)',
@@ -654,7 +654,7 @@ export default function AskContent() {
                   gap: 8,
                   alignItems: 'center',
                   padding: '14px 20px',
-                  background: 'var(--input-bg)',
+                  background: 'rgba(255,255,255,0.03)',
                   border: '1px solid var(--border)',
                   borderRadius: 'var(--radius-md)',
                 }}
@@ -673,7 +673,7 @@ export default function AskContent() {
           <div ref={bottomRef} />
         </div>
 
-        <div style={{ padding: '16px 20px', borderTop: '1px solid var(--border)', background: 'var(--bg-elevated)' }}>
+        <div style={{ padding: '16px 20px', borderTop: '1px solid var(--border)', background: 'rgba(0,0,0,0.1)' }}>
           <div style={{ display: 'flex', gap: 10 }}>
             <input
               value={input}

@@ -1,0 +1,1464 @@
+#!/usr/bin/env python3
+"""
+AI Discovery Engine — Setup Generator
+======================================
+
+Reads discovery_config.yaml and generates all domain-specific code.
+
+Usage:
+    python setup_engine.py                    # Generate from discovery_config.yaml
+    python setup_engine.py --config my.yaml   # Use a custom config file
+    python setup_engine.py --validate         # Validate config only, don't generate
+"""
+
+import argparse
+import json
+import re
+import sys
+import textwrap
+from pathlib import Path
+from typing import Any, Dict, List
+
+# Fix Windows console encoding for emojis
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
+try:
+    import yaml
+except ImportError:
+    print("❌ PyYAML is required. Install it: pip install pyyaml")
+    sys.exit(1)
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+PIPELINE_DIR = PROJECT_ROOT / "pipeline"
+DASHBOARD_DIR = PROJECT_ROOT / "dashboard"
+
+# ═══════════════════════════════════════════════════════════════
+# Color Palette (auto-assigned to tags/factors/sources)
+# ═══════════════════════════════════════════════════════════════
+
+PALETTE = [
+    "#ff3f6c", "#ff7849", "#a855f7", "#2dd4bf",
+    "#3b82f6", "#fbbf24", "#ec4899", "#84cc16",
+    "#f97316", "#8b5cf6", "#06b6d4", "#10b981",
+    "#ef4444", "#6366f1", "#14b8a6", "#f59e0b",
+]
+
+SOURCE_PALETTE = {
+    "playstore":      ("#ff3f6c", "Play Store"),
+    "appstore":       ("#2dd4bf", "App Store"),
+    "reddit":         ("#ff7849", "Reddit"),
+    "youtube":        ("#a855f7", "YouTube"),
+    "trustpilot":     ("#3b82f6", "Trustpilot"),
+    "pissedconsumer": ("#fbbf24", "PissedConsumer"),
+    "reviewsio":      ("#6b7280", "Reviews.io"),
+}
+
+
+# ═══════════════════════════════════════════════════════════════
+# Config Loader & Validator
+# ═══════════════════════════════════════════════════════════════
+
+def load_config(config_path: Path) -> Dict[str, Any]:
+    """Load and validate the discovery config YAML."""
+    if not config_path.exists():
+        print(f"❌ Config file not found: {config_path}")
+        sys.exit(1)
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+
+    # Validate required sections
+    required = ["project", "domain", "sources", "discovery_questions", "classification", "relevance"]
+    missing = [s for s in required if s not in cfg]
+    if missing:
+        print(f"❌ Missing required config sections: {', '.join(missing)}")
+        sys.exit(1)
+
+    # Validate project
+    for key in ["name", "slug", "description"]:
+        if key not in cfg["project"]:
+            print(f"❌ Missing project.{key}")
+            sys.exit(1)
+
+    # Validate at least 1 enabled source
+    enabled_sources = [s for s, v in cfg["sources"].items() if v.get("enabled", False)]
+    if not enabled_sources:
+        print("❌ At least one source must be enabled")
+        sys.exit(1)
+
+    # Validate questions
+    if len(cfg["discovery_questions"]) < 1:
+        print("❌ At least 1 discovery question is required")
+        sys.exit(1)
+
+    # Validate classification
+    cls = cfg["classification"]
+    if not cls.get("hesitation_reasons"):
+        print("❌ classification.hesitation_reasons must have at least one entry")
+        sys.exit(1)
+    if not cls.get("factor_categories"):
+        print("❌ classification.factor_categories must have at least one entry")
+        sys.exit(1)
+
+    print(f"✅ Config validated: {cfg['project']['name']}")
+    print(f"   Sources: {', '.join(enabled_sources)}")
+    print(f"   Questions: {len(cfg['discovery_questions'])}")
+    print(f"   Hesitation reasons: {len(cls['hesitation_reasons'])}")
+    print(f"   Factor categories: {len(cls['factor_categories'])}")
+
+    return cfg
+
+
+def _assign_colors(items: List[str]) -> Dict[str, str]:
+    """Assign colors from palette to a list of items."""
+    return {item: PALETTE[i % len(PALETTE)] for i, item in enumerate(items)}
+
+
+def _label(tag: str) -> str:
+    """Convert snake_case tag to Title Case label."""
+    return tag.replace("_", " ").title()
+
+
+def _write(path: Path, content: str, label: str = ""):
+    """Write content to a file, creating parent dirs."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+    print(f"  ✅ {label or path.name}")
+
+
+# ═══════════════════════════════════════════════════════════════
+# Generators
+# ═══════════════════════════════════════════════════════════════
+
+def gen_scraper_config(cfg: Dict) -> str:
+    """Generate pipeline/scrapers/config.py from sources config."""
+    sources = cfg["sources"]
+    brand = cfg["domain"]["brand_name"]
+    slug = cfg["project"]["slug"]
+
+    lines = [
+        '"""',
+        f'Scraper configurations for {brand} Discovery Engine.',
+        f'Auto-generated by setup_engine.py — edit discovery_config.yaml to change.',
+        '"""',
+        '',
+    ]
+
+    config_names = []
+    enabled_sources = []
+    primary_sources = set()
+    secondary_sources = set()
+
+    source_map = {
+        "playstore": ("PLAYSTORE_CONFIG", "primary"),
+        "appstore": ("APPSTORE_CONFIG", "primary"),
+        "reddit": ("REDDIT_CONFIG", "primary"),
+        "youtube": ("YOUTUBE_CONFIG", "primary"),
+        "trustpilot": ("TRUSTPILOT_CONFIG", "secondary"),
+        "pissedconsumer": ("PISSEDCONSUMER_CONFIG", "secondary"),
+        "reviewsio": ("REVIEWSIO_CONFIG", "secondary"),
+    }
+
+    for source_key, source_cfg in sources.items():
+        if not source_cfg.get("enabled", False):
+            continue
+
+        var_name, tier = source_map.get(source_key, (f"{source_key.upper()}_CONFIG", "secondary"))
+        config_names.append((source_key, var_name))
+        enabled_sources.append(source_key)
+
+        if tier == "primary":
+            primary_sources.add(source_key)
+        else:
+            secondary_sources.add(source_key)
+
+        lines.append(f"# {'─' * 58}")
+        lines.append(f"# {source_key.title()}")
+        lines.append(f"# {'─' * 58}")
+
+        # Build the config dict based on source type
+        if source_key == "playstore":
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "app_id": "{source_cfg.get("app_id", "")}",')
+            lines.append(f'    "lang": "{source_cfg.get("lang", "en")}",')
+            lines.append(f'    "country": "{source_cfg.get("country", "in")}",')
+            lines.append(f'    "sort": 1,')
+            lines.append(f'    "count": {source_cfg.get("count", 50000)},')
+            lines.append(f'    "batch_size": {source_cfg.get("batch_size", 200)},')
+            lines.append(f'    "checkpoint_every": 5000,')
+            lines.append(f"}}",)
+
+        elif source_key == "appstore":
+            app_id = source_cfg.get("app_id", "")
+            country = source_cfg.get("country", "in")
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "app_id": "{app_id}",')
+            lines.append(f'    "country": "{country}",')
+            lines.append(f'    "rss_url": "https://itunes.apple.com/{country}/rss/customerreviews/id={app_id}/sortBy=mostRecent/json",')
+            lines.append(f'    "max_pages": {source_cfg.get("max_pages", 50)},')
+            lines.append(f'    "target_count": {source_cfg.get("target_count", 10000)},')
+            lines.append(f"}}",)
+
+        elif source_key == "reddit":
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "subreddits": {json.dumps(source_cfg.get("subreddits", []), indent=8)},')
+            lines.append(f'    "search_queries": {json.dumps(source_cfg.get("search_queries", []), indent=8)},')
+            lines.append(f'    "sort": "{source_cfg.get("sort", "relevance")}",')
+            lines.append(f'    "time_filter": "{source_cfg.get("time_filter", "all")}",')
+            lines.append(f'    "limit_per_query": {source_cfg.get("limit_per_query", 500)},')
+            lines.append(f'    "include_comments": {source_cfg.get("include_comments", True)},')
+            lines.append(f'    "comment_depth": {source_cfg.get("comment_depth", 5)},')
+            lines.append(f'    "min_upvotes": {source_cfg.get("min_upvotes", 1)},')
+            lines.append(f"}}",)
+
+        elif source_key == "youtube":
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "search_queries": {json.dumps(source_cfg.get("search_queries", []), indent=8)},')
+            lines.append(f'    "max_videos_per_query": {source_cfg.get("max_videos_per_query", 30)},')
+            lines.append(f'    "max_comments_per_video": {source_cfg.get("max_comments_per_video", 200)},')
+            lines.append(f'    "order": "{source_cfg.get("order", "relevance")}",')
+            lines.append(f'    "published_after": "{source_cfg.get("published_after", "2022-01-01T00:00:00Z")}",')
+            lines.append(f'    "region_code": "{source_cfg.get("region_code", "IN")}",')
+            lines.append(f'    "relevance_language": "{source_cfg.get("relevance_language", "en")}",')
+            lines.append(f'    "comment_order": "relevance",')
+            lines.append(f"}}",)
+
+        elif source_key == "trustpilot":
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "base_url": "{source_cfg.get("url", "")}",')
+            lines.append(f'    "max_pages": {source_cfg.get("max_pages", 100)},')
+            lines.append(f'    "target_count": {source_cfg.get("target_count", 5000)},')
+            lines.append(f'    "wait_between_pages": 2,')
+            lines.append(f"}}",)
+
+        elif source_key == "pissedconsumer":
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "base_url": "{source_cfg.get("url", "")}",')
+            lines.append(f'    "max_pages": {source_cfg.get("max_pages", 50)},')
+            lines.append(f'    "target_count": {source_cfg.get("target_count", 3000)},')
+            lines.append(f'    "wait_between_pages": 2,')
+            lines.append(f"}}",)
+
+        elif source_key == "reviewsio":
+            lines.append(f"{var_name} = {{")
+            lines.append(f'    "base_url": "{source_cfg.get("url", "")}",')
+            lines.append(f'    "max_pages": {source_cfg.get("max_pages", 20)},')
+            lines.append(f'    "target_count": {source_cfg.get("target_count", 1000)},')
+            lines.append(f'    "wait_between_pages": 2,')
+            lines.append(f"}}",)
+
+        lines.append("")
+
+    # Aggregate
+    lines.append(f"# {'─' * 58}")
+    lines.append(f"# Aggregate config")
+    lines.append(f"# {'─' * 58}")
+    lines.append("SCRAPER_CONFIGS = {")
+    for src, var in config_names:
+        lines.append(f'    "{src}": {var},')
+    lines.append("}")
+    lines.append("")
+    lines.append(f"VALID_SOURCES = {{{', '.join(repr(s) for s in enabled_sources)}}}")
+    lines.append(f"PRIMARY_SOURCES = {{{', '.join(repr(s) for s in sorted(primary_sources))}}}")
+    lines.append(f"SECONDARY_SOURCES = {{{', '.join(repr(s) for s in sorted(secondary_sources))}}}")
+    lines.append("")
+
+    return "\n".join(lines)
+
+
+def gen_prompts(cfg: Dict) -> str:
+    """Generate pipeline/classification/prompts.py from classification config."""
+    brand = cfg["domain"]["brand_name"]
+    industry = cfg["domain"]["industry"]
+    cls = cfg["classification"]
+    questions = cfg["discovery_questions"]
+    competitors = cfg["domain"].get("competitors", [])
+
+    hesitation_reasons = cls["hesitation_reasons"]
+    intents = cls.get("intent_types", ["genuine_intent", "browsing", "unknown"])
+    factors = cls["factor_categories"]
+    segments = cls.get("user_segments", {})
+    platforms = cls.get("competitor_platforms", [])
+    info_types = cls.get("external_info_types", [])
+
+    # Build schema string
+    reason_enum = " | ".join(hesitation_reasons)
+    intent_enum = " | ".join(intents)
+    age_enum = " | ".join(segments.get("age_groups", ["gen_z", "millennial", "gen_x", "unknown"]))
+    price_enum = " | ".join(segments.get("price_sensitivity", ["high", "medium", "low", "unknown"]))
+    engage_enum = " | ".join(segments.get("engagement_level", ["high", "casual", "unknown"]))
+    gender_enum = " | ".join(segments.get("gender_signals", ["male", "female", "non_binary", "unknown"]))
+
+    # Build factor mentions schema
+    factor_schema_lines = []
+    for f in factors:
+        factor_schema_lines.append(f'      "{f}": {{ "mentioned": true | false, "sentiment": "positive | negative | neutral | mixed" }}')
+    factor_schema = ",\n".join(factor_schema_lines)
+
+    # Build question mapping reference
+    q_ref_lines = []
+    for q in questions:
+        q_ref_lines.append(f'  {q["id"]}. {q["text"]}')
+    q_ref = "\n".join(q_ref_lines)
+
+    system_prompt = f'''You are an expert analyst classifying user feedback about {brand}, a {industry} platform.
+
+Your task: For each review/comment provided, extract structured classification tags using the JSON schema below. These tags will be aggregated to answer strategic business questions about user friction and hesitation.
+
+CRITICAL RULES:
+1. Respond ONLY with valid JSON. No markdown, no explanations, no extra text.
+2. Many reviews are in Hinglish (Hindi-English code-mixed). Classify these with the same schema — do NOT skip them.
+3. A single review can have MULTIPLE hesitation reasons, factor mentions, and unmet needs. Extract ALL that apply.
+4. Only assign tags you are confident about. Use the "confidence" field (0.0–1.0) to express certainty.
+5. Always include an "evidence_quote" — the exact substring from the review supporting each tag.
+6. If a review has NO relevant signal for a field, use the default/empty value (e.g., "unknown", empty array).
+7. Do NOT hallucinate or infer information not present in the text.
+8. For "unmet_needs", extract the user's own words about what they wish existed — do not rephrase.
+
+SCHEMA:
+{{
+  "doc_id": "string — pass through from input",
+  "classification": {{
+    "hesitation_reasons": [
+      {{
+        "reason": "{reason_enum}",
+        "confidence": 0.0-1.0,
+        "evidence_quote": "exact substring from the review"
+      }}
+    ],
+    "user_intent": "{intent_enum}",
+    "user_segment_signals": {{
+      "inferred_age_group": "{age_enum}",
+      "price_sensitivity": "{price_enum}",
+      "engagement_level": "{engage_enum}",
+      "gender_signal": "{gender_enum}"
+    }},
+    "comparison_behavior": {{
+      "compares_across_platforms": true | false,
+      "platforms_mentioned": {json.dumps(platforms)},
+      "comparison_criteria": ["price", "quality", "delivery", "variety", "other"]
+    }},
+    "external_info_seeking": {{
+      "seeks_external_info": true | false,
+      "info_types": {json.dumps(info_types)}
+    }},
+    "factor_mentions": {{
+{factor_schema}
+    }},
+    "unmet_needs": ["free-text strings — extracted from the user's own words"],
+    "brief_question_mapping": [1, 2, 7],
+    "is_primary_signal": true | false
+  }}
+}}
+
+QUESTION MAPPING REFERENCE:
+Map each review to the relevant questions it helps answer (by number):
+{q_ref}'''
+
+    # Build few-shot examples
+    few_shot_code = "FEW_SHOT_EXAMPLES = [\n"
+    examples = cfg.get("few_shot_examples", [])
+    for i, ex in enumerate(examples):
+        inp = ex.get("input", "").strip()
+        out = ex.get("expected_output", {})
+
+        # Build output JSON
+        out_json = {
+            "doc_id": f"doc_{i+1:03d}",
+            "classification": {
+                "hesitation_reasons": [
+                    {"reason": r["reason"], "confidence": r.get("confidence", 0.85), "evidence_quote": r.get("evidence_quote", "")}
+                    for r in out.get("hesitation_reasons", [])
+                ],
+                "user_intent": out.get("intent", "unknown"),
+                "user_segment_signals": {
+                    "inferred_age_group": out.get("age_group", "unknown"),
+                    "price_sensitivity": out.get("price_sensitivity", "unknown"),
+                    "engagement_level": "unknown",
+                    "gender_signal": "unknown",
+                },
+                "comparison_behavior": {
+                    "compares_across_platforms": len(out.get("platforms_mentioned", [])) > 0,
+                    "platforms_mentioned": out.get("platforms_mentioned", []),
+                    "comparison_criteria": ["price"] if out.get("platforms_mentioned") else [],
+                },
+                "external_info_seeking": {"seeks_external_info": False, "info_types": []},
+                "factor_mentions": {f: {"mentioned": False, "sentiment": "neutral"} for f in factors},
+                "unmet_needs": out.get("unmet_needs", []),
+                "brief_question_mapping": [],
+                "is_primary_signal": out.get("is_primary_signal", True),
+            },
+        }
+
+        escaped_input = inp.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
+        escaped_output = json.dumps(out_json, ensure_ascii=False).replace("\\", "\\\\")
+
+        few_shot_code += f'    # Example {i+1}\n'
+        few_shot_code += f'    {{\n'
+        few_shot_code += f'        "input": \'[Document doc_{i+1:03d}]: "{escaped_input}"\',\n'
+        few_shot_code += f"        \"output\": '{json.dumps(out_json, ensure_ascii=False)}',\n"
+        few_shot_code += f'    }},\n'
+
+    few_shot_code += "]\n"
+
+    return f'''"""
+Prompt templates for LLM classification.
+Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+"""
+
+# ──────────────────────────────────────────────────────────
+# System Prompt
+# ──────────────────────────────────────────────────────────
+
+SYSTEM_PROMPT = """{system_prompt}"""
+
+
+# ──────────────────────────────────────────────────────────
+# Few-Shot Examples
+# ──────────────────────────────────────────────────────────
+
+{few_shot_code}
+
+# ──────────────────────────────────────────────────────────
+# Batch Request Formatter
+# ──────────────────────────────────────────────────────────
+
+def format_batch_prompt(documents: list) -> str:
+    """Format a batch of documents into the user prompt."""
+    parts = ["Classify the following reviews. Return a JSON array with one classification object per document.\\n"]
+    for doc in documents:
+        doc_id = doc.get("doc_id", "unknown")
+        content = doc.get("content", "")
+        words = content.split()
+        if len(words) > 500:
+            content = " ".join(words[:500]) + " [truncated]"
+        parts.append(f\'[Document {{doc_id}}]: "{{content}}"\')
+    return "\\n\\n".join(parts)
+
+
+def build_few_shot_messages() -> list:
+    """Build few-shot message history for chat-based APIs."""
+    messages = []
+    for example in FEW_SHOT_EXAMPLES:
+        messages.append({{"role": "user", "content": example["input"]}})
+        messages.append({{"role": "model", "content": example["output"]}})
+    return messages
+
+
+def estimate_tokens(text: str) -> int:
+    """Rough token estimate — ~4 chars per token."""
+    return len(text) // 4
+'''
+
+
+def gen_schema(cfg: Dict) -> str:
+    """Generate pipeline/classification/schema.py from classification config."""
+    cls = cfg["classification"]
+    hesitation = cls["hesitation_reasons"]
+    intents = cls.get("intent_types", ["genuine_intent", "browsing", "unknown"])
+    factors = cls["factor_categories"]
+    segments = cls.get("user_segments", {})
+    platforms = cls.get("competitor_platforms", [])
+    info_types = cls.get("external_info_types", [])
+
+    age_groups = segments.get("age_groups", ["gen_z", "millennial", "gen_x", "unknown"])
+    price_sens = segments.get("price_sensitivity", ["high", "medium", "low", "unknown"])
+    engagement = segments.get("engagement_level", ["high", "casual", "unknown"])
+    genders = segments.get("gender_signals", ["male", "female", "non_binary", "unknown"])
+
+    # Build factor fields for FactorMentions model
+    factor_fields = []
+    for f in factors:
+        factor_fields.append(f'    {f}: FactorMentionItem = Field(default_factory=FactorMentionItem)')
+
+    return f'''"""
+Pydantic models for the classification schema.
+Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+"""
+
+from typing import List, Optional, Dict
+from pydantic import BaseModel, Field
+
+
+# ──────────────────────────────────────────────────────────
+# Valid Enum Constants
+# ──────────────────────────────────────────────────────────
+
+VALID_HESITATION_REASONS = {json.dumps(hesitation, indent=4)}
+
+VALID_INTENTS = {json.dumps(intents, indent=4)}
+
+VALID_AGE_GROUPS = {json.dumps(age_groups)}
+
+VALID_PRICE_SENSITIVITY = {json.dumps(price_sens)}
+
+VALID_ENGAGEMENT = {json.dumps(engagement)}
+
+VALID_GENDER_SIGNALS = {json.dumps(genders)}
+
+VALID_SENTIMENTS = ["positive", "negative", "neutral", "mixed"]
+
+VALID_PLATFORMS = {json.dumps(platforms, indent=4)}
+
+VALID_COMPARISON_CRITERIA = ["price", "quality", "delivery", "variety", "authenticity", "other"]
+
+VALID_INFO_TYPES = {json.dumps(info_types, indent=4)}
+
+FACTOR_NAMES = {json.dumps(factors, indent=4)}
+
+
+# ──────────────────────────────────────────────────────────
+# Pydantic Models
+# ──────────────────────────────────────────────────────────
+
+class HesitationReason(BaseModel):
+    """A single hesitation reason with confidence and evidence."""
+    reason: str = "other"
+    confidence: float = 0.5
+    evidence_quote: str = ""
+
+
+class UserSegmentSignals(BaseModel):
+    """Inferred user segment signals."""
+    inferred_age_group: str = "unknown"
+    price_sensitivity: str = "unknown"
+    engagement_level: str = "unknown"
+    gender_signal: str = "unknown"
+
+
+class ComparisonBehavior(BaseModel):
+    """Cross-platform comparison behavior."""
+    compares_across_platforms: bool = False
+    platforms_mentioned: List[str] = Field(default_factory=list)
+    comparison_criteria: List[str] = Field(default_factory=list)
+
+
+class ExternalInfoSeeking(BaseModel):
+    """External information seeking behavior."""
+    seeks_external_info: bool = False
+    info_types: List[str] = Field(default_factory=list)
+
+
+class FactorMentionItem(BaseModel):
+    """A single factor mention."""
+    mentioned: bool = False
+    sentiment: str = "neutral"
+
+
+class FactorMentions(BaseModel):
+    """All factor mentions."""
+{chr(10).join(factor_fields)}
+
+
+class Classification(BaseModel):
+    """Full classification output for a single document."""
+    hesitation_reasons: List[HesitationReason] = Field(default_factory=list)
+    user_intent: str = "unknown"
+    user_segment_signals: UserSegmentSignals = Field(default_factory=UserSegmentSignals)
+    comparison_behavior: ComparisonBehavior = Field(default_factory=ComparisonBehavior)
+    external_info_seeking: ExternalInfoSeeking = Field(default_factory=ExternalInfoSeeking)
+    factor_mentions: FactorMentions = Field(default_factory=FactorMentions)
+    unmet_needs: List[str] = Field(default_factory=list)
+    brief_question_mapping: List[int] = Field(default_factory=list)
+    is_primary_signal: bool = False
+
+
+class DocumentClassification(BaseModel):
+    """Classification result for a single document (doc_id + classification)."""
+    doc_id: str
+    classification: Classification = Field(default_factory=Classification)
+
+
+class ClassificationResult(BaseModel):
+    """Wrapper for a batch of classification results."""
+    results: List[DocumentClassification] = Field(default_factory=list)
+    model_used: str = ""
+    tier_used: str = ""
+    errors: List[str] = Field(default_factory=list)
+
+
+def empty_classification(doc_id: str) -> DocumentClassification:
+    """Return a default empty classification for a document."""
+    return DocumentClassification(
+        doc_id=doc_id,
+        classification=Classification(
+            hesitation_reasons=[],
+            user_intent="unknown",
+            user_segment_signals=UserSegmentSignals(),
+            comparison_behavior=ComparisonBehavior(),
+            external_info_seeking=ExternalInfoSeeking(),
+            factor_mentions=FactorMentions(),
+            unmet_needs=[],
+            brief_question_mapping=[],
+            is_primary_signal=False,
+        ),
+    )
+'''
+
+
+def gen_relevance_filter(cfg: Dict) -> str:
+    """Generate pipeline/cleaning/relevance_filter.py from relevance config."""
+    keywords = cfg["relevance"].get("domain_keywords", [])
+    auto_relevant = cfg["relevance"].get("auto_relevant_sources", [])
+
+    kw_set = "{\n"
+    for kw in keywords:
+        kw_set += f'    "{kw}",\n'
+    kw_set += "}"
+
+    auto_set = ", ".join(f'"{s}"' for s in auto_relevant)
+
+    return f'''"""
+Relevance filter — keeps documents that contain domain-relevant signals.
+Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+"""
+
+import re
+from typing import List, Tuple
+
+
+# Keywords that indicate domain relevance
+DOMAIN_KEYWORDS = {kw_set}
+
+# Noise patterns (ultra-short or non-informative)
+NOISE_PATTERNS = [
+    r"^\\s*(good|nice|bad|worst|best|ok|okay|fine|great|excellent|awesome|terrible|horrible|amazing)\\s*[.!]*\\s*$",
+    r"^[⭐★☆✩✪]+\\s*$",
+    r"^\\s*\\d+\\s*$",
+]
+
+NOISE_REGEXES = [re.compile(p, re.IGNORECASE) for p in NOISE_PATTERNS]
+
+MIN_WORD_COUNT = 4
+
+# Sources where ALL reviews are inherently relevant
+AUTO_RELEVANT_SOURCES = ({auto_set})
+
+
+def is_relevant(text: str) -> bool:
+    """Check if text is relevant to the domain."""
+    if not text:
+        return False
+    text_lower = text.lower()
+    words = text_lower.split()
+    if len(words) < MIN_WORD_COUNT:
+        return False
+    for regex in NOISE_REGEXES:
+        if regex.match(text):
+            return False
+    for keyword in DOMAIN_KEYWORDS:
+        if keyword in text_lower:
+            return True
+    return False
+
+
+def is_relevant_with_source(text: str, source: str) -> bool:
+    """Check relevance with source context."""
+    if not text or len(text.split()) < MIN_WORD_COUNT:
+        return False
+    for regex in NOISE_REGEXES:
+        if regex.match(text):
+            return False
+    if source in AUTO_RELEVANT_SOURCES:
+        return True
+    return is_relevant(text)
+
+
+def filter_documents(docs: List[dict]) -> Tuple[List[dict], int]:
+    """Filter documents for relevance. Returns (relevant_docs, dropped_count)."""
+    kept = []
+    dropped = 0
+    for doc in docs:
+        content = doc.get("content", "")
+        source = doc.get("source", "")
+        if is_relevant_with_source(content, source):
+            kept.append(doc)
+        else:
+            dropped += 1
+    return kept, dropped
+'''
+
+
+def gen_question_mapper(cfg: Dict) -> str:
+    """Generate pipeline/quantification/question_mapper.py."""
+    questions = cfg["discovery_questions"]
+    brand = cfg["domain"]["brand_name"]
+
+    # Build QUESTIONS dict
+    q_dict_lines = []
+    for q in questions:
+        q_dict_lines.append(f'    {q["id"]}:  ("{q["text"]}",{" " * max(1, 80 - len(q["text"]))}"{q["short"]}"),')
+
+    # Build QUESTION_TAG_MAPPING
+    tag_map_lines = []
+    for q in questions:
+        tags = q.get("related_tags", [])
+        if tags:
+            tag_map_lines.append(f'    {q["id"]}:  {json.dumps(tags)},')
+        else:
+            tag_map_lines.append(f'    {q["id"]}:  None,')
+
+    return f'''"""
+Question mapper — maps aggregated data to the strategic discovery questions.
+Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+"""
+
+from pipeline.quantification.aggregator import Aggregator
+
+
+# ─────────────────────────────────────────────────────────────
+# Question metadata
+# ─────────────────────────────────────────────────────────────
+
+QUESTIONS = {{
+{chr(10).join(q_dict_lines)}
+}}
+
+# Which hesitation tags map to each question
+QUESTION_TAG_MAPPING = {{
+{chr(10).join(tag_map_lines)}
+}}
+
+
+def _base(agg: Aggregator, question_id: int, tags=None, quotes_limit: int = 4) -> dict:
+    """Build the base schema shared by all question files."""
+    q_text, q_short = QUESTIONS[question_id]
+
+    from sqlalchemy import text
+    rows = agg._q("""
+        SELECT COUNT(*) FROM question_mappings WHERE question_id = :qid
+    """, {{"qid": question_id}})
+    total_relevant = int(rows[0][0]) if rows else 0
+
+    breakdown = agg.hesitation_frequency(question_ids=[question_id]) if tags is not False else []
+
+    segment_splits = {{
+        seg: agg.hesitation_frequency(question_ids=[question_id], segment=seg)
+        for seg in ["gen_z", "millennial", "gen_x"]
+    }} if tags is not False else {{}}
+
+    source_attribution = agg.hesitation_by_source(question_ids=[question_id]) if tags is not False else []
+    quote_tags = tags if tags else None
+    key_quotes = agg.key_quotes(tags=quote_tags, limit=quotes_limit)
+    temporal_trend = agg.temporal_trend(question_ids=[question_id] if question_id else None)
+
+    avg_conf_rows = agg._q("""
+        SELECT AVG(h.confidence) FROM hesitation_tags h
+        JOIN question_mappings qm ON h.doc_id = qm.doc_id
+        WHERE qm.question_id = :qid
+    """, {{"qid": question_id}})
+    avg_conf = round(float(avg_conf_rows[0][0] or 0.70), 3)
+
+    return {{
+        "question_id":        question_id,
+        "question_text":      q_text,
+        "question_short":     q_short,
+        "total_relevant_docs": total_relevant,
+        "avg_confidence":     avg_conf,
+        "breakdown":          breakdown,
+        "segment_splits":     segment_splits,
+        "source_attribution": source_attribution,
+        "key_quotes":         key_quotes,
+        "temporal_trend":     temporal_trend,
+    }}
+
+
+def build_all_questions(agg: Aggregator) -> dict:
+    """Build all question data objects. Returns {{1: data, 2: data, ...}}"""
+    results = {{}}
+    for qid in QUESTIONS:
+        try:
+            data = _base(agg, qid)
+            results[qid] = data
+            print(f"    [OK] Q{{qid}}: {{QUESTIONS[qid][1]}}")
+        except Exception as e:
+            print(f"    [!!] Q{{qid}} failed: {{e}}")
+            results[qid] = {{
+                "question_id":   qid,
+                "question_text": QUESTIONS[qid][0],
+                "question_short": QUESTIONS[qid][1],
+                "error":         str(e),
+            }}
+    return results
+'''
+
+
+def gen_dashboard_constants(cfg: Dict) -> str:
+    """Generate dashboard/lib/constants.ts."""
+    questions = cfg["discovery_questions"]
+    brand = cfg["domain"]["brand_name"]
+    enabled_sources = [s for s, v in cfg["sources"].items() if v.get("enabled", False)]
+
+    q_entries = []
+    for q in questions:
+        color = PALETTE[(q["id"] - 1) % len(PALETTE)]
+        q_entries.append(f"""  {q["id"]}: {{
+    text: '{q["text"]}',
+    short: '{q["short"]}',
+    color: '{color}',
+    sourceType: 'both',
+    sourceLabel: 'All Sources',
+    sourceDetail: 'Auto-generated from discovery config.',
+  }}""")
+
+    source_entries = []
+    for src in enabled_sources:
+        color, label = SOURCE_PALETTE.get(src, ("#6b7280", src.title()))
+        source_entries.append(f"  '{label}': '{color}',")
+
+    return f"""// constants.ts — question metadata, color palette, source colors
+// Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+
+export interface QuestionMeta {{
+  text: string;
+  short: string;
+  color: string;
+  sourceType: 'primary' | 'secondary' | 'both';
+  sourceLabel: string;
+  sourceDetail: string;
+}}
+
+export const QUESTION_META: Record<number, QuestionMeta> = {{
+{','.join(q_entries)}
+}};
+
+export const SOURCE_COLORS: Record<string, string> = {{
+{chr(10).join(source_entries)}
+}};
+
+export const CONFIDENCE_THRESHOLDS = {{
+  high: 0.8,
+  mid:  0.6,
+}} as const;
+
+export const CHART_COLORS = {json.dumps(PALETTE[:10])};
+
+export function confBadgeClass(conf: number): 'badge-conf-high' | 'badge-conf-mid' | 'badge-conf-low' {{
+  if (conf >= CONFIDENCE_THRESHOLDS.high) return 'badge-conf-high';
+  if (conf >= CONFIDENCE_THRESHOLDS.mid)  return 'badge-conf-mid';
+  return 'badge-conf-low';
+}}
+"""
+
+
+def gen_dashboard_layout(cfg: Dict) -> str:
+    """Generate dashboard/app/layout.tsx."""
+    brand = cfg["domain"]["brand_name"]
+    name = cfg["project"]["name"]
+    desc = cfg["project"]["description"].strip()
+
+    return f"""import type {{ Metadata }} from 'next';
+import './globals.css';
+import Navbar from '@/components/Navbar';
+
+export const metadata: Metadata = {{
+  title: {{
+    default: '{name} — Insights Dashboard',
+    template: '%s — AI Discovery Engine',
+  }},
+  description: '{desc}',
+  keywords: ['{brand}', 'analytics', 'consumer insights', 'discovery engine', 'AI research'],
+  authors: [{{ name: 'AI Discovery Engine' }}],
+  openGraph: {{
+    title: '{name} — Insights Dashboard',
+    description: '{desc}',
+    type: 'website',
+    siteName: 'AI Discovery Engine',
+  }},
+}};
+
+export default function RootLayout({{ children }}: {{ children: React.ReactNode }}) {{
+  return (
+    <html lang="en" data-mode="dark" data-theme="tokyo-sakura" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{{{
+            __html: `
+              (function() {{
+                try {{
+                  var m = localStorage.getItem('app-mode') || 'dark';
+                  var t = localStorage.getItem('app-theme') || 'tokyo-sakura';
+                  if (t === 'sunset') t = 'tokyo-sakura';
+                  if (t === 'emerald') t = 'cyber-matrix';
+                  if (t === 'nebula') t = 'cosmic-nebula';
+                  document.documentElement.setAttribute('data-mode', m);
+                  document.documentElement.setAttribute('data-theme', t);
+                }} catch (e) {{}}
+              }})();
+            `,
+          }}}}
+        />
+      </head>
+      <body suppressHydrationWarning>
+        <Navbar />
+        <main className="page-wrapper">
+          {{children}}
+        </main>
+      </body>
+    </html>
+  );
+}}
+"""
+
+
+def gen_env_example(cfg: Dict) -> str:
+    """Generate .env.example."""
+    brand = cfg["domain"]["brand_name"]
+    sources = cfg["sources"]
+
+    lines = [
+        f"# === {brand} Discovery Engine ===",
+        "",
+        "# === LLM APIs (all free) ===",
+        "GEMINI_API_KEY=your_gemini_api_key_here",
+        "GROQ_API_KEY=your_groq_api_key_here",
+        "",
+    ]
+
+    if sources.get("reddit", {}).get("enabled"):
+        lines.extend([
+            "# === Reddit / Apify ===",
+            "APIFY_API_TOKEN=your_apify_api_token_here",
+            "REDDIT_CLIENT_ID=your_reddit_client_id_here",
+            "REDDIT_CLIENT_SECRET=your_reddit_client_secret_here",
+            f"REDDIT_USER_AGENT={cfg['project']['slug']}-discovery-engine/1.0",
+            "REDDIT_USERNAME=your_reddit_username_here",
+            "REDDIT_PASSWORD=your_reddit_password_here",
+            "",
+        ])
+
+    if sources.get("youtube", {}).get("enabled"):
+        lines.extend([
+            "# === YouTube API ===",
+            "YOUTUBE_API_KEY=your_youtube_api_key_here",
+            "",
+        ])
+
+    lines.extend([
+        "# === Database ===",
+        "DATABASE_URL=sqlite:///data/db.sqlite",
+        "",
+        "# === Ollama (local, no key needed) ===",
+        "OLLAMA_BASE_URL=http://localhost:11434",
+        "",
+        "# === Pipeline Config ===",
+        "BATCH_SIZE=10",
+        "CONFIDENCE_THRESHOLD=0.4",
+        "MAX_RPM_GEMINI=10",
+        "MAX_RPM_GROQ=25",
+        "",
+    ])
+
+    return "\n".join(lines)
+
+
+def gen_readme(cfg: Dict) -> str:
+    """Generate README.md."""
+    brand = cfg["domain"]["brand_name"]
+    name = cfg["project"]["name"]
+    desc = cfg["project"]["description"].strip()
+    sources = [s for s, v in cfg["sources"].items() if v.get("enabled", False)]
+    questions = cfg["discovery_questions"]
+
+    q_list = "\n".join(f'  {q["id"]}. **{q["short"]}** — {q["text"]}' for q in questions)
+
+    return f"""# {name}
+
+{desc}
+
+## Architecture
+
+```
+Scrape → Clean → Classify (LLM) → Quantify → Dashboard
+```
+
+**Data Sources**: {", ".join(s.title() for s in sources)}
+
+## Quick Start
+
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+cd dashboard && npm install && cd ..
+
+# 2. Set up environment
+cp .env.example .env
+# Fill in your API keys
+
+# 3. Run the pipeline
+cd pipeline
+python run_pipeline.py --mode full --limit 50
+
+# 4. Start the dashboard
+cd ../dashboard
+npm run dev
+```
+
+## Discovery Questions
+
+{q_list}
+
+## Pipeline Modes
+
+| Mode | Command |
+|------|---------|
+| Initialize DB | `python run_pipeline.py --mode init-db` |
+| Scrape data | `python run_pipeline.py --mode scrape --limit 100` |
+| Clean data | `python run_pipeline.py --mode clean` |
+| Classify (LLM) | `python run_pipeline.py --mode classify` |
+| Export JSON | `python run_pipeline.py --mode export` |
+| Full pipeline | `python run_pipeline.py --mode full` |
+| RAG server | `python run_pipeline.py --mode rag-server` |
+| Stats | `python run_pipeline.py --mode stats` |
+
+## Tech Stack
+
+- **Pipeline**: Python, SQLAlchemy, Pydantic, Gemini/Groq LLMs
+- **Dashboard**: Next.js, Recharts, Nivo
+- **Database**: SQLite
+- **RAG**: FastAPI + scikit-learn vector store
+
+---
+
+*Generated by [AI Discovery Engine Template](https://github.com/your-repo)*
+"""
+
+
+def gen_mock_data(cfg: Dict) -> str:
+    """Generate dashboard/lib/mockData.ts with domain-appropriate mock data."""
+    questions = cfg["discovery_questions"]
+    brand = cfg["domain"]["brand_name"]
+    hesitation = cfg["classification"]["hesitation_reasons"]
+    hes_colors = _assign_colors(hesitation)
+    enabled_sources = [s for s, v in cfg["sources"].items() if v.get("enabled", False)]
+
+    # Build source distribution mock
+    src_dist = []
+    for i, src in enumerate(enabled_sources[:5]):
+        color, label = SOURCE_PALETTE.get(src, ("#6b7280", src.title()))
+        count = max(100, 5000 - i * 1000)
+        pct = round(count / sum(max(100, 5000 - j * 1000) for j in range(min(5, len(enabled_sources)))) * 100, 1)
+        src_dist.append(f'    {{ source: "{label}", count: {count}, pct: {pct}, color: "{color}" }}')
+
+    # Build top opportunities mock
+    top_opps = []
+    for i, tag in enumerate(hesitation[:5]):
+        pct = round(40 - i * 7, 1)
+        count = int(pct * 80)
+        top_opps.append(f'    {{ rank: {i+1}, label: "{_label(tag)}", question_id: 2, pct: {pct}, count: {count}, avg_confidence: 0.{70+i*3}, impact_score: {10 - i * 0.7:.1f} }}')
+
+    # Build question meta
+    q_meta_lines = []
+    for q in questions:
+        q_meta_lines.append(f'  {q["id"]}: {{ text: "{q["text"]}", short: "{q["short"]}" }}')
+
+    return f"""// Mock data used during development before real pipeline runs.
+// Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+
+export const MOCK_Q6_SANKEY = {{
+  nodes: [
+    {{ id: '{brand} App' }},
+    {{ id: 'YouTube Reviews' }},
+    {{ id: 'Reddit Thread' }},
+    {{ id: 'Competitor App' }},
+    {{ id: 'Instagram/Social' }},
+    {{ id: 'Google Search' }},
+    {{ id: 'Friend / WhatsApp' }},
+    {{ id: 'Ordered ✓' }},
+    {{ id: 'Abandoned ✗' }},
+    {{ id: 'Still Undecided' }},
+  ],
+  links: [
+    {{ source: '{brand} App', target: 'YouTube Reviews', value: 3800 }},
+    {{ source: '{brand} App', target: 'Reddit Thread', value: 2900 }},
+    {{ source: '{brand} App', target: 'Competitor App', value: 2100 }},
+    {{ source: '{brand} App', target: 'Instagram/Social', value: 1700 }},
+    {{ source: '{brand} App', target: 'Google Search', value: 900 }},
+    {{ source: '{brand} App', target: 'Friend / WhatsApp', value: 600 }},
+    {{ source: 'YouTube Reviews', target: 'Ordered ✓', value: 1900 }},
+    {{ source: 'YouTube Reviews', target: 'Abandoned ✗', value: 1100 }},
+    {{ source: 'Reddit Thread', target: 'Ordered ✓', value: 1400 }},
+    {{ source: 'Reddit Thread', target: 'Abandoned ✗', value: 900 }},
+    {{ source: 'Competitor App', target: 'Abandoned ✗', value: 1100 }},
+    {{ source: 'Instagram/Social', target: 'Ordered ✓', value: 900 }},
+    {{ source: 'Google Search', target: 'Ordered ✓', value: 600 }},
+    {{ source: 'Friend / WhatsApp', target: 'Ordered ✓', value: 500 }},
+  ],
+}};
+
+export const MOCK_Q9_GROUPED = [
+  {{ factor: '{_label(hesitation[0]) if hesitation else "Issue 1"}', youtube: 74, play_store: 11, reddit: 9, pissed_consumer: 4, app_store: 2 }},
+  {{ factor: '{_label(hesitation[1]) if len(hesitation) > 1 else "Issue 2"}', youtube: 42, play_store: 28, reddit: 20, pissed_consumer: 6, app_store: 4 }},
+  {{ factor: '{_label(hesitation[2]) if len(hesitation) > 2 else "Issue 3"}', youtube: 5, play_store: 18, reddit: 12, pissed_consumer: 62, app_store: 3 }},
+  {{ factor: '{_label(hesitation[3]) if len(hesitation) > 3 else "Issue 4"}', youtube: 82, play_store: 4, reddit: 11, pissed_consumer: 1, app_store: 2 }},
+  {{ factor: '{_label(hesitation[4]) if len(hesitation) > 4 else "Issue 5"}', youtube: 35, play_store: 25, reddit: 30, pissed_consumer: 8, app_store: 2 }},
+];
+
+export const MOCK_SUMMARY = {{
+  generated_at: "2026-01-01T00:00:00Z",
+  pipeline_version: "1.0.0",
+  kpi_cards: [
+    {{ id: "total_reviews", label: "Reviews Analyzed", value: 8000, unit: "count", sparkline: [4000, 5000, 6000, 7000, 8000] }},
+    {{ id: "{hesitation[0]}", label: "{_label(hesitation[0])}", value: 40.0, unit: "percent", sparkline: [24, 28, 32, 36, 40] }},
+    {{ id: "{hesitation[1] if len(hesitation) > 1 else 'tag2'}", label: "{_label(hesitation[1]) if len(hesitation) > 1 else 'Tag 2'}", value: 14.4, unit: "percent", sparkline: [9, 10, 11, 13, 14] }},
+    {{ id: "unmet_needs", label: "Unmet Needs Identified", value: 30, unit: "count", sparkline: [18, 21, 24, 27, 30] }},
+  ],
+  source_distribution: [
+{",\\n".join(src_dist)}
+  ],
+  top_opportunities: [
+{",\\n".join(top_opps)}
+  ],
+  overall_confidence: 0.69,
+  primary_signal_docs: 7000,
+  secondary_signal_docs: 500,
+  no_signal_docs: 0,
+}};
+
+export const MOCK_Q2 = {{
+  question_id: 2,
+  question_text: "{questions[1]['text'] if len(questions) > 1 else 'Question 2'}",
+  question_short: "{questions[1]['short'] if len(questions) > 1 else 'Q2'}",
+  total_relevant_docs: 7000,
+  avg_confidence: 0.678,
+  breakdown: [
+    {{ label: "{_label(hesitation[0])}", tag: "{hesitation[0]}", count: 3200, pct: 40.0, avg_confidence: 0.57, color: "{hes_colors[hesitation[0]]}" }},
+    {{ label: "{_label(hesitation[1]) if len(hesitation) > 1 else 'Tag 2'}", tag: "{hesitation[1] if len(hesitation) > 1 else 'tag2'}", count: 1150, pct: 14.4, avg_confidence: 0.69, color: "{hes_colors.get(hesitation[1], '#6b7280') if len(hesitation) > 1 else '#6b7280'}" }},
+  ],
+  source_attribution: [],
+  key_quotes: [
+    {{ text: "Sample review quote from users.", source: "Play Store", source_id: "gp_001", date: "2026-01-15", confidence: 0.92, tags: ["{hesitation[0]}"] }},
+  ],
+  temporal_trend: [
+    {{ month: "2025-01", count: 300, pct: 29.0 }},
+    {{ month: "2025-07", count: 400, pct: 32.5 }},
+    {{ month: "2026-01", count: 460, pct: 34.0 }},
+  ],
+}};
+
+export const MOCK_SYSTEMIC_GAPS = {{
+  generated_at: "2026-01-01T00:00:00Z",
+  total_secondary_docs: 500,
+  issue_breakdown: [
+    {{ label: "{_label(hesitation[0])}", tag: "{hesitation[0]}", count: 200, pct: 40.0, color: "{hes_colors[hesitation[0]]}" }},
+    {{ label: "{_label(hesitation[1]) if len(hesitation) > 1 else 'Issue 2'}", tag: "{hesitation[1] if len(hesitation) > 1 else 'issue2'}", count: 120, pct: 24.0, color: "{hes_colors.get(hesitation[1], '#6b7280') if len(hesitation) > 1 else '#6b7280'}" }},
+  ],
+  correlation_with_hesitation: [],
+  key_quotes: [
+    {{ text: "Sample complaint from secondary source.", source: "PissedConsumer", date: "2026-02-10", issue: "{hesitation[0]}" }},
+  ],
+}};
+
+export const QUESTION_META: Record<number, {{ text: string; short: string }}> = {{
+{",\\n".join(q_meta_lines)}
+}};
+"""
+
+
+def gen_keyword_tagger(cfg: Dict) -> str:
+    """Generate pipeline/classification/keyword_tagger.py."""
+    cls = cfg["classification"]
+    hesitation = cls["hesitation_reasons"]
+    intents = cls.get("intent_types", [])
+    factors = cls["factor_categories"]
+    platforms = cls.get("competitor_platforms", [])
+    info_types = cls.get("external_info_types", [])
+    keywords = cfg["relevance"].get("domain_keywords", [])
+    questions = cfg["discovery_questions"]
+
+    # Build simple keyword patterns per hesitation reason from the tag name
+    hes_patterns = {}
+    for reason in hesitation:
+        # Split tag name into words and create basic regex patterns
+        words = reason.split("_")
+        patterns = [f'r"\\b{w}\\b"' for w in words if len(w) > 2]
+        hes_patterns[reason] = patterns if patterns else [f'r"\\b{reason}\\b"']
+
+    hes_code = "HESITATION_PATTERNS = {\n"
+    for reason, patterns in hes_patterns.items():
+        hes_code += f'    "{reason}": [\n'
+        hes_code += f'        {", ".join(patterns)},\n'
+        hes_code += f'    ],\n'
+    hes_code += "}\n"
+
+    # Intent patterns
+    intent_code = "INTENT_PATTERNS = {\n"
+    for intent in intents:
+        words = intent.split("_")
+        pats = [f'r"\\b{w}\\b"' for w in words if len(w) > 2]
+        intent_code += f'    "{intent}": [{", ".join(pats)}],\n'
+    intent_code += "}\n"
+
+    # Platform patterns
+    plat_code = "PLATFORM_PATTERNS = {\n"
+    for plat in platforms:
+        name = plat.replace("_", " ")
+        plat_code += f'    "{plat}": [r"\\b{name}\\b"],\n'
+    plat_code += "}\n"
+
+    # Info type patterns
+    info_code = "INFO_PATTERNS = {\n"
+    for it in info_types:
+        words = it.split("_")
+        pats = [f'r"\\b{w}\\b"' for w in words if len(w) > 2]
+        info_code += f'    "{it}": [{", ".join(pats)}],\n'
+    info_code += "}\n"
+
+    # Factor patterns
+    factor_code = "FACTOR_PATTERNS = {\n"
+    for f in factors:
+        words = f.split("_")
+        pats = [f'r"\\b{w}\\b"' for w in words if len(w) > 2]
+        factor_code += f'    "{f}": [{", ".join(pats)}],\n'
+    factor_code += "}\n"
+
+    return f'''"""
+Keyword-based classification tagger.
+Auto-generated by setup_engine.py — edit discovery_config.yaml to change.
+"""
+
+import re
+from typing import List, Dict, Any
+
+
+# ──────────────────────────────────────────────────────────
+# 1. Hesitation Reason Patterns
+# ──────────────────────────────────────────────────────────
+
+{hes_code}
+
+# ──────────────────────────────────────────────────────────
+# 2. Intent Classification Patterns
+# ──────────────────────────────────────────────────────────
+
+{intent_code}
+
+# ──────────────────────────────────────────────────────────
+# 3. Platform Comparison Patterns
+# ──────────────────────────────────────────────────────────
+
+{plat_code}
+
+# ──────────────────────────────────────────────────────────
+# 4. External Info Patterns
+# ──────────────────────────────────────────────────────────
+
+{info_code}
+
+# ──────────────────────────────────────────────────────────
+# 5. Factor Patterns
+# ──────────────────────────────────────────────────────────
+
+{factor_code}
+
+
+def classify_with_keywords(doc_id: str, content: str) -> dict:
+    """Classify a document using keyword patterns."""
+    text = content.lower()
+
+    # 1. Hesitation reasons
+    hesitation_reasons = []
+    for reason, patterns in HESITATION_PATTERNS.items():
+        for pattern in patterns:
+            m = re.search(pattern, text, re.IGNORECASE)
+            if m:
+                start = max(0, m.start() - 25)
+                end = min(len(content), m.end() + 35)
+                evidence = content[start:end].strip()
+                hesitation_reasons.append({{
+                    "reason": reason,
+                    "confidence": 0.85,
+                    "evidence_quote": evidence,
+                }})
+                break
+
+    if not hesitation_reasons:
+        hesitation_reasons.append({{
+            "reason": "{hesitation[0] if hesitation else 'other'}",
+            "confidence": 0.50,
+            "evidence_quote": content[:60],
+        }})
+
+    # 2. Intent
+    user_intent = "unknown"
+    for intent, patterns in INTENT_PATTERNS.items():
+        if any(re.search(p, text, re.IGNORECASE) for p in patterns):
+            user_intent = intent
+            break
+
+    # 3. Platforms
+    platforms = []
+    for platform, patterns in PLATFORM_PATTERNS.items():
+        if any(re.search(p, text, re.IGNORECASE) for p in patterns):
+            platforms.append(platform)
+
+    # 4. External info
+    info_types = []
+    for info_type, patterns in INFO_PATTERNS.items():
+        if any(re.search(p, text, re.IGNORECASE) for p in patterns):
+            info_types.append(info_type)
+
+    # 5. Factor mentions
+    factor_mentions = {{}}
+    for factor, patterns in FACTOR_PATTERNS.items():
+        mentioned = any(re.search(p, text, re.IGNORECASE) for p in patterns)
+        sentiment = "neutral"
+        if mentioned:
+            if any(w in text for w in ["bad", "poor", "waste", "terrible", "worst", "hate", "slow", "fake"]):
+                sentiment = "negative"
+            elif any(w in text for w in ["good", "great", "nice", "love", "perfect", "worth", "fast", "best"]):
+                sentiment = "positive"
+        factor_mentions[factor] = {{
+            "mentioned": mentioned,
+            "sentiment": sentiment,
+        }}
+
+    # 6. Unmet needs (basic extraction)
+    unmet_needs = []
+    for r in hesitation_reasons[:2]:
+        unmet_needs.append(f"Address {{r['reason'].replace('_', ' ')}}")
+    if not unmet_needs:
+        unmet_needs.append("Improve user experience")
+
+    # 7. Question mapping
+    q_map = [1]
+    for r in hesitation_reasons:
+        if r["reason"] in HESITATION_PATTERNS:
+            q_map.extend([2, 3])
+            break
+    if platforms:
+        q_map.append(5)
+    if info_types:
+        q_map.append(6)
+
+    return {{
+        "doc_id": doc_id,
+        "classification": {{
+            "hesitation_reasons": hesitation_reasons[:5],
+            "user_intent": user_intent,
+            "user_segment_signals": {{
+                "inferred_age_group": "unknown",
+                "price_sensitivity": "unknown",
+                "engagement_level": "unknown",
+                "gender_signal": "unknown",
+            }},
+            "comparison_behavior": {{
+                "compares_across_platforms": len(platforms) > 0,
+                "platforms_mentioned": platforms,
+                "comparison_criteria": ["price", "quality"] if platforms else [],
+            }},
+            "external_info_seeking": {{
+                "seeks_external_info": len(info_types) > 0,
+                "info_types": info_types,
+            }},
+            "factor_mentions": factor_mentions,
+            "unmet_needs": unmet_needs[:3],
+            "brief_question_mapping": sorted(set(q_map)),
+            "is_primary_signal": True,
+        }},
+    }}
+'''
+
+
+def gen_gitignore() -> str:
+    """Generate .gitignore."""
+    return """# Data
+data/raw/
+data/clean/
+data/classified/
+data/checkpoints/
+data/exports/
+data/chroma_db/
+data/*.sqlite
+data/*.csv
+data/*.npz
+data/*.joblib
+data/*.json
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.env
+
+# Node
+node_modules/
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+"""
+
+
+# ═══════════════════════════════════════════════════════════════
+# Main
+# ═══════════════════════════════════════════════════════════════
+
+def main():
+    parser = argparse.ArgumentParser(description="AI Discovery Engine — Setup Generator")
+    parser.add_argument("--config", type=str, default="discovery_config.yaml", help="Path to config YAML")
+    parser.add_argument("--validate", action="store_true", help="Validate config only, don't generate")
+    args = parser.parse_args()
+
+    config_path = PROJECT_ROOT / args.config
+    cfg = load_config(config_path)
+
+    if args.validate:
+        print("\n✅ Config is valid. Run without --validate to generate files.")
+        return
+
+    brand = cfg["domain"]["brand_name"]
+    print(f"\n🚀 Generating {brand} Discovery Engine...\n")
+
+    # ── Pipeline files ──
+    print("📦 Pipeline:")
+    _write(PIPELINE_DIR / "scrapers" / "config.py", gen_scraper_config(cfg), "scrapers/config.py")
+    _write(PIPELINE_DIR / "classification" / "prompts.py", gen_prompts(cfg), "classification/prompts.py")
+    _write(PIPELINE_DIR / "classification" / "schema.py", gen_schema(cfg), "classification/schema.py")
+    _write(PIPELINE_DIR / "classification" / "keyword_tagger.py", gen_keyword_tagger(cfg), "classification/keyword_tagger.py")
+    _write(PIPELINE_DIR / "cleaning" / "relevance_filter.py", gen_relevance_filter(cfg), "cleaning/relevance_filter.py")
+    _write(PIPELINE_DIR / "quantification" / "question_mapper.py", gen_question_mapper(cfg), "quantification/question_mapper.py")
+
+    # ── Dashboard files ──
+    print("\n🎨 Dashboard:")
+    _write(DASHBOARD_DIR / "lib" / "constants.ts", gen_dashboard_constants(cfg), "lib/constants.ts")
+    _write(DASHBOARD_DIR / "lib" / "mockData.ts", gen_mock_data(cfg), "lib/mockData.ts")
+    _write(DASHBOARD_DIR / "app" / "layout.tsx", gen_dashboard_layout(cfg), "app/layout.tsx")
+
+    # ── Root files ──
+    print("\n📄 Root files:")
+    _write(PROJECT_ROOT / ".env.example", gen_env_example(cfg), ".env.example")
+    _write(PROJECT_ROOT / "README.md", gen_readme(cfg), "README.md")
+    _write(PROJECT_ROOT / ".gitignore", gen_gitignore(), ".gitignore")
+
+    print(f"\n{'='*60}")
+    print(f"✅ {brand} Discovery Engine generated successfully!")
+    print(f"{'='*60}")
+    print(f"\nNext steps:")
+    print(f"  1. cp .env.example .env  (fill in your API keys)")
+    print(f"  2. pip install -r requirements.txt")
+    print(f"  3. cd dashboard && npm install && cd ..")
+    print(f"  4. cd pipeline && python run_pipeline.py --mode full --limit 50")
+    print(f"  5. cd dashboard && npm run dev")
+    print(f"{'='*60}\n")
+
+
+if __name__ == "__main__":
+    main()

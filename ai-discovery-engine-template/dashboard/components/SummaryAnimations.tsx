@@ -95,7 +95,7 @@ export default function SummaryAnimations({ data }: SummaryAnimationsProps) {
                     flexDirection: 'column',
                     padding: '6px 10px',
                     borderRadius: 8,
-                    background: 'var(--input-bg)',
+                    background: 'rgba(255, 255, 255, 0.02)',
                     border: '1px solid var(--border)',
                   }}
                 >

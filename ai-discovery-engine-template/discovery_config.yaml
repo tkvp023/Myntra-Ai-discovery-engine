@@ -1,0 +1,387 @@
+# ═══════════════════════════════════════════════════════════════
+# AI Discovery Engine — Configuration File
+# ═══════════════════════════════════════════════════════════════
+#
+# Fill in this file to define YOUR discovery engine.
+# Then run: python setup_engine.py
+#
+# This generates all domain-specific code (prompts, schemas,
+# scrapers, dashboard) from your config. No coding needed.
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. PROJECT METADATA ─────────────────────────────────────
+
+project:
+  name: "Swiggy AI Discovery Engine"       # Project display name
+  slug: "swiggy"                             # Short slug (lowercase, no spaces)
+  description: >
+    Analyzing food delivery user friction — why users abandon carts,
+    cancel orders, or switch to competitor platforms.
+
+# ─── 2. DOMAIN CONTEXT ───────────────────────────────────────
+
+domain:
+  brand_name: "Swiggy"                      # The brand/product being analyzed
+  industry: "Food Delivery"                  # Industry for LLM context
+  competitors:                               # Competitor brands
+    - "Zomato"
+    - "EatSure"
+    - "Uber Eats"
+    - "Dunzo"
+    - "Blinkit"
+
+# ─── 3. DATA SOURCES ─────────────────────────────────────────
+# Enable/disable sources and configure each one.
+# All scrapers are included — just set enabled: true/false.
+
+sources:
+  playstore:
+    enabled: true
+    app_id: "in.swiggy.android"              # Google Play package name
+    country: "in"
+    lang: "en"
+    count: 50000
+    batch_size: 200
+
+  appstore:
+    enabled: true
+    app_id: "989540920"                      # Apple App Store ID
+    country: "in"
+    max_pages: 50
+    target_count: 10000
+
+  reddit:
+    enabled: true
+    subreddits:
+      - "swiggy"
+      - "india"
+      - "bangalore"
+      - "mumbai"
+      - "delhi"
+      - "hyderabad"
+      - "pune"
+    search_queries:
+      - "swiggy delivery"
+      - "swiggy complaint"
+      - "swiggy vs zomato"
+      - "swiggy order issue"
+      - "swiggy refund"
+      - "swiggy customer care"
+      - "food delivery app india"
+      - "swiggy review"
+    sort: "relevance"
+    time_filter: "all"
+    limit_per_query: 500
+    include_comments: true
+    comment_depth: 5
+    min_upvotes: 1
+
+  youtube:
+    enabled: true
+    search_queries:
+      - "swiggy review"
+      - "swiggy experience"
+      - "swiggy vs zomato"
+      - "swiggy food quality"
+      - "swiggy delivery late"
+      - "swiggy dark kitchen"
+      - "food delivery experience india"
+    max_videos_per_query: 30
+    max_comments_per_video: 200
+    order: "relevance"
+    published_after: "2022-01-01T00:00:00Z"
+    region_code: "IN"
+    relevance_language: "en"
+
+  trustpilot:
+    enabled: true
+    url: "https://www.trustpilot.com/review/www.swiggy.com"
+    max_pages: 100
+    target_count: 5000
+
+  pissedconsumer:
+    enabled: true
+    url: "https://swiggy.pissedconsumer.com/review.html"
+    max_pages: 50
+    target_count: 3000
+
+  reviewsio:
+    enabled: false
+    url: "https://www.reviews.io/company-reviews/store/swiggy.com"
+    max_pages: 20
+    target_count: 1000
+
+# ─── 4. DISCOVERY QUESTIONS ──────────────────────────────────
+# The 10 strategic questions your engine will answer.
+# Map each to relevant hesitation tags from section 5.
+
+discovery_questions:
+  - id: 1
+    text: "Why do users open the app but abandon their cart before ordering?"
+    short: "Cart Abandonment"
+    related_tags: []  # uses intent distribution (no specific tags)
+
+  - id: 2
+    text: "What prevents users from completing their food order?"
+    short: "Order Prevention"
+    related_tags:
+      - "delivery_delay_fear"
+      - "price_surge"
+      - "food_quality_doubt"
+      - "minimum_order_concern"
+      - "restaurant_closed"
+      - "payment_issue"
+
+  - id: 3
+    text: "What uncertainties remain after selecting a restaurant?"
+    short: "Restaurant Uncertainty"
+    related_tags:
+      - "food_quality_doubt"
+      - "hygiene_concern"
+      - "portion_size_doubt"
+      - "delivery_delay_fear"
+
+  - id: 4
+    text: "What causes users to postpone placing an order?"
+    short: "Order Postponement"
+    related_tags:
+      - "price_surge"
+      - "waiting_for_offer"
+      - "minimum_order_concern"
+      - "meal_timing_mismatch"
+
+  - id: 5
+    text: "How do users compare food delivery platforms before ordering?"
+    short: "Platform Comparison"
+    related_tags:
+      - "competitor_better_offer"
+
+  - id: 6
+    text: "What information do users seek outside the app before ordering?"
+    short: "External Info Seeking"
+    related_tags: []  # uses external_info_seeking data
+
+  - id: 7
+    text: "What role do price, delivery speed, food quality, hygiene, packaging, and restaurant variety play?"
+    short: "Factor Importance"
+    related_tags: []  # uses factor_mentions
+
+  - id: 8
+    text: "When is the cart genuine order intent vs casual browsing?"
+    short: "Intent vs Browsing"
+    related_tags: []  # uses intent distribution
+
+  - id: 9
+    text: "How do friction patterns differ across user segments and platforms?"
+    short: "Segment Differences"
+    related_tags: []  # cross-segment analysis
+
+  - id: 10
+    text: "What unmet needs emerge consistently across user feedback?"
+    short: "Unmet Needs"
+    related_tags: []  # uses unmet_needs
+
+# ─── 5. CLASSIFICATION SCHEMA ────────────────────────────────
+# These define WHAT the LLM classifies in each review.
+
+classification:
+  # The friction/hesitation categories the LLM extracts
+  hesitation_reasons:
+    - "delivery_delay_fear"
+    - "price_surge"
+    - "food_quality_doubt"
+    - "hygiene_concern"
+    - "minimum_order_concern"
+    - "restaurant_closed"
+    - "payment_issue"
+    - "address_issue"
+    - "competitor_better_offer"
+    - "portion_size_doubt"
+    - "waiting_for_offer"
+    - "meal_timing_mismatch"
+    - "trust_deficit"
+    - "customer_support_issue"
+    - "packaging_concern"
+    - "other"
+
+  # The key factors analyzed across reviews
+  factor_categories:
+    - "delivery_speed"
+    - "food_quality"
+    - "price_value"
+    - "packaging"
+    - "customer_support"
+    - "restaurant_variety"
+    - "app_experience"
+    - "hygiene"
+
+  # User intent types
+  intent_types:
+    - "genuine_order_intent"
+    - "browsing"
+    - "price_checking"
+    - "comparison_shortlist"
+    - "meal_planning"
+    - "unknown"
+
+  # User segment signals
+  user_segments:
+    age_groups: ["gen_z", "millennial", "gen_x", "unknown"]
+    price_sensitivity: ["high", "medium", "low", "unknown"]
+    engagement_level: ["high", "casual", "unknown"]
+    gender_signals: ["male", "female", "non_binary", "unknown"]
+
+  # Competitor platforms for comparison tracking
+  competitor_platforms:
+    - "zomato"
+    - "eatsure"
+    - "uber_eats"
+    - "dunzo"
+    - "blinkit"
+    - "offline_restaurant"
+    - "other"
+
+  # External info sources users consult
+  external_info_types:
+    - "youtube_reviews"
+    - "instagram_food"
+    - "google_search"
+    - "ask_friends"
+    - "google_maps_reviews"
+    - "food_blogger"
+    - "other"
+
+# ─── 6. RELEVANCE FILTER KEYWORDS ────────────────────────────
+# Keywords that indicate a review is relevant to your domain.
+# Reviews without these keywords (from non-dedicated sources
+# like Reddit/YouTube) will be filtered out.
+
+relevance:
+  domain_keywords:
+    # Brand & platform
+    - "swiggy"
+    - "zomato"
+    - "food delivery"
+    - "food order"
+    - "uber eats"
+    - "dunzo"
+
+    # Food & restaurant terms
+    - "restaurant"
+    - "food"
+    - "meal"
+    - "order"
+    - "delivery"
+    - "deliver"
+    - "biryani"
+    - "pizza"
+    - "burger"
+    - "thali"
+    - "menu"
+    - "cuisine"
+    - "kitchen"
+    - "chef"
+
+    # Order/delivery terms
+    - "cart"
+    - "checkout"
+    - "payment"
+    - "cod"
+    - "delivery boy"
+    - "delivery partner"
+    - "rider"
+    - "coupon"
+    - "discount"
+    - "offer"
+    - "promo"
+    - "minimum order"
+    - "surge"
+    - "refund"
+    - "cancel"
+
+    # Quality terms
+    - "fresh"
+    - "stale"
+    - "cold food"
+    - "spill"
+    - "packaging"
+    - "hygiene"
+    - "taste"
+    - "portion"
+    - "quantity"
+
+    # Hinglish terms
+    - "khana"
+    - "khaana"
+    - "order kiya"
+    - "delivery nahi"
+    - "refund nahi"
+    - "ghatiya"
+    - "bekar"
+    - "accha"
+
+  # Sources where ALL reviews are inherently relevant
+  auto_relevant_sources:
+    - "playstore"
+    - "appstore"
+    - "trustpilot"
+    - "pissedconsumer"
+    - "reviewsio"
+
+# ─── 7. EXAMPLE REVIEWS (FEW-SHOT) ───────────────────────────
+# Provide 2-3 example reviews with expected classifications.
+# These help the LLM understand your domain.
+# If left empty, the engine relies only on the system prompt.
+
+few_shot_examples:
+  - input: >
+      Ordered biryani at 8pm, app said 30 min delivery. After 1.5 hours still waiting.
+      Called the restaurant — they said Swiggy hasn't assigned a rider yet.
+      Cancelled and ordered from Zomato instead, got it in 25 minutes.
+    expected_output:
+      hesitation_reasons:
+        - reason: "delivery_delay_fear"
+          confidence: 0.95
+          evidence_quote: "After 1.5 hours still waiting"
+        - reason: "competitor_better_offer"
+          confidence: 0.85
+          evidence_quote: "ordered from Zomato instead, got it in 25 minutes"
+      intent: "genuine_order_intent"
+      age_group: "millennial"
+      price_sensitivity: "medium"
+      platforms_mentioned: ["zomato"]
+      unmet_needs:
+        - "Accurate delivery time estimates"
+        - "Faster rider assignment"
+
+  - input: >
+      Surge pricing is insane during rain. Same order costs 150 more.
+      Checking Zomato but prices similar. Will wait for the rain to stop
+      and order later. Also applied coupon SWIGGY50 but it says expired.
+    expected_output:
+      hesitation_reasons:
+        - reason: "price_surge"
+          confidence: 0.92
+          evidence_quote: "Surge pricing is insane during rain. Same order costs 150 more"
+        - reason: "waiting_for_offer"
+          confidence: 0.80
+          evidence_quote: "Will wait for the rain to stop and order later"
+      intent: "price_checking"
+      age_group: "unknown"
+      price_sensitivity: "high"
+      platforms_mentioned: ["zomato"]
+      unmet_needs:
+        - "Transparent surge pricing"
+        - "Working coupon codes"
+
+  - input: >
+      App crashes every time I open it. Fix your app!!
+    expected_output:
+      hesitation_reasons: []
+      intent: "unknown"
+      age_group: "unknown"
+      price_sensitivity: "unknown"
+      platforms_mentioned: []
+      is_primary_signal: false
+      unmet_needs:
+        - "Stable app experience"

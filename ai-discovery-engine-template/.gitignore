@@ -1,0 +1,35 @@
+# Data
+data/raw/
+data/clean/
+data/classified/
+data/checkpoints/
+data/exports/
+data/chroma_db/
+data/*.sqlite
+data/*.csv
+data/*.npz
+data/*.joblib
+data/*.json
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.env
+
+# Node
+node_modules/
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
